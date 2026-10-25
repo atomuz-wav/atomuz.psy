@@ -17,7 +17,7 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=dcd7b9ac">
+  <link rel="stylesheet" href="css/style.css?v=3a04fa8c">
 
   <!--
     BIBLIOTECAS (módulos ES via importmap, versões minificadas)
@@ -724,12 +724,8 @@
               <div><dt>ESTILO</dt><dd>Progressive Psytrance · Zenonesque</dd></div>
             </dl>
             <p class="project-readout__signal">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <ellipse cx="12" cy="12" rx="10" ry="4"/>
-                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
-                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
-                <circle cx="12" cy="12" r="1.8"/>
-              </svg>
+              <!-- Orb animado (thinking-orbs, estado "connecting"): js/modules/section-orbs.js -->
+              <canvas class="project-readout__orb" data-orb="connecting" data-orb-size="64" width="64" height="64" aria-hidden="true"></canvas>
               Experiência sônica do mundo quântico
             </p>
           </aside>
@@ -737,7 +733,11 @@
 
         <!-- Raves em que o ATOMUZ se apresentou (circuito de nós, na ordem informada) -->
         <div class="project-sequence" data-reveal>
-          <p class="project-sequence__title" id="raves-title">Apresentações ao vivo nas maiores raves do Nordeste:</p>
+          <p class="project-sequence__title" id="raves-title">
+            <!-- Sinal de radar (mesmo ícone de "PRÓXIMAS DATAS", seção 05) -->
+            <span class="live-upcoming__signal" aria-hidden="true"></span>
+            <span class="project-sequence__text">Apresentações ao vivo nas maiores raves do Nordeste:</span>
+          </p>
           <ol class="sequence" aria-labelledby="raves-title">
             <li class="sequence__step" style="--i: 0"><span class="sequence__index">01</span><span class="sequence__word">Drop</span></li>
             <li class="sequence__step" style="--i: 1"><span class="sequence__index">02</span><span class="sequence__word">Intense</span></li>

@@ -1528,16 +1528,16 @@ body {
   border-top: 1px solid rgba(18, 201, 46, 0.25);
   font: 400 12px/1.4 var(--f-mono);
   letter-spacing: 0.12em;
-  color: #A3A3A3;   /* frase em cinza; o ícone do átomo segue verde */
+  color: #A3A3A3;   /* frase em cinza; o orb segue verde */
 }
-.project-readout__signal svg {
-  width: 22px;
+/* Orb animado no lugar do ícone do átomo (canvas do section-orbs.js);
+   margem negativa para não aumentar a altura da linha */
+.project-readout__orb {
+  width: 40px;
+  height: 40px;
   flex: none;
-  fill: none;
-  stroke: var(--c-tech);
-  stroke-width: 1.4;
+  margin: -12px -6px -12px -8px;
 }
-.project-readout__signal circle { fill: var(--c-neon); stroke: none; }
 
 /* Sequência: circuito VERTICAL de nós (número · losango neon · nome),
    ligados por uma trilha que se desenha de cima para baixo. */
@@ -1548,6 +1548,20 @@ body {
   font: 400 13px/1.6 var(--f-mono);
   letter-spacing: 0.32em;
   color: var(--c-tech);
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+}
+/* o radar fica alinhado à 1ª linha do texto, que pode quebrar */
+.project-sequence__title .live-upcoming__signal { top: -1px; margin-left: 6px; }
+/* Tema escuro: frase "acesa" como o neon do logo da hero, com miolo verde
+   claro e halo verde em camadas. Brilho fixo, sem animação. */
+:root[data-theme="dark"] .project-sequence__text {
+  color: #9DFF9D;
+  text-shadow:
+    0 0 1px rgba(0, 255, 0, 0.9),
+    0 0 6px rgba(0, 255, 0, 0.55),
+    0 0 14px rgba(0, 255, 0, 0.3);
 }
 .sequence {
   --node: 14px;
