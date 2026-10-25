@@ -1015,16 +1015,20 @@ body {
   margin-top: clamp(18px, 2.4vw, 28px);
   max-width: 620px;
 }
-.section-head__bars { width: 74px; flex: none; fill: var(--c-tech); }
+/* Espectro animado no lugar das barrinhas (desenhado pelo section-spectrum.js) */
+.section-head__spectrum { width: 128px; height: 28px; flex: none; margin: -1px 0; }
 .section-head__line { flex: 1; height: 1px; background: var(--c-line); }
-.section-head__reticle {
-  width: 26px;
+/* Orb animado no lugar da mira (desenhado em canvas pelo section-orbs.js) */
+.section-head__orb {
+  width: 48px;
+  height: 48px;
   flex: none;
-  fill: none;
-  stroke: var(--c-line);
-  stroke-width: 2;
+  margin: -11px -6px -11px 0; /* não aumenta a altura da linha (mira tinha 26px) */
 }
-.section-head__core { fill: var(--c-neon); stroke: none; }
+@media (max-width: 768px) {
+  .section-head__orb { width: 40px; height: 40px; margin: -7px -4px -7px 0; }
+  .section-head__spectrum { width: 100px; height: 24px; margin: 0; }
+}
 
 .section-head__lead {
   margin: 18px 0 0;
@@ -2026,12 +2030,21 @@ html.is-viewing { overflow: hidden; }
 }
 
 /* ---------- 07 · BOOKING ---------- */
+/* Desktop: texto e contatos na coluna da esquerda, formulário na direita.
+   Celular: texto → formulário → contatos (ver @media max-width: 900px). */
 .booking-grid {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(28px, 5vw, 80px);
+  grid-template-areas:
+    "copy    panel"
+    "details panel";
+  grid-template-rows: auto 1fr;
+  column-gap: clamp(28px, 5vw, 80px);
   align-items: start;
 }
+.booking-copy { grid-area: copy; }
+.booking-details { grid-area: details; }
+.booking-panel { grid-area: panel; }
 .booking-copy__lead {
   margin: 0;
   font: 500 clamp(22px, 2.6vw, 34px)/1.45 var(--f-display);
@@ -2237,7 +2250,13 @@ html.is-viewing { overflow: hidden; }
 .booking-form__status a { color: var(--c-tech); }
 
 @media (max-width: 900px) {
-  .booking-grid { grid-template-columns: minmax(0, 1fr); }
+  .booking-grid {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas: "copy" "panel" "details";
+    grid-template-rows: auto;
+    row-gap: clamp(28px, 5vw, 40px);
+  }
+  .booking-contacts { margin-top: 0; }
 }
 @media (max-width: 560px) {
   .booking-form { grid-template-columns: minmax(0, 1fr); }
@@ -2369,7 +2388,7 @@ html.is-viewing { overflow: hidden; }
 .reveal-on .release-grid [data-reveal]:nth-child(2),
 .reveal-on .project-grid [data-reveal]:nth-child(2),
 .reveal-on .atom-grid [data-reveal]:nth-child(2),
-.reveal-on .booking-grid [data-reveal]:nth-child(2) { transition-delay: 0.12s; }
+.reveal-on .booking-grid .booking-panel { transition-delay: 0.12s; }
 
 /* ------------------------------------------------------------------------
    Controle de pausa das animações (aparece ao receber foco pelo teclado)

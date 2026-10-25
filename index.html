@@ -17,7 +17,7 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=14b2b2a1">
+  <link rel="stylesheet" href="css/style.css?v=dcd7b9ac">
 
   <!--
     BIBLIOTECAS (módulos ES via importmap, versões minificadas)
@@ -54,16 +54,19 @@
         "./js/modules/media-viewer.js": "./js/modules/media-viewer.js?v=73655969",
         "./js/modules/particle-field.js": "./js/modules/particle-field.js?v=896ae991",
         "./js/modules/particle-webgl.js": "./js/modules/particle-webgl.js?v=659f5898",
+        "./js/modules/section-orbs.js": "./js/modules/section-orbs.js?v=e6a6d760",
         "./js/modules/section-reveal.js": "./js/modules/section-reveal.js?v=2387fcad",
-        "./js/script.js": "./js/script.js?v=aca2b6a1",
+        "./js/modules/section-spectrum.js": "./js/modules/section-spectrum.js?v=0b680512",
+        "./js/script.js": "./js/script.js?v=a39e08a1",
         "./js/utils/random.js": "./js/utils/random.js?v=296157a1",
-        "./js/utils/svg.js": "./js/utils/svg.js?v=6b6d900b"
+        "./js/utils/svg.js": "./js/utils/svg.js?v=6b6d900b",
+        "./js/vendor/thinking-orbs.js": "./js/vendor/thinking-orbs.js?v=429ddd79"
       }
     }
   </script>
 
   <!-- Pré-carrega os módulos locais em paralelo (evita a "cascata" de imports) -->
-  <link rel="modulepreload" href="js/script.js?v=aca2b6a1">
+  <link rel="modulepreload" href="js/script.js?v=a39e08a1">
   <link rel="modulepreload" href="js/core/loop.js?v=078b6124">
   <link rel="modulepreload" href="js/core/motion.js?v=19092605">
   <link rel="modulepreload" href="js/core/interaction.js?v=8762fc9a">
@@ -171,7 +174,7 @@
     })();
   </script>
 
-  <script type="module" src="js/script.js?v=aca2b6a1"></script>
+  <script type="module" src="js/script.js?v=a39e08a1"></script>
 </head>
 <body>
 
@@ -686,16 +689,11 @@
           <p class="section-head__index"><span>01</span> / O PROJETO</p>
           <h2 class="section-head__title" id="project-title" tabindex="-1">PROJETO</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "working"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="working" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -760,16 +758,11 @@
           <p class="section-head__index"><span>02</span> / SOM</p>
           <h2 class="section-head__title" id="music-title">MÚSICA</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "listening"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="listening" data-orb-size="64" width="64" height="64"></canvas>
           </div>
           <p class="section-head__lead">Ouça o ATOMUZ nas plataformas oficiais.</p>
         </header>
@@ -828,16 +821,11 @@
           <p class="section-head__index"><span>03</span> / ÚLTIMO LANÇAMENTO</p>
           <h2 class="section-head__title" id="release-title">LANÇAMENTO</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "composing"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="composing" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -911,16 +899,11 @@
           <p class="section-head__index"><span>04</span> / REDES</p>
           <h2 class="section-head__title" id="connect-title">CONECTE</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "connecting"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="connecting" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -998,16 +981,11 @@
           <p class="section-head__index"><span>05</span> / TRANSMISSÕES</p>
           <h2 class="section-head__title" id="live-title">AO VIVO</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "solving"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="solving" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -1098,16 +1076,11 @@
           <p class="section-head__index"><span>06</span> / AUDIOVISUAL</p>
           <h2 class="section-head__title" id="media-title">MÍDIA</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "searching"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="searching" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
       </div>
@@ -1355,16 +1328,11 @@
           <p class="section-head__index"><span>07</span> / IDENTIDADE VISUAL</p>
           <h2 class="section-head__title" id="atom-title">ÁTOMO</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "weaving"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="weaving" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -1473,16 +1441,11 @@
           <p class="section-head__index"><span>08</span> / CONTATO</p>
           <h2 class="section-head__title" id="booking-title">BOOKING</h2>
           <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
             <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
+            <!-- Orb animado (thinking-orbs, estado "breathing"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="breathing" data-orb-size="64" width="64" height="64"></canvas>
           </div>
         </header>
 
@@ -1490,7 +1453,11 @@
           <div class="booking-copy" data-reveal>
             <p class="booking-copy__lead">Para bookings, festivais, clubes, eventos e <em>colaborações.</em></p>
             <p class="booking-copy__text">Preencha o formulário com os detalhes do evento. A resposta chega pelo e-mail informado.</p>
+          </div>
 
+          <!-- Contatos e agência: bloco separado para, no celular, ficar abaixo
+               do formulário (a ordem é definida no CSS, em .booking-grid) -->
+          <div class="booking-details" data-reveal>
             <dl class="booking-contacts">
               <div>
                 <dt>AGÊNCIA</dt>

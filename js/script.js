@@ -35,6 +35,8 @@ import { initI18n } from './modules/i18n.js';
 import { createMediaViewer } from './modules/media-viewer.js';
 import { initBookingForm } from './modules/booking-form.js';
 import { initLazyEmbeds } from './modules/lazy-embeds.js';
+import { createSectionOrbs } from './modules/section-orbs.js';
+import { createSectionSpectrum } from './modules/section-spectrum.js';
 
 const hero = document.querySelector('.hero');
 const stage = document.querySelector('[data-stage]');
@@ -182,6 +184,10 @@ motionToggle?.addEventListener('click', () => {
 // Seções após a Hero: revelação suave ao rolar (segue a mesma regra de movimento)
 const sectionReveal = createSectionReveal(document.querySelector('.site-sections') || document);
 const atomDiagram = createAtomDiagram(document.querySelector('[data-atom-diagram]'));
+// Orbs animados nos cabeçalhos das seções (<canvas data-orb>)
+const sectionOrbs = createSectionOrbs(document.querySelector('.site-sections') || document);
+// Espectro de frequências animado nos cabeçalhos (<canvas data-spectrum>)
+const sectionSpectrum = createSectionSpectrum(document.querySelector('.site-sections') || document);
 // Fundo interativo de caracteres: só nas seções 01–04, 07 e 08
 const codeField = createCodeField(
   ['#music', '#release', '#live', '#project', '#booking', '#connect'].map((id) => document.querySelector(id)),
@@ -200,11 +206,15 @@ function applyMotionPreference(reduce) {
   if (reduce) {
     sectionReveal.disable();
     atomDiagram.disable();
+    sectionOrbs.disable();
+    sectionSpectrum.disable();
     codeField.disable();
     heroWave.disable();
   } else {
     sectionReveal.enable();
     atomDiagram.enable();
+    sectionOrbs.enable();
+    sectionSpectrum.enable();
     codeField.enable();
     heroWave.enable();
   }
