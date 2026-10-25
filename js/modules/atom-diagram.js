@@ -1,3 +1,4 @@
+import { t } from './i18n.js';
 /* =========================================================================
    DIAGRAMA DO ÁTOMO (seção 05 · VISUAL IDENTITY)
    -------------------------------------------------------------------------
@@ -283,6 +284,11 @@ export function createAtomDiagram(figure) {
   }
   section.addEventListener('pointerdown', onDown, { passive: true });
 
+  // rótulo do controle acompanha o idioma do site
+  document.addEventListener('atomuz:langchange', () => {
+    if (enabled) figure.setAttribute('aria-label', t('Reconstruir o átomo'));
+  });
+
   return {
     enable() {
       enabled = true;
@@ -290,7 +296,7 @@ export function createAtomDiagram(figure) {
       // o átomo vira um controle acionável pelo teclado
       figure.tabIndex = 0;
       figure.setAttribute('role', 'button');
-      figure.setAttribute('aria-label', 'Reconstruir o átomo');
+      figure.setAttribute('aria-label', t('Reconstruir o átomo'));
       figure.addEventListener('keydown', onKey);
     },
     /** Movimento desligado: elétrons parados, sistema centralizado, sem partículas. */

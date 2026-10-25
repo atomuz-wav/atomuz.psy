@@ -20,6 +20,7 @@ import { prefersReducedMotion, onMotionPreferenceChange } from './core/motion.js
 import { Interaction } from './core/interaction.js';
 import { completeIntro, resetFx } from './core/state.js';
 import { createLogoEnergy } from './modules/logo-energy.js';
+import { createLogoMatrix, createLogoReveal } from './modules/logo-matrix.js';
 import { createCircuitSystem } from './modules/circuit-system.js';
 import { createHudSystem } from './modules/hud-system.js';
 import { createDepthLayers } from './modules/depth-layers.js';
@@ -30,7 +31,10 @@ import { setupEnterTransition } from './modules/enter-transition.js';
 import { createSectionReveal } from './modules/section-reveal.js';
 import { createAtomDiagram } from './modules/atom-diagram.js';
 import { createCodeField } from './modules/code-field.js';
+import { initI18n } from './modules/i18n.js';
+import { createMediaViewer } from './modules/media-viewer.js';
 import { initBookingForm } from './modules/booking-form.js';
+import { initLazyEmbeds } from './modules/lazy-embeds.js';
 
 const hero = document.querySelector('.hero');
 const stage = document.querySelector('[data-stage]');
@@ -184,7 +188,13 @@ const codeField = createCodeField(
 );
 // Na Hero, só a onda de caracteres ao clicar (sem grade em repouso)
 const heroWave = createCodeField([hero], { rippleOnly: true });
+// Idioma antes do formulário (ele lê os textos no idioma atual)
+initI18n();
+// Fotos da MÍDIA: olho no hover e visualizador em tela cheia
+createMediaViewer(document.querySelector('#media'));
 initBookingForm(document.querySelector('[data-booking-form]'));
+// Players do Spotify/SoundCloud: só depois do load e perto da tela
+initLazyEmbeds(document.querySelector('.site-sections') || document);
 
 function applyMotionPreference(reduce) {
   if (reduce) {
@@ -223,6 +233,12 @@ if (stage) {
   loop.add(createDepthLayers(stage, interaction));
   loop.add(createAtomSystem(stage, interaction));
   loop.add(createLogoEnergy(stage, interaction));
+  // Chuva binária dentro das letras: só na entrada, no hover e no clique
+  const matrixGroup = stage.querySelector('[data-logo-matrix]');
+  const logoEl = stage.querySelector('[data-logo]');
+  if (matrixGroup && logoEl) {
+    loop.add(createLogoReveal(logoEl, createLogoMatrix(matrixGroup), interaction, hero));
+  }
   loop.add(createCircuitSystem(stage, interaction));
 }
 loop.add(createHudSystem(hero));

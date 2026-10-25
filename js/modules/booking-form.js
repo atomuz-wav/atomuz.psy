@@ -9,6 +9,8 @@
    e-mail (ou usar o código que o FormSubmit gera após a ativação) basta
    editar o HTML.
    ========================================================================= */
+import { t } from './i18n.js';
+
 const BOOKING_EMAIL = 'atomuz.audio@gmail.com';
 
 export function initBookingForm(form) {
@@ -16,7 +18,8 @@ export function initBookingForm(form) {
   const status = form.querySelector('[data-booking-status]');
   const button = form.querySelector('button[type="submit"]');
   const label = form.querySelector('[data-submit-label]');
-  const idleLabel = label?.textContent ?? '';
+  // rótulo de repouso no idioma atual (pode mudar depois do carregamento)
+  const idleLabel = () => t('ENVIAR SOLICITAÇÃO');
 
   // https://formsubmit.co/<destino>  →  https://formsubmit.co/ajax/<destino>
   const endpoint = form.action.replace('formsubmit.co/', 'formsubmit.co/ajax/');
@@ -35,7 +38,7 @@ export function initBookingForm(form) {
     }
 
     button.disabled = true;
-    if (label) label.textContent = 'ENVIANDO…';
+    if (label) label.textContent = t('ENVIANDO…');
     setStatus('', '');
 
     try {
@@ -50,13 +53,13 @@ export function initBookingForm(form) {
 
       form.reset();
       form.classList.remove('was-submitted');
-      setStatus('success', 'Solicitação enviada! Obrigado — a resposta chega no e-mail informado.');
+      setStatus('success', t('Solicitação enviada! Obrigado — a resposta chega no e-mail informado.'));
     } catch (error) {
       console.warn('[ATOMUZ] Falha no envio do booking:', error);
-      setStatus('error', `Não foi possível enviar agora. Tente de novo ou escreva para <a href="mailto:${BOOKING_EMAIL}">${BOOKING_EMAIL}</a>.`);
+      setStatus('error', `${t('Não foi possível enviar agora. Tente de novo ou escreva para')} <a href="mailto:${BOOKING_EMAIL}">${BOOKING_EMAIL}</a>.`);
     } finally {
       button.disabled = false;
-      if (label) label.textContent = idleLabel;
+      if (label) label.textContent = idleLabel();
     }
   });
 }

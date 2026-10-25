@@ -395,6 +395,39 @@ body {
   .theme-switch__knob { transition: none; }
 }
 
+/* ---------- Idioma (bandeira redonda) ----------
+   Do tamanho da altura da chave de tema; contorno verde como ela. A bandeira
+   é a do idioma de destino (Reino Unido no português, Brasil no inglês). */
+.lang-switch {
+  --flag: max(26px, calc(56 * var(--u)));
+  display: block;
+  width: var(--flag);
+  height: var(--flag);
+  padding: 0;
+  border: max(1.5px, calc(3 * var(--u))) solid var(--c-tech);
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--c-black);
+  cursor: pointer;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+}
+.lang-switch__flag { display: block; width: 100%; height: 100%; }
+.lang-switch__flag--pt { display: none; }
+:root[lang="en"] .lang-switch__flag--en { display: none; }
+:root[lang="en"] .lang-switch__flag--pt { display: block; }
+.lang-switch:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 4px; }
+@media (hover: hover) {
+  .lang-switch:hover {
+    border-color: var(--c-neon);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.45);
+    transform: translateY(-2px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lang-switch { transition: none; }
+  .lang-switch:hover { transform: none; }
+}
+
 /* ---------- Menu de seções ----------
    Desktop: centralizado dentro da "aba" elevada da linha HUD da navbar
    (trecho entre x 546 e 1415 da referência, abaixo dos segmentos). */
@@ -605,11 +638,6 @@ body {
   stroke: var(--c-gray-orbit);
   stroke-width: 2;
 }
-.axis {
-  stroke: var(--c-gray-orbit);
-  stroke-width: 1.6;
-}
-.axis--h { opacity: 0.5; }
 
 .layer-orbits-front { opacity: 0.28; }
 
@@ -619,7 +647,24 @@ body {
 .logo-halo { fill: var(--c-neon); opacity: 0.85; }
 .logo-halo--tight { opacity: 1; }
 .layer-logo-halo { opacity: 0.85; }
+/* Logo verde neon; a chuva binária aparece em momentos (logo-matrix.js põe
+   o nível 0–1 em --matrix): o corpo escurece, a borda acende por dentro e
+   os 0/1 descem dentro das letras */
 .logo-body { fill: url(#g-wm-nav); }
+.logo-body--dark { fill: var(--c-black); opacity: var(--matrix, 0); }
+.logo-inner,
+.logo-matrix { opacity: var(--matrix, 0); }
+.logo-inner-glow {
+  fill: none;
+  stroke: var(--c-neon);
+  stroke-width: 11;
+}
+.logo-matrix text {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  fill: #2EFF2E;
+  text-anchor: middle;
+}
 .logo-edge {
   fill: none;
   stroke: #3DFF3D;
@@ -1079,7 +1124,9 @@ body {
 }
 @media (max-width: 560px) {
   .section__inner { width: calc(100% - 32px); }
-  .section-head__title { letter-spacing: 0.14em; margin-right: -0.14em; }
+  /* títulos em português são mais longos (ex.: LANÇAMENTO): fonte acompanha a
+     largura da tela para caber numa linha em celulares estreitos */
+  .section-head__title { font-size: clamp(28px, 9vw, 40px); letter-spacing: 0.14em; margin-right: -0.14em; }
 }
 
 /* ---------- 02 · LATEST RELEASE ---------- */
@@ -1844,6 +1891,135 @@ body {
   .media-item:hover .media-item__img { transform: scale(1.05); }
 }
 
+/* Botão "ver" por cima de cada foto (js/modules/media-viewer.js):
+   no hover/foco a foto escurece e aparece um olho neon no centro */
+.media-item__view {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: rgba(4, 8, 5, 0);
+  cursor: zoom-in;
+  transition: background-color 0.3s ease;
+}
+.media-item__eye {
+  width: clamp(44px, 5vw, 64px);
+  fill: none;
+  stroke: var(--c-neon);
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 0, 0.7));
+  opacity: 0;
+  transform: scale(0.7);
+  transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.media-item__pupil { fill: var(--c-neon); stroke: none; }
+.media-item__view:focus-visible { outline: 2px solid var(--c-neon); outline-offset: -4px; }
+.media-item__view:focus-visible,
+.media-item:hover .media-item__view { background: rgba(4, 8, 5, 0.55); }
+.media-item__view:focus-visible .media-item__eye,
+.media-item:hover .media-item__eye { opacity: 1; transform: scale(1); }
+
+/* Visualizador em tela cheia */
+html.is-viewing { overflow: hidden; }
+.photo-viewer {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(4, 8, 5, 0.97);   /* quase opaco: a navbar não aparece por trás */
+  color: var(--c-fg);
+  overflow: hidden;
+}
+.photo-viewer::backdrop { background: transparent; }
+.photo-viewer[open] { display: grid; place-items: center; }
+.photo-viewer__figure {
+  display: grid;
+  justify-items: center;
+  gap: 14px;
+  margin: 0;
+  padding: 64px 72px 28px;
+  width: 100%;
+  height: 100%;
+  align-content: center;
+}
+.photo-viewer__img {
+  --cut: 22px;
+  display: block;
+  max-width: min(100%, 1400px);
+  max-height: calc(100dvh - 160px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  box-shadow: 0 0 0 1px rgba(18, 201, 46, 0.6);
+}
+.photo-viewer__caption {
+  display: flex;
+  gap: 16px;
+  align-items: baseline;
+  max-width: min(100%, 900px);
+  font: 400 12px/1.5 var(--f-mono);
+  letter-spacing: 0.12em;
+  color: #A3A3A3;
+  text-align: center;
+}
+.photo-viewer__count { flex: none; color: var(--c-tech); }
+.photo-viewer__btn {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid var(--c-tech);
+  border-radius: 50%;
+  background: rgba(4, 8, 5, 0.7);
+  color: var(--c-neon);
+  cursor: pointer;
+  transition: box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.photo-viewer__btn svg {
+  width: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.photo-viewer__btn--close { top: 16px; right: 16px; }
+.photo-viewer__btn--prev { left: 16px; top: 50%; transform: translateY(-50%); }
+.photo-viewer__btn--next { right: 16px; top: 50%; transform: translateY(-50%); }
+.photo-viewer__btn:focus-visible { outline: 2px solid var(--c-neon); outline-offset: 3px; }
+@media (hover: hover) {
+  .photo-viewer__btn:hover { border-color: var(--c-neon); box-shadow: 0 0 12px rgba(0, 255, 0, 0.5); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .photo-viewer[open] { animation: viewer-in 0.3s ease; }
+  .photo-viewer[open] .photo-viewer__img { animation: viewer-img-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1); }
+}
+@keyframes viewer-in { from { opacity: 0; } }
+@keyframes viewer-img-in { from { opacity: 0; transform: scale(0.96); } }
+@media (prefers-reduced-motion: reduce) {
+  .media-item__view, .media-item__eye { transition: none; }
+}
+
+@media (max-width: 760px) {
+  .photo-viewer__figure { padding: 64px 12px 24px; }
+  .photo-viewer__btn--prev,
+  .photo-viewer__btn--next { top: auto; bottom: 16px; transform: none; }
+  .photo-viewer__caption { flex-direction: column; gap: 4px; align-items: center; padding-bottom: 56px; }
+}
+
 @media (max-width: 760px) {
   .section--media { --photo-h: clamp(170px, 26svh, 260px); }
   .media-item { --cut: 12px; }
@@ -1897,6 +2073,71 @@ body {
 .booking-contacts a:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 4px; }
 @media (hover: hover) {
   .booking-contacts a:hover { border-color: currentColor; }
+}
+
+/* Agência (START BOOKINGS): cartão "representado por" na coluna dos contatos.
+   Fica junto do contato da agência (primeira opção de booking) e preenche o
+   espaço que sobrava ao lado do formulário. Dentro dele, uma faixa com o logo
+   repetido andando sempre para a direita em duas camadas de velocidades
+   diferentes (parallax): atrás, logos grandes, lentos e quase transparentes;
+   na frente, logos menores, mais rápidos e nítidos. Cada camada é uma máscara
+   (o logo) sobre a cor do texto — muda sozinha com o tema. */
+.agency-card {
+  --cut: 16px;
+  display: block;
+  margin-top: 32px;
+  padding: 16px 0 6px;
+  color: var(--c-fg);
+  text-decoration: none;
+  background: var(--c-panel);
+  border: 1px solid rgba(18, 201, 46, 0.45);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+:root[data-theme="dark"] .agency-card { color: #FFFFFF; }
+.agency-card__label {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 18px;
+  font: 400 11px/1 var(--f-mono);
+  letter-spacing: 0.24em;
+  color: var(--c-tech);
+}
+.agency-card__arrow { transition: transform 0.25s ease; }
+.agency-card:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 4px; }
+.agency-strip {
+  position: relative;
+  display: block;
+  height: 76px;
+  overflow: hidden;
+  /* logos somem suavemente nas bordas do cartão */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 14%, #000 86%, transparent);
+}
+.agency-strip__layer {
+  --h: 30px;                                   /* altura de cada logo */
+  --tile: calc(var(--h) * 1700 / 419.1);        /* largura do logo + espaço */
+  position: absolute;
+  inset: 0;
+  background: currentColor;
+  -webkit-mask: url("../assets/agencia/startbookings-tile.svg") 0 50% / auto var(--h) repeat-x;
+  mask: url("../assets/agencia/startbookings-tile.svg") 0 50% / auto var(--h) repeat-x;
+}
+.agency-strip__layer--back { --h: 66px; opacity: 0.1; }
+.agency-strip__layer--front { opacity: 0.85; }
+.reveal-on .agency-strip__layer--back { animation: agency-slide 14s linear infinite; }
+.reveal-on .agency-strip__layer--front { animation: agency-slide 3.2s linear infinite; }
+@keyframes agency-slide {
+  to {
+    -webkit-mask-position: var(--tile) 50%;
+    mask-position: var(--tile) 50%;
+  }
+}
+@media (hover: hover) {
+  .agency-card:hover { border-color: var(--c-neon); box-shadow: 0 0 14px rgba(0, 255, 0, 0.18); }
+  .agency-card:hover .agency-card__arrow { transform: translate(2px, -2px); }
+  .agency-card:hover .agency-strip__layer--front { opacity: 1; }
 }
 
 /* Painel do formulário: moldura chanfrada como os demais cartões */
@@ -2201,9 +2442,15 @@ body {
     right: 16px;
     top: 12px;
     height: 28px;
-    gap: 12px;
+    gap: 10px;   /* cabe também o botão de idioma */
   }
   .nav__divider { height: 20px; }
+  /* celulares estreitos: sem os divisores e logo um pouco menor, para os
+     ícones, a chave de tema e o idioma não encostarem no logo */
+  @media (max-width: 380px) {
+    .nav__social .nav__divider { display: none; }
+    .nav__brand { width: 104px; }
+  }
   .social--spotify    { width: 20px; }
   .social--soundcloud { width: 30px; }
   .social--instagram  { width: 18px; }

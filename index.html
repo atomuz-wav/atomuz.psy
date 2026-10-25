@@ -17,7 +17,7 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=1a4b83e5">
+  <link rel="stylesheet" href="css/style.css?v=14b2b2a1">
 
   <!--
     BIBLIOTECAS (módulos ES via importmap, versões minificadas)
@@ -38,20 +38,24 @@
         "./js/core/loop.js": "./js/core/loop.js?v=078b6124",
         "./js/core/motion.js": "./js/core/motion.js?v=19092605",
         "./js/core/state.js": "./js/core/state.js?v=e9f4355a",
-        "./js/modules/atom-diagram.js": "./js/modules/atom-diagram.js?v=1d563f82",
-        "./js/modules/atom-system.js": "./js/modules/atom-system.js?v=07c8d2bb",
-        "./js/modules/booking-form.js": "./js/modules/booking-form.js?v=725ae496",
+        "./js/modules/atom-diagram.js": "./js/modules/atom-diagram.js?v=00d131f4",
+        "./js/modules/atom-system.js": "./js/modules/atom-system.js?v=07651ddc",
+        "./js/modules/booking-form.js": "./js/modules/booking-form.js?v=23349b3a",
         "./js/modules/circuit-system.js": "./js/modules/circuit-system.js?v=b6c32a80",
-        "./js/modules/code-field.js": "./js/modules/code-field.js?v=9fbebf75",
+        "./js/modules/code-field.js": "./js/modules/code-field.js?v=365e3087",
         "./js/modules/depth-layers.js": "./js/modules/depth-layers.js?v=54ad5562",
         "./js/modules/enter-transition.js": "./js/modules/enter-transition.js?v=5840edcf",
         "./js/modules/hud-system.js": "./js/modules/hud-system.js?v=ed468414",
+        "./js/modules/i18n.js": "./js/modules/i18n.js?v=0f3139da",
         "./js/modules/intro-sequence.js": "./js/modules/intro-sequence.js?v=62a45dfc",
+        "./js/modules/lazy-embeds.js": "./js/modules/lazy-embeds.js?v=b8b50bd3",
         "./js/modules/logo-energy.js": "./js/modules/logo-energy.js?v=5a87b636",
+        "./js/modules/logo-matrix.js": "./js/modules/logo-matrix.js?v=44653e71",
+        "./js/modules/media-viewer.js": "./js/modules/media-viewer.js?v=73655969",
         "./js/modules/particle-field.js": "./js/modules/particle-field.js?v=896ae991",
         "./js/modules/particle-webgl.js": "./js/modules/particle-webgl.js?v=659f5898",
         "./js/modules/section-reveal.js": "./js/modules/section-reveal.js?v=2387fcad",
-        "./js/script.js": "./js/script.js?v=1ff7b79c",
+        "./js/script.js": "./js/script.js?v=aca2b6a1",
         "./js/utils/random.js": "./js/utils/random.js?v=296157a1",
         "./js/utils/svg.js": "./js/utils/svg.js?v=6b6d900b"
       }
@@ -59,7 +63,7 @@
   </script>
 
   <!-- Pré-carrega os módulos locais em paralelo (evita a "cascata" de imports) -->
-  <link rel="modulepreload" href="js/script.js?v=1ff7b79c">
+  <link rel="modulepreload" href="js/script.js?v=aca2b6a1">
   <link rel="modulepreload" href="js/core/loop.js?v=078b6124">
   <link rel="modulepreload" href="js/core/motion.js?v=19092605">
   <link rel="modulepreload" href="js/core/interaction.js?v=8762fc9a">
@@ -67,18 +71,30 @@
   <link rel="modulepreload" href="js/config.js?v=0eaf43e4">
   <link rel="modulepreload" href="js/utils/random.js?v=296157a1">
   <link rel="modulepreload" href="js/utils/svg.js?v=6b6d900b">
+  <link rel="modulepreload" href="js/modules/logo-matrix.js?v=44653e71">
   <link rel="modulepreload" href="js/modules/logo-energy.js?v=5a87b636">
   <link rel="modulepreload" href="js/modules/circuit-system.js?v=b6c32a80">
   <link rel="modulepreload" href="js/modules/hud-system.js?v=ed468414">
   <link rel="modulepreload" href="js/modules/depth-layers.js?v=54ad5562">
   <link rel="modulepreload" href="js/modules/particle-field.js?v=896ae991">
-  <link rel="modulepreload" href="js/modules/atom-system.js?v=07c8d2bb">
+  <link rel="modulepreload" href="js/modules/atom-system.js?v=07651ddc">
   <link rel="modulepreload" href="js/modules/intro-sequence.js?v=62a45dfc">
   <link rel="modulepreload" href="js/modules/enter-transition.js?v=5840edcf">
   <link rel="modulepreload" href="js/modules/section-reveal.js?v=2387fcad">
-  <link rel="modulepreload" href="js/modules/atom-diagram.js?v=1d563f82">
-  <link rel="modulepreload" href="js/modules/booking-form.js?v=725ae496">
-  <link rel="modulepreload" href="js/modules/code-field.js?v=9fbebf75">
+  <link rel="modulepreload" href="js/modules/atom-diagram.js?v=00d131f4">
+  <link rel="modulepreload" href="js/modules/booking-form.js?v=23349b3a">
+  <link rel="modulepreload" href="js/modules/code-field.js?v=365e3087">
+  <link rel="modulepreload" href="js/modules/i18n.js?v=0f3139da">
+  <link rel="modulepreload" href="js/modules/media-viewer.js?v=73655969">
+  <link rel="modulepreload" href="js/modules/lazy-embeds.js?v=b8b50bd3">
+
+  <!--
+    Bibliotecas da CDN pré-carregadas JUNTO com os módulos locais (antes só
+    começavam a baixar depois de todos eles). A entrada da Hero espera o
+    GSAP, então isso encurta o tempo de tela vazia no primeiro acesso.
+  -->
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm" crossorigin>
+  <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
 
   <!--
     Esconde a composição até a sequência de entrada começar (evita "piscar" o
@@ -155,7 +171,7 @@
     })();
   </script>
 
-  <script type="module" src="js/script.js?v=1ff7b79c"></script>
+  <script type="module" src="js/script.js?v=aca2b6a1"></script>
 </head>
 <body>
 
@@ -186,7 +202,9 @@
         M1123.6 1046.2 L1125.5 1045.8 L1130.2 1045.8 L1134.9 1046.9 L1138.0 1048.5 L1141.2 1050.8 L1142.8 1052.5 L1145.1 1055.6 L1146.6 1058.7 L1147.6 1063.4 L1147.7 1066.6 L1146.6 1072.8 L1145.0 1076.0 L1141.2 1080.5 L1138.0 1083.0 L1134.9 1084.5 L1131.8 1085.1 L1128.6 1085.7 L1125.5 1085.6 L1120.8 1084.6 L1117.7 1083.1 L1114.6 1080.9 L1111.4 1077.3 L1109.6 1074.4 L1108.1 1069.7 L1107.6 1066.6 L1107.8 1063.4 L1109.5 1057.2 L1112.6 1052.5 L1114.6 1050.5 L1119.3 1047.4 L1122.4 1046.6 Z"/>
 
       <clipPath id="wm-clip" clipPathUnits="userSpaceOnUse">
-        <use href="#wm-path"/>
+        <!-- clip-rule aqui no <use>: alguns navegadores ignoram o do <path>
+             original e acabam "preenchendo" o vazio do O (e de outras letras) -->
+        <use href="#wm-path" clip-rule="evenodd"/>
       </clipPath>
 
       <!-- Degradê verde do logotipo (navbar e Hero) -->
@@ -252,10 +270,10 @@
          numa linha logo abaixo da navbar (telas menores) -->
     <nav class="nav__menu" aria-label="Seções do site">
       <ul>
-        <li><a href="#music">MUSIC</a></li>
-        <li><a href="#live">LIVE</a></li>
-        <li><a href="#project">ABOUT</a></li>
-        <li><a href="#media">MEDIA</a></li>
+        <li><a href="#music">MÚSICA</a></li>
+        <li><a href="#live">AO VIVO</a></li>
+        <li><a href="#project">SOBRE</a></li>
+        <li><a href="#media">MÍDIA</a></li>
         <li><a href="#booking">BOOKING</a></li>
       </ul>
     </nav>
@@ -314,6 +332,26 @@
           </span>
         </button>
       </li>
+      <li>
+        <!-- Idioma (js/modules/i18n.js): mostra a bandeira do idioma para o qual
+             o site vai mudar — Reino Unido no português, Brasil no inglês -->
+        <button class="lang-switch" type="button" data-lang-toggle aria-label="Mudar o idioma para inglês" title="English">
+          <svg class="lang-switch__flag lang-switch__flag--en" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <clipPath id="flag-uk-diag"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath>
+            <path d="M0 0v30h60V0z" fill="#012169"/>
+            <path d="M0 0l60 30m0-30L0 30" stroke="#FFFFFF" stroke-width="6"/>
+            <path d="M0 0l60 30m0-30L0 30" clip-path="url(#flag-uk-diag)" stroke="#C8102E" stroke-width="4"/>
+            <path d="M30 0v30M0 15h60" stroke="#FFFFFF" stroke-width="10"/>
+            <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
+          </svg>
+          <svg class="lang-switch__flag lang-switch__flag--pt" viewBox="0 0 20 14" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <rect width="20" height="14" fill="#009C3B"/>
+            <path d="M10 1.6 18.4 7 10 12.4 1.6 7z" fill="#FFDF00"/>
+            <circle cx="10" cy="7" r="3.5" fill="#002776"/>
+            <path d="M6.7 6.2a7 7 0 0 1 6.6 1.6" fill="none" stroke="#FFFFFF" stroke-width="0.6"/>
+          </svg>
+        </button>
+      </li>
     </ul>
     </nav>
   </header>
@@ -360,6 +398,10 @@
               </filter>
               <filter id="f-logo-halo-tight" filterUnits="userSpaceOnUse" x="0" y="700" width="2048" height="620">
                 <feGaussianBlur stdDeviation="5"/>
+              </filter>
+              <!-- Brilho interno das bordas das letras (versão com chuva de caracteres) -->
+              <filter id="f-logo-inner" filterUnits="userSpaceOnUse" x="0" y="700" width="2048" height="620">
+                <feGaussianBlur stdDeviation="4"/>
               </filter>
               <!-- Brilho de região pequena (caixa do próprio elemento) para peças animadas -->
               <filter id="f-fx-glow" x="-80%" y="-40%" width="260%" height="180%">
@@ -421,7 +463,6 @@
               <g id="orbit-lines">
                 <ellipse class="orbit orbit--a" data-orbit cx="1040" cy="965" rx="432" ry="165" data-rotate="-45" transform="rotate(-45 1040 965)"/>
                 <ellipse class="orbit orbit--b" data-orbit cx="988" cy="1040" rx="335" ry="120" data-rotate="46" transform="rotate(46 988 1040)"/>
-                <line class="axis axis--h" x1="342" y1="1010" x2="1598" y2="1010"/>
               </g>
             </defs>
           </svg>
@@ -524,14 +565,24 @@
               <use class="logo-halo logo-halo--tight" href="#wm-path" filter="url(#f-logo-halo-tight)"/>
             </svg>
 
-            <!-- Camada 4b · ESTÁTICA: letras do logo oficial (degradê verde) -->
+            <!-- Camada 4b · letras do logo oficial (degradê verde). Na revelação da
+                 chuva (--matrix, js/modules/logo-matrix.js) o corpo escurece e a
+                 borda acende por dentro -->
             <svg class="stage-layer layer-logo-body" viewBox="0 520 2048 900" focusable="false">
               <use class="logo-body" href="#wm-path"/>
+              <use class="logo-body logo-body--dark" href="#wm-path"/>
+              <g class="logo-inner" clip-path="url(#wm-clip)">
+                <use class="logo-inner-glow" href="#wm-path" filter="url(#f-logo-inner)"/>
+              </g>
             </svg>
 
             <!-- Camada 5 · ANIMADA (sem desfoque): contorno, pulsos de energia,
                  reflexo das órbitas e núcleo -->
             <svg class="stage-layer layer-logo-fx" viewBox="0 520 2048 900" focusable="false">
+              <!-- Textura digital (colunas de caracteres) gerada por js/modules/logo-matrix.js -->
+              <g clip-path="url(#wm-clip)">
+                <g class="logo-matrix" data-logo-matrix></g>
+              </g>
               <use class="logo-edge" href="#wm-path"/>
               <!-- Pulsos de energia no contorno e faíscas (js/modules/logo-energy.js) -->
               <g class="logo-energy" data-logo-energy></g>
@@ -625,13 +676,89 @@
        topo deste contêiner e coloca o foco no primeiro título (h2). -->
   <div class="site-sections" id="explorar">
 
-    <!-- ===== 01 · MUSIC ===== -->
+    <!-- ===== 01 · THE PROJECT =====
+         Textos: arquivo de referência (atomuzVfinal.html) + bio oficial do
+         SoundCloud (origem e proposta do projeto). -->
+    <section class="section section--project" id="project" aria-labelledby="project-title">
+      <div class="section__inner">
+
+        <header class="section-head" data-reveal>
+          <p class="section-head__index"><span>01</span> / O PROJETO</p>
+          <h2 class="section-head__title" id="project-title" tabindex="-1">PROJETO</h2>
+          <div class="section-head__rule" aria-hidden="true">
+            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
+              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
+            </svg>
+            <span class="section-head__line"></span>
+            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
+              <circle cx="20" cy="20" r="13"/>
+              <circle cx="20" cy="20" r="6.5"/>
+              <path d="M2 20 H38 M20 2 V38"/>
+              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
+            </svg>
+          </div>
+        </header>
+
+        <div class="project-grid">
+          <div class="project-copy" data-reveal>
+            <p class="project-copy__lead">
+              Atomuz é um projeto de progressive psytrance e zenonesque que explora o
+              <em>som, ciência, tecnologia e consciência.</em>
+            </p>
+            <p class="project-copy__text">
+              Criado por Luiz Felipe, o projeto explora as profundezas da mente através de paisagens sonoras
+              psicodélicas e imersivas — batidas hipnóticas, falhas interestelares, melodias marcantes e linhas
+              de baixo profundas, inspiradas pela ciência, tecnologia e ficção científica.
+            </p>
+            <p class="project-copy__text">
+              A música é tratada como uma exploração de sistemas: precisa, imersiva e audiovisual, com uma
+              linguagem futurista baseada em psicodelia.
+            </p>
+          </div>
+
+          <!-- Ficha técnica no formato de leitura de instrumento -->
+          <aside class="project-readout" aria-label="Ficha do projeto" data-reveal>
+            <p class="project-readout__title">PERFIL DO SISTEMA</p>
+            <dl class="project-readout__list">
+              <div><dt>PROJETO</dt><dd>ATOMUZ</dd></div>
+              <div><dt>ARTISTA</dt><dd>Luiz Felipe</dd></div>
+              <div><dt>ORIGEM</dt><dd>Pernambuco · Brasil</dd></div>
+              <div><dt>ESTILO</dt><dd>Progressive Psytrance · Zenonesque</dd></div>
+            </dl>
+            <p class="project-readout__signal">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <ellipse cx="12" cy="12" rx="10" ry="4"/>
+                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
+                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
+                <circle cx="12" cy="12" r="1.8"/>
+              </svg>
+              Experiência sônica do mundo quântico
+            </p>
+          </aside>
+        </div>
+
+        <!-- Raves em que o ATOMUZ se apresentou (circuito de nós, na ordem informada) -->
+        <div class="project-sequence" data-reveal>
+          <p class="project-sequence__title" id="raves-title">Apresentações ao vivo nas maiores raves do Nordeste:</p>
+          <ol class="sequence" aria-labelledby="raves-title">
+            <li class="sequence__step" style="--i: 0"><span class="sequence__index">01</span><span class="sequence__word">Drop</span></li>
+            <li class="sequence__step" style="--i: 1"><span class="sequence__index">02</span><span class="sequence__word">Intense</span></li>
+            <li class="sequence__step" style="--i: 2"><span class="sequence__index">03</span><span class="sequence__word">Samsara</span></li>
+            <li class="sequence__step" style="--i: 3"><span class="sequence__index">04</span><span class="sequence__word">Manipura</span></li>
+            <li class="sequence__step" style="--i: 4"><span class="sequence__index">05</span><span class="sequence__word">Liquid Sky</span></li>
+          </ol>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 02 · MUSIC ===== -->
     <section class="section section--music" id="music" aria-labelledby="music-title">
       <div class="section__inner">
 
         <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>01</span> / SOUND</p>
-          <h2 class="section-head__title" id="music-title" tabindex="-1">MUSIC</h2>
+          <p class="section-head__index"><span>02</span> / SOM</p>
+          <h2 class="section-head__title" id="music-title">MÚSICA</h2>
           <div class="section-head__rule" aria-hidden="true">
             <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
               <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
@@ -660,7 +787,7 @@
               <div class="player-card__screen">
                 <iframe
                   title="Player do Spotify — ATOMUZ"
-                  src="https://open.spotify.com/embed/artist/55wNhCr9PhSkrum4GwGuZi?utm_source=generator&amp;theme=0"
+                  data-src="https://open.spotify.com/embed/artist/55wNhCr9PhSkrum4GwGuZi?utm_source=generator&amp;theme=0"
                   height="352"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"></iframe>
@@ -679,7 +806,7 @@
               <div class="player-card__screen">
                 <iframe
                   title="Player do SoundCloud — ATOMUZ"
-                  src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/atomuz&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
+                  data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/atomuz&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
                   height="352"
                   allow="autoplay"
                   loading="lazy"></iframe>
@@ -691,15 +818,15 @@
       </div>
     </section>
 
-    <!-- ===== 02 · LATEST RELEASE =====
+    <!-- ===== 03 · LATEST RELEASE =====
          Dados reais da página oficial da faixa no SoundCloud
          (soundcloud.com/atomuz/atomuz-primordial-particle). -->
     <section class="section section--release" id="release" aria-labelledby="release-title">
       <div class="section__inner">
 
         <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>02</span> / LATEST RELEASE</p>
-          <h2 class="section-head__title" id="release-title">RELEASE</h2>
+          <p class="section-head__index"><span>03</span> / ÚLTIMO LANÇAMENTO</p>
+          <h2 class="section-head__title" id="release-title">LANÇAMENTO</h2>
           <div class="section-head__rule" aria-hidden="true">
             <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
               <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
@@ -750,7 +877,7 @@
             <div class="release-player">
               <iframe
                 title="Player do SoundCloud — Primordial Particle"
-                src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2276823767&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
+                data-src="https://w.soundcloud.com/player/?url=https%3A%2F%2Fapi.soundcloud.com%2Ftracks%2F2276823767&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
                 height="166"
                 allow="autoplay; encrypted-media"
                 loading="lazy"></iframe>
@@ -766,9 +893,9 @@
             </div>
 
             <dl class="release-credits">
-              <div><dt>MASTERING</dt><dd>Fractal Joke</dd></div>
-              <div><dt>ARTWORK</dt><dd>Oberas</dd></div>
-              <div><dt>LABEL</dt><dd>Dense Nebula Records</dd></div>
+              <div><dt>MASTERIZAÇÃO</dt><dd>Fractal Joke</dd></div>
+              <div><dt>ARTE</dt><dd>Oberas</dd></div>
+              <div><dt>SELO</dt><dd>Dense Nebula Records</dd></div>
             </dl>
           </div>
 
@@ -776,15 +903,100 @@
       </div>
     </section>
 
-    <!-- ===== 03 · LIVE =====
+    <!-- ===== 04 · CONNECT ===== (links oficiais; YouTube omitido até haver link real) -->
+    <section class="section section--connect" id="connect" aria-labelledby="connect-title">
+      <div class="section__inner">
+
+        <header class="section-head" data-reveal>
+          <p class="section-head__index"><span>04</span> / REDES</p>
+          <h2 class="section-head__title" id="connect-title">CONECTE</h2>
+          <div class="section-head__rule" aria-hidden="true">
+            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
+              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
+            </svg>
+            <span class="section-head__line"></span>
+            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
+              <circle cx="20" cy="20" r="13"/>
+              <circle cx="20" cy="20" r="6.5"/>
+              <path d="M2 20 H38 M20 2 V38"/>
+              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
+            </svg>
+          </div>
+        </header>
+
+        <ul class="net-grid" data-reveal>
+          <li>
+            <a class="net-card net-card--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
+              <span class="net-card__index" aria-hidden="true">01</span>
+              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="currentColor" stroke-width="2.3">
+                  <rect x="1.6" y="1.6" width="20.8" height="20.8" rx="5.8"/>
+                  <circle cx="12" cy="12" r="5"/>
+                </g>
+                <circle cx="18.1" cy="5.9" r="1.45" fill="currentColor"/>
+              </svg></span>
+              <span class="net-card__label">INSTAGRAM</span>
+              <span class="net-card__handle">@atomuz_</span>
+              <span class="net-card__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="net-card net-card--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
+              <span class="net-card__index" aria-hidden="true">02</span>
+              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+              </svg></span>
+              <span class="net-card__label">SPOTIFY</span>
+              <span class="net-card__handle">Atomuz</span>
+              <span class="net-card__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="net-card net-card--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
+              <span class="net-card__index" aria-hidden="true">03</span>
+              <span class="net-card__icon"><svg viewBox="0 0 44 22" aria-hidden="true" focusable="false">
+                <g fill="currentColor">
+                  <rect x="0"    y="12.5" width="2" height="7"  rx="1"/>
+                  <rect x="3.3"  y="9.5"  width="2" height="10" rx="1"/>
+                  <rect x="6.6"  y="7.5"  width="2" height="12" rx="1"/>
+                  <rect x="9.9"  y="5"    width="2" height="14.5" rx="1"/>
+                  <rect x="13.2" y="4"    width="2" height="15.5" rx="1"/>
+                  <path d="M16.6 19.5 V3.4 C18.1 2.5 19.9 2 21.8 2 C27 2 31.2 5.8 31.8 10.7 C32.5 10.4 33.3 10.3 34.1 10.3 C38.6 10.3 42 13.3 42 15 C42 17.7 39.8 19.5 37.1 19.5 Z"/>
+                </g>
+              </svg></span>
+              <span class="net-card__label">SOUNDCLOUD</span>
+              <span class="net-card__handle">soundcloud.com/atomuz</span>
+              <span class="net-card__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+          <li>
+            <a class="net-card net-card--mail" href="mailto:atomuz.audio@gmail.com" aria-label="Enviar e-mail para atomuz.audio@gmail.com">
+              <span class="net-card__index" aria-hidden="true">04</span>
+              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round">
+                  <rect x="2" y="4.5" width="20" height="15" rx="2"/>
+                  <path d="M3 6 L12 13 L21 6"/>
+                </g>
+              </svg></span>
+              <span class="net-card__label">E-MAIL</span>
+              <span class="net-card__handle">atomuz.audio@gmail.com</span>
+              <span class="net-card__arrow" aria-hidden="true">↗</span>
+            </a>
+          </li>
+        </ul>
+
+      </div>
+    </section>
+
+    <!-- ===== 05 · LIVE =====
          Eventos reais: sets ao vivo publicados no SoundCloud oficial
          (título, data, estilo e duração de cada gravação). -->
     <section class="section section--live" id="live" aria-labelledby="live-title">
       <div class="section__inner">
 
         <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>03</span> / TRANSMISSIONS</p>
-          <h2 class="section-head__title" id="live-title">LIVE</h2>
+          <p class="section-head__index"><span>05</span> / TRANSMISSÕES</p>
+          <h2 class="section-head__title" id="live-title">AO VIVO</h2>
           <div class="section-head__rule" aria-hidden="true">
             <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
               <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
@@ -873,199 +1085,6 @@
       </div>
     </section>
 
-    <!-- ===== 04 · THE PROJECT =====
-         Textos: arquivo de referência (atomuzVfinal.html) + bio oficial do
-         SoundCloud (origem e proposta do projeto). -->
-    <section class="section section--project" id="project" aria-labelledby="project-title">
-      <div class="section__inner">
-
-        <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>04</span> / THE PROJECT</p>
-          <h2 class="section-head__title" id="project-title">PROJECT</h2>
-          <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
-            <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
-          </div>
-        </header>
-
-        <div class="project-grid">
-          <div class="project-copy" data-reveal>
-            <p class="project-copy__lead">
-              Atomuz é um projeto de progressive psytrance e zenonesque que explora o
-              <em>som, ciência, tecnologia e consciência.</em>
-            </p>
-            <p class="project-copy__text">
-              Criado por Luiz Felipe, o projeto explora as profundezas da mente através de paisagens sonoras
-              psicodélicas e imersivas — batidas hipnóticas, falhas interestelares, melodias marcantes e linhas
-              de baixo profundas, inspiradas pela ciência, tecnologia e ficção científica.
-            </p>
-            <p class="project-copy__text">
-              A música é tratada como uma exploração de sistemas: precisa, imersiva e audiovisual, com uma
-              linguagem futurista baseada em psicodelia.
-            </p>
-          </div>
-
-          <!-- Ficha técnica no formato de leitura de instrumento -->
-          <aside class="project-readout" aria-label="Ficha do projeto" data-reveal>
-            <p class="project-readout__title">SYSTEM PROFILE</p>
-            <dl class="project-readout__list">
-              <div><dt>PROJETO</dt><dd>ATOMUZ</dd></div>
-              <div><dt>ARTISTA</dt><dd>Luiz Felipe</dd></div>
-              <div><dt>ORIGEM</dt><dd>Pernambuco · Brasil</dd></div>
-              <div><dt>ESTILO</dt><dd>Progressive Psytrance · Zenonesque</dd></div>
-            </dl>
-            <p class="project-readout__signal">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <ellipse cx="12" cy="12" rx="10" ry="4"/>
-                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/>
-                <ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/>
-                <circle cx="12" cy="12" r="1.8"/>
-              </svg>
-              Experiência sônica do mundo quântico
-            </p>
-          </aside>
-        </div>
-
-        <!-- Raves em que o ATOMUZ se apresentou (circuito de nós, na ordem informada) -->
-        <div class="project-sequence" data-reveal>
-          <p class="project-sequence__title" id="raves-title">Apresentações ao vivo nas maiores raves do Nordeste:</p>
-          <ol class="sequence" aria-labelledby="raves-title">
-            <li class="sequence__step" style="--i: 0"><span class="sequence__index">01</span><span class="sequence__word">Drop</span></li>
-            <li class="sequence__step" style="--i: 1"><span class="sequence__index">02</span><span class="sequence__word">Intense</span></li>
-            <li class="sequence__step" style="--i: 2"><span class="sequence__index">03</span><span class="sequence__word">Samsara</span></li>
-            <li class="sequence__step" style="--i: 3"><span class="sequence__index">04</span><span class="sequence__word">Manipura</span></li>
-            <li class="sequence__step" style="--i: 4"><span class="sequence__index">05</span><span class="sequence__word">Liquid Sky</span></li>
-          </ol>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== 05 · VISUAL IDENTITY — ATOM =====
-         Diagrama técnico do símbolo: cada parte numerada corresponde a um
-         conceito da frase da referência (matéria, energia, movimento,
-         transformação). Elétrons e reação ao cursor: js/modules/atom-diagram.js -->
-    <section class="section section--atom" id="atom" aria-labelledby="atom-title">
-      <!-- Partículas interativas (rastro do cursor e explosão no clique) -->
-      <canvas class="atom-particles" data-atom-particles aria-hidden="true"></canvas>
-      <div class="section__inner">
-
-        <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>05</span> / VISUAL IDENTITY</p>
-          <h2 class="section-head__title" id="atom-title">ATOM</h2>
-          <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
-            <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
-          </div>
-        </header>
-
-        <div class="atom-grid">
-          <div class="atom-copy" data-reveal>
-            <p class="atom-copy__lead">
-              O átomo é o símbolo central do Atomuz — uma representação visual de
-              <em>matéria, energia, movimento e transformação.</em>
-            </p>
-            <p class="atom-copy__hint">Mova o cursor ou clique pelo campo: o sistema responde sutilmente, como uma interface científica experimental.</p>
-
-            <!-- Legenda do diagrama -->
-            <ol class="atom-legend" aria-label="Partes do símbolo">
-              <li><span class="atom-legend__num">01</span><span class="atom-legend__part">NÚCLEO</span><span class="atom-legend__meaning">Matéria</span></li>
-              <li><span class="atom-legend__num">02</span><span class="atom-legend__part">ÓRBITAS</span><span class="atom-legend__meaning">Energia</span></li>
-              <li><span class="atom-legend__num">03</span><span class="atom-legend__part">ELÉTRONS</span><span class="atom-legend__meaning">Movimento</span></li>
-              <li><span class="atom-legend__num">04</span><span class="atom-legend__part">CAMPO</span><span class="atom-legend__meaning">Transformação</span></li>
-            </ol>
-          </div>
-
-          <figure class="atom-diagram" data-reveal data-atom-diagram>
-            <svg class="atom-diagram__svg" viewBox="0 0 400 400" role="img" aria-label="Diagrama do átomo do ATOMUZ: núcleo, três órbitas com elétrons e o campo ao redor">
-              <defs>
-                <radialGradient id="g-diagram-core">
-                  <stop offset="0" stop-color="#F2FFF2"/>
-                  <stop class="atom-diagram__hue" offset=".22" stop-color="#00FF00"/>
-                  <stop class="atom-diagram__hue" offset=".5" stop-color="#00FF00" stop-opacity=".3"/>
-                  <stop offset="1" stop-color="#00FF00" stop-opacity="0"/>
-                </radialGradient>
-                <!-- órbita base (elipse escrita como path para os elétrons seguirem) -->
-                <path id="diagram-orbit" pathLength="1" d="M50 200 A150 56 0 1 1 350 200 A150 56 0 1 1 50 200"/>
-              </defs>
-
-              <!-- 04 · campo -->
-              <circle class="atom-diagram__field" cx="200" cy="200" r="185"/>
-              <g class="atom-diagram__ticks">
-                <path d="M200 8 V22 M200 378 V392 M8 200 H22 M378 200 H392"/>
-              </g>
-
-              <!-- grupo que reage ao cursor (deslocamento leve via JS) -->
-              <g class="atom-diagram__system" data-atom-system>
-                <!-- 02 · órbitas (0°, 60°, 120°) com 03 · elétrons percorrendo cada uma -->
-                <g transform="rotate(0 200 200)">
-                  <g class="atom-diagram__sway atom-diagram__sway--1">
-                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
-                  <circle class="atom-diagram__electron" r="5">
-                    <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s"><mpath href="#diagram-orbit"/></animateMotion>
-                  </circle>
-                  </g>
-                </g>
-                <g transform="rotate(60 200 200)">
-                  <g class="atom-diagram__sway atom-diagram__sway--2">
-                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
-                  <circle class="atom-diagram__electron" r="5">
-                    <animateMotion dur="6s" repeatCount="indefinite" begin="-2s"><mpath href="#diagram-orbit"/></animateMotion>
-                  </circle>
-                  </g>
-                </g>
-                <g transform="rotate(120 200 200)">
-                  <g class="atom-diagram__sway atom-diagram__sway--3">
-                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
-                  <circle class="atom-diagram__electron" r="5">
-                    <animateMotion dur="7.5s" repeatCount="indefinite" begin="-4.5s"><mpath href="#diagram-orbit"/></animateMotion>
-                  </circle>
-                  </g>
-                </g>
-
-                <!-- 01 · núcleo -->
-                <circle class="atom-diagram__glow" cx="200" cy="200" r="58" fill="url(#g-diagram-core)" data-atom-glow/>
-                <circle class="atom-diagram__core" cx="200" cy="200" r="9"/>
-              </g>
-
-              <!-- marcadores numerados (estáticos, apontam para cada parte) -->
-              <g class="atom-diagram__callouts">
-                <path d="M207 193 L246 154 H268"/>
-                <path d="M330 228 L352 262 H372"/>
-                <path d="M125 330 L100 356 H74"/>
-                <path d="M69 69 L48 48 H26"/>
-                <circle cx="207" cy="193" r="2.5"/><circle cx="330" cy="228" r="2.5"/>
-                <circle cx="125" cy="330" r="2.5"/><circle cx="69" cy="69" r="2.5"/>
-              </g>
-              <g class="atom-diagram__nums">
-                <text x="272" y="158">01</text>
-                <text x="376" y="266">02</text>
-                <text x="70" y="360" text-anchor="end">03</text>
-                <text x="22" y="52" text-anchor="end">04</text>
-              </g>
-            </svg>
-          </figure>
-        </div>
-
-      </div>
-    </section>
-
     <!-- ===== 06 · MEDIA =====
          Fotos reais de apresentações (assets/media), em duas fileiras que
          correm em loop contínuo: a de cima para a direita, a de baixo para a
@@ -1077,7 +1096,7 @@
       <div class="section__inner">
         <header class="section-head" data-reveal>
           <p class="section-head__index"><span>06</span> / AUDIOVISUAL</p>
-          <h2 class="section-head__title" id="media-title">MEDIA</h2>
+          <h2 class="section-head__title" id="media-title">MÍDIA</h2>
           <div class="section-head__rule" aria-hidden="true">
             <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
               <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
@@ -1323,7 +1342,124 @@
       </div>
     </section>
 
-    <!-- ===== 07 · BOOKING =====
+    <!-- ===== 07 · VISUAL IDENTITY — ATOM =====
+         Diagrama técnico do símbolo: cada parte numerada corresponde a um
+         conceito da frase da referência (matéria, energia, movimento,
+         transformação). Elétrons e reação ao cursor: js/modules/atom-diagram.js -->
+    <section class="section section--atom" id="atom" aria-labelledby="atom-title">
+      <!-- Partículas interativas (rastro do cursor e explosão no clique) -->
+      <canvas class="atom-particles" data-atom-particles aria-hidden="true"></canvas>
+      <div class="section__inner">
+
+        <header class="section-head" data-reveal>
+          <p class="section-head__index"><span>07</span> / IDENTIDADE VISUAL</p>
+          <h2 class="section-head__title" id="atom-title">ÁTOMO</h2>
+          <div class="section-head__rule" aria-hidden="true">
+            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
+              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
+            </svg>
+            <span class="section-head__line"></span>
+            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
+              <circle cx="20" cy="20" r="13"/>
+              <circle cx="20" cy="20" r="6.5"/>
+              <path d="M2 20 H38 M20 2 V38"/>
+              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
+            </svg>
+          </div>
+        </header>
+
+        <div class="atom-grid">
+          <div class="atom-copy" data-reveal>
+            <p class="atom-copy__lead">
+              O átomo é o símbolo central do Atomuz — uma representação visual de
+              <em>matéria, energia, movimento e transformação.</em>
+            </p>
+            <p class="atom-copy__hint">Mova o cursor ou clique pelo campo: o sistema responde sutilmente, como uma interface científica experimental.</p>
+
+            <!-- Legenda do diagrama -->
+            <ol class="atom-legend" aria-label="Partes do símbolo">
+              <li><span class="atom-legend__num">01</span><span class="atom-legend__part">NÚCLEO</span><span class="atom-legend__meaning">Matéria</span></li>
+              <li><span class="atom-legend__num">02</span><span class="atom-legend__part">ÓRBITAS</span><span class="atom-legend__meaning">Energia</span></li>
+              <li><span class="atom-legend__num">03</span><span class="atom-legend__part">ELÉTRONS</span><span class="atom-legend__meaning">Movimento</span></li>
+              <li><span class="atom-legend__num">04</span><span class="atom-legend__part">CAMPO</span><span class="atom-legend__meaning">Transformação</span></li>
+            </ol>
+          </div>
+
+          <figure class="atom-diagram" data-reveal data-atom-diagram>
+            <svg class="atom-diagram__svg" viewBox="0 0 400 400" role="img" aria-label="Diagrama do átomo do ATOMUZ: núcleo, três órbitas com elétrons e o campo ao redor">
+              <defs>
+                <radialGradient id="g-diagram-core">
+                  <stop offset="0" stop-color="#F2FFF2"/>
+                  <stop class="atom-diagram__hue" offset=".22" stop-color="#00FF00"/>
+                  <stop class="atom-diagram__hue" offset=".5" stop-color="#00FF00" stop-opacity=".3"/>
+                  <stop offset="1" stop-color="#00FF00" stop-opacity="0"/>
+                </radialGradient>
+                <!-- órbita base (elipse escrita como path para os elétrons seguirem) -->
+                <path id="diagram-orbit" pathLength="1" d="M50 200 A150 56 0 1 1 350 200 A150 56 0 1 1 50 200"/>
+              </defs>
+
+              <!-- 04 · campo -->
+              <circle class="atom-diagram__field" cx="200" cy="200" r="185"/>
+              <g class="atom-diagram__ticks">
+                <path d="M200 8 V22 M200 378 V392 M8 200 H22 M378 200 H392"/>
+              </g>
+
+              <!-- grupo que reage ao cursor (deslocamento leve via JS) -->
+              <g class="atom-diagram__system" data-atom-system>
+                <!-- 02 · órbitas (0°, 60°, 120°) com 03 · elétrons percorrendo cada uma -->
+                <g transform="rotate(0 200 200)">
+                  <g class="atom-diagram__sway atom-diagram__sway--1">
+                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
+                  <circle class="atom-diagram__electron" r="5">
+                    <animateMotion dur="4.5s" repeatCount="indefinite" begin="0s"><mpath href="#diagram-orbit"/></animateMotion>
+                  </circle>
+                  </g>
+                </g>
+                <g transform="rotate(60 200 200)">
+                  <g class="atom-diagram__sway atom-diagram__sway--2">
+                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
+                  <circle class="atom-diagram__electron" r="5">
+                    <animateMotion dur="6s" repeatCount="indefinite" begin="-2s"><mpath href="#diagram-orbit"/></animateMotion>
+                  </circle>
+                  </g>
+                </g>
+                <g transform="rotate(120 200 200)">
+                  <g class="atom-diagram__sway atom-diagram__sway--3">
+                  <use class="atom-diagram__orbit" href="#diagram-orbit"/>
+                  <circle class="atom-diagram__electron" r="5">
+                    <animateMotion dur="7.5s" repeatCount="indefinite" begin="-4.5s"><mpath href="#diagram-orbit"/></animateMotion>
+                  </circle>
+                  </g>
+                </g>
+
+                <!-- 01 · núcleo -->
+                <circle class="atom-diagram__glow" cx="200" cy="200" r="58" fill="url(#g-diagram-core)" data-atom-glow/>
+                <circle class="atom-diagram__core" cx="200" cy="200" r="9"/>
+              </g>
+
+              <!-- marcadores numerados (estáticos, apontam para cada parte) -->
+              <g class="atom-diagram__callouts">
+                <path d="M207 193 L246 154 H268"/>
+                <path d="M330 228 L352 262 H372"/>
+                <path d="M125 330 L100 356 H74"/>
+                <path d="M69 69 L48 48 H26"/>
+                <circle cx="207" cy="193" r="2.5"/><circle cx="330" cy="228" r="2.5"/>
+                <circle cx="125" cy="330" r="2.5"/><circle cx="69" cy="69" r="2.5"/>
+              </g>
+              <g class="atom-diagram__nums">
+                <text x="272" y="158">01</text>
+                <text x="376" y="266">02</text>
+                <text x="70" y="360" text-anchor="end">03</text>
+                <text x="22" y="52" text-anchor="end">04</text>
+              </g>
+            </svg>
+          </figure>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===== 08 · BOOKING =====
          Envio pelo FormSubmit (formsubmit.co) para atomuz.audio@gmail.com.
          Com JS: envio sem sair da página (js/modules/booking-form.js).
          Sem JS: o formulário envia normalmente e o FormSubmit mostra a
@@ -1334,7 +1470,7 @@
       <div class="section__inner">
 
         <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>07</span> / CONTACT</p>
+          <p class="section-head__index"><span>08</span> / CONTATO</p>
           <h2 class="section-head__title" id="booking-title">BOOKING</h2>
           <div class="section-head__rule" aria-hidden="true">
             <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
@@ -1357,14 +1493,30 @@
 
             <dl class="booking-contacts">
               <div>
-                <dt>E-MAIL</dt>
-                <dd><a href="mailto:atomuz.audio@gmail.com">atomuz.audio@gmail.com</a></dd>
+                <dt>AGÊNCIA</dt>
+                <dd><a href="https://www.instagram.com/startbookings/" target="_blank" rel="noopener noreferrer">@startbookings<span class="sr-only"> (abre em nova aba)</span></a></dd>
               </div>
               <div>
                 <dt>INSTAGRAM</dt>
                 <dd><a href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer">@atomuz_<span class="sr-only"> (abre em nova aba)</span></a></dd>
               </div>
+              <div>
+                <dt>E-MAIL</dt>
+                <dd><a href="mailto:atomuz.audio@gmail.com">atomuz.audio@gmail.com</a></dd>
+              </div>
             </dl>
+
+            <!-- Agência (START BOOKINGS): cartão "representado por" com o logo repetido
+                 andando para a direita em duas camadas de velocidades diferentes
+                 (parallax). Os logos são máscaras CSS (assets/agencia/startbookings-tile.svg). -->
+            <a class="agency-card" href="https://www.instagram.com/startbookings/" target="_blank" rel="noopener noreferrer"
+               aria-label="Start Bookings, agência do ATOMUZ, no Instagram (abre em nova aba)">
+              <span class="agency-card__label">REPRESENTADO POR<span class="agency-card__arrow" aria-hidden="true">↗</span></span>
+              <span class="agency-strip" aria-hidden="true">
+                <span class="agency-strip__layer agency-strip__layer--back"></span>
+                <span class="agency-strip__layer agency-strip__layer--front"></span>
+              </span>
+            </a>
           </div>
 
           <div class="booking-panel" data-reveal>
@@ -1428,91 +1580,6 @@
             </form>
           </div>
         </div>
-
-      </div>
-    </section>
-
-    <!-- ===== 08 · CONNECT ===== (links oficiais; YouTube omitido até haver link real) -->
-    <section class="section section--connect" id="connect" aria-labelledby="connect-title">
-      <div class="section__inner">
-
-        <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>08</span> / NETWORK</p>
-          <h2 class="section-head__title" id="connect-title">CONNECT</h2>
-          <div class="section-head__rule" aria-hidden="true">
-            <svg class="section-head__bars" viewBox="0 0 92 10" focusable="false">
-              <path d="M6 1 H18 L14 9 H2 Z M24 1 H36 L32 9 H20 Z M42 1 H54 L50 9 H38 Z M60 1 H72 L68 9 H56 Z M78 1 H92 L88 9 H74 Z"/>
-            </svg>
-            <span class="section-head__line"></span>
-            <svg class="section-head__reticle" viewBox="0 0 40 40" focusable="false">
-              <circle cx="20" cy="20" r="13"/>
-              <circle cx="20" cy="20" r="6.5"/>
-              <path d="M2 20 H38 M20 2 V38"/>
-              <circle class="section-head__core" cx="20" cy="20" r="2.2"/>
-            </svg>
-          </div>
-        </header>
-
-        <ul class="net-grid" data-reveal>
-          <li>
-            <a class="net-card net-card--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
-              <span class="net-card__index" aria-hidden="true">01</span>
-              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-              </svg></span>
-              <span class="net-card__label">SPOTIFY</span>
-              <span class="net-card__handle">Atomuz</span>
-              <span class="net-card__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="net-card net-card--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
-              <span class="net-card__index" aria-hidden="true">02</span>
-              <span class="net-card__icon"><svg viewBox="0 0 44 22" aria-hidden="true" focusable="false">
-                <g fill="currentColor">
-                  <rect x="0"    y="12.5" width="2" height="7"  rx="1"/>
-                  <rect x="3.3"  y="9.5"  width="2" height="10" rx="1"/>
-                  <rect x="6.6"  y="7.5"  width="2" height="12" rx="1"/>
-                  <rect x="9.9"  y="5"    width="2" height="14.5" rx="1"/>
-                  <rect x="13.2" y="4"    width="2" height="15.5" rx="1"/>
-                  <path d="M16.6 19.5 V3.4 C18.1 2.5 19.9 2 21.8 2 C27 2 31.2 5.8 31.8 10.7 C32.5 10.4 33.3 10.3 34.1 10.3 C38.6 10.3 42 13.3 42 15 C42 17.7 39.8 19.5 37.1 19.5 Z"/>
-                </g>
-              </svg></span>
-              <span class="net-card__label">SOUNDCLOUD</span>
-              <span class="net-card__handle">soundcloud.com/atomuz</span>
-              <span class="net-card__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="net-card net-card--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
-              <span class="net-card__index" aria-hidden="true">03</span>
-              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <g fill="none" stroke="currentColor" stroke-width="2.3">
-                  <rect x="1.6" y="1.6" width="20.8" height="20.8" rx="5.8"/>
-                  <circle cx="12" cy="12" r="5"/>
-                </g>
-                <circle cx="18.1" cy="5.9" r="1.45" fill="currentColor"/>
-              </svg></span>
-              <span class="net-card__label">INSTAGRAM</span>
-              <span class="net-card__handle">@atomuz_</span>
-              <span class="net-card__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-          <li>
-            <a class="net-card net-card--mail" href="mailto:atomuz.audio@gmail.com" aria-label="Enviar e-mail para atomuz.audio@gmail.com">
-              <span class="net-card__index" aria-hidden="true">04</span>
-              <span class="net-card__icon"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <g fill="none" stroke="currentColor" stroke-width="2.1" stroke-linejoin="round">
-                  <rect x="2" y="4.5" width="20" height="15" rx="2"/>
-                  <path d="M3 6 L12 13 L21 6"/>
-                </g>
-              </svg></span>
-              <span class="net-card__label">E-MAIL</span>
-              <span class="net-card__handle">atomuz.audio@gmail.com</span>
-              <span class="net-card__arrow" aria-hidden="true">↗</span>
-            </a>
-          </li>
-        </ul>
 
       </div>
     </section>

@@ -438,6 +438,8 @@ export function createCodeField(sections, options = {}) {
   const redrawAll = () => fields.forEach((field) => field.redraw());
   document.fonts?.load(`14px ${FONT}`).then(redrawAll).catch(() => {});
   document.addEventListener('atomuz:themechange', redrawAll);
+  // textos mudam de tamanho ao trocar o idioma: remarca a área atrás deles
+  document.addEventListener('atomuz:langchange', redrawAll);
 
   return {
     enable() { fields.forEach((field) => field.setInteractive(true)); },

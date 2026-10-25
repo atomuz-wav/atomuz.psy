@@ -57,8 +57,6 @@ export function createAtomSystem(svg, interaction) {
     };
   });
 
-  const axes = [...svg.querySelectorAll('#orbit-lines .axis')];
-
   const electrons = [...svg.querySelectorAll('[data-electron]')].map((el) => ({
     el,
     orbit: orbits[+el.dataset.orbitIndex],
@@ -108,7 +106,7 @@ export function createAtomSystem(svg, interaction) {
     }
   }
 
-  /** Entrada: órbitas desenhadas como um traço que se fecha; eixos surgem. */
+  /** Entrada: órbitas desenhadas como um traço que se fecha. */
   function updateDraw() {
     const p = intro.orbits;
     if (p < 1) {
@@ -117,7 +115,6 @@ export function createAtomSystem(svg, interaction) {
         o.el.style.strokeDasharray = '1 1';
         o.el.style.strokeDashoffset = (1 - p).toFixed(4);
       }
-      for (const a of axes) a.style.opacity = p.toFixed(3);
     } else if (drawing) {
       drawing = false;
       clearDraw();
@@ -129,7 +126,6 @@ export function createAtomSystem(svg, interaction) {
       o.el.style.strokeDasharray = '';
       o.el.style.strokeDashoffset = '';
     }
-    for (const a of axes) a.style.opacity = '';
   }
 
   function updateElectrons(t) {
