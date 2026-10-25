@@ -25,7 +25,7 @@ const DEPTH = { orbits: 12, logo: 18 };
 
 const STAGE_W = 2048;
 const STAGE_H = 900;
-const NUCLEUS_CENTER = [856, 1011];
+const NUCLEUS_CENTER = [823, 1009]; // ponto central do "O" do logo oficial
 
 /** Deslocamento em unidades da referência → translate3d em % do palco. */
 const translate = (x, y) =>

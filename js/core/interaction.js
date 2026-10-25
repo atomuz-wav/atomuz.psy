@@ -13,7 +13,7 @@ import { DESIGN } from '../config.js';
    ========================================================================= */
 
 const LOGO_BOX = { x0: 170, x1: 1880, y0: 880, y1: 1140 };
-const NUCLEUS = { x: 856, y: 1011 };
+const NUCLEUS = { x: 823, y: 1009 }; // ponto central do "O" do logo oficial
 
 const damp = (current, target, rate, dt) => current + (target - current) * (1 - Math.exp(-rate * dt));
 

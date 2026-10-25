@@ -33,7 +33,9 @@ export function setupEnterTransition({ gsap, link, frame, canvas, isMotionOff = 
     const root = document.documentElement;
     const maxScroll = root.scrollHeight - window.innerHeight;
     const scroller = { y: window.scrollY };
-    const targetY = Math.min(target.getBoundingClientRect().top + window.scrollY, maxScroll);
+    // desconta a navbar fixa (scroll-padding-top do CSS)
+    const navPad = parseFloat(getComputedStyle(root).scrollPaddingTop) || 0;
+    const targetY = Math.min(target.getBoundingClientRect().top + window.scrollY - navPad, maxScroll);
 
     // O scroll-behavior: smooth do CSS brigaria com o scroll quadro a quadro
     root.style.scrollBehavior = 'auto';

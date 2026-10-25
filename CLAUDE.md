@@ -18,7 +18,7 @@ O manifesto oficial atual é **PSYTRANCE • SCIENCE • TECHNOLOGY**.
 ## Regras visuais inegociáveis
 
 - Paleta principal: branco `#FFFFFF`, verde neon `#00FF00`, verde tecnológico `#00CC22`, verde profundo `#008C18` e preto `#071009`.
-- Fundo predominantemente branco; **não** transformar a interface em tema escuro. O branco é sempre o padrão; existe um tema escuro **opcional**, ativado pelo visitante no botão sol/lua da navbar (decisão do usuário).
+- O site abre no **tema escuro** (decisão do usuário, 24/10/2026); o tema claro (fundo branco, fiel à referência) é **opcional**, ativado pelo visitante no botão sol/lua da navbar. Os dois temas devem continuar funcionando e legíveis.
 - Preservar logo ATOMUZ, ondas de partículas horizontais, órbitas atômicas, núcleo, circuitos à direita, molduras HUD, navbar, manifesto e botão ENTER.
 - Priorizar os espaços negativos e a composição da imagem original.
 - Evitar degradês roxos, azuis, cartões de dashboard, elementos decorativos excessivos e glitch forte.

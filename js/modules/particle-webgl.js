@@ -182,7 +182,7 @@ export function createParticleRenderer(canvas, stage, field, interaction) {
     uPointer: { value: new THREE.Vector2(1024, 1010) },
     uPointerStrength: { value: 0 },
     uIntro: { value: 1 },
-    uWaveCenter: { value: new THREE.Vector2(856, 1011) },
+    uWaveCenter: { value: new THREE.Vector2(823, 1009) }, // núcleo (ponto do "O")
     uWaveRadius: { value: 0 },
     uWaveStrength: { value: 0 },
   };

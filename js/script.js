@@ -19,7 +19,6 @@ import { AnimationLoop } from './core/loop.js';
 import { prefersReducedMotion, onMotionPreferenceChange } from './core/motion.js';
 import { Interaction } from './core/interaction.js';
 import { completeIntro, resetFx } from './core/state.js';
-import { createLogoMatrix } from './modules/logo-matrix.js';
 import { createLogoEnergy } from './modules/logo-energy.js';
 import { createCircuitSystem } from './modules/circuit-system.js';
 import { createHudSystem } from './modules/hud-system.js';
@@ -30,6 +29,7 @@ import { playIntro } from './modules/intro-sequence.js';
 import { setupEnterTransition } from './modules/enter-transition.js';
 import { createSectionReveal } from './modules/section-reveal.js';
 import { createAtomDiagram } from './modules/atom-diagram.js';
+import { createCodeField } from './modules/code-field.js';
 import { initBookingForm } from './modules/booking-form.js';
 
 const hero = document.querySelector('.hero');
@@ -178,15 +178,25 @@ motionToggle?.addEventListener('click', () => {
 // Seções após a Hero: revelação suave ao rolar (segue a mesma regra de movimento)
 const sectionReveal = createSectionReveal(document.querySelector('.site-sections') || document);
 const atomDiagram = createAtomDiagram(document.querySelector('[data-atom-diagram]'));
+// Fundo interativo de caracteres: só nas seções 01–04, 07 e 08
+const codeField = createCodeField(
+  ['#music', '#release', '#live', '#project', '#booking', '#connect'].map((id) => document.querySelector(id)),
+);
+// Na Hero, só a onda de caracteres ao clicar (sem grade em repouso)
+const heroWave = createCodeField([hero], { rippleOnly: true });
 initBookingForm(document.querySelector('[data-booking-form]'));
 
 function applyMotionPreference(reduce) {
   if (reduce) {
     sectionReveal.disable();
     atomDiagram.disable();
+    codeField.disable();
+    heroWave.disable();
   } else {
     sectionReveal.enable();
     atomDiagram.enable();
+    codeField.enable();
+    heroWave.enable();
   }
 
   if (reduce) {
@@ -208,8 +218,6 @@ function applyMotionPreference(reduce) {
 // A interação vem primeiro: os demais sistemas leem os valores já suavizados
 loop.add(interaction);
 
-const matrixGroup = document.querySelector('[data-logo-matrix]');
-if (matrixGroup) loop.add(createLogoMatrix(matrixGroup));
 
 if (stage) {
   loop.add(createDepthLayers(stage, interaction));

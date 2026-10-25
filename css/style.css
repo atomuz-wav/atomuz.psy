@@ -24,6 +24,7 @@
   /* Tons auxiliares derivados da paleta */
   --c-line: #12C92E;        /* linhas HUD/circuitos (entre tech e neon) */
   --c-dim: #8FDD9A;         /* indicador atenuado */
+  --c-red: #FF2D3A;         /* acento: pontos do manifesto (mesmo vermelho do núcleo do ATOM) */
 
   /* Tokens de TEMA (claro = padrão, fiel à referência).
      O tema escuro redefine só estes valores — ver :root[data-theme="dark"] */
@@ -32,17 +33,28 @@
   --c-surface: rgba(255, 255, 255, 0.85);  /* interior do botão ENTER */
   --c-text-muted: var(--c-deep);           /* textos secundários */
   --c-panel: #F4FFF5;                      /* painéis/capas sobre o fundo */
+  /* Cinzas neutros (levemente esverdeados) para elementos secundários da
+     Hero: o verde fica reservado ao que é ação/foco (ENTER, retícula) */
+  --c-gray-text: #6E7770;                  /* manifesto (contraste ≥ 4.5:1 no branco) */
+  --c-gray-line: #B4BCB6;                  /* linhas de apoio */
+  --c-gray-orbit: #A2ABA4;                 /* órbitas e eixo do átomo da Hero */
 
   /* Tipografia */
-  --f-display: "Montserrat", "Segoe UI", system-ui, sans-serif;
+  --f-display: "Orbitron", "Segoe UI", system-ui, sans-serif;
   --f-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
 
   /* Unidade de design */
   --design-w: 2048;
   --design-h: 1480;
   --u: min(calc(100vw / 2048), calc(100vh / 1480));
-  /* Piso para elementos de interface: ~15 px de texto no manifesto, ENTER ≥ 144 px */
+  /* Piso para elementos de interface: ~10 px de texto no manifesto, ENTER ≥ 113 px */
   --u-ui: max(var(--u), 0.42px);
+  /* Navbar fixa: largura da moldura e espaço que ela reserva no topo da Hero.
+     Calculadas aqui na raiz para usar o --u global (a .nav redefine --u). */
+  --frame-w: calc(var(--design-w) * var(--u));
+  --nav-h: calc(160 * var(--u-ui));
+  --nav-gap: 0px;     /* espaço extra abaixo da navbar (menu em linha própria) */
+  --nav-under: 0px;   /* quanto o fundo da navbar fixa desce além dela */
 }
 
 @supports (height: 100svh) {
@@ -61,10 +73,11 @@
   --c-text-muted: var(--c-tech);
   --c-dim: #2F6B3A;
   --c-panel: #07110A;
+  --c-gray-text: #8E9890;
+  --c-gray-line: #3A433C;
+  --c-gray-orbit: #5C665E;
   color-scheme: dark;
 }
-/* Letras: um pouco mais claras que o fundo para o corpo não "sumir" */
-:root[data-theme="dark"] .logo-body { fill: #0B1A0E; }
 
 /* Troca de tema suave (sem animação para quem pede movimento reduzido) */
 @media (prefers-reduced-motion: no-preference) {
@@ -84,7 +97,11 @@
 *::before,
 *::after { box-sizing: border-box; }
 
-html { -webkit-text-size-adjust: 100%; }
+html {
+  -webkit-text-size-adjust: 100%;
+  /* âncoras do menu param abaixo da navbar fixa */
+  scroll-padding-top: calc(var(--nav-h) + var(--nav-under));
+}
 
 @media (prefers-reduced-motion: no-preference) {
   html { scroll-behavior: smooth; }
@@ -125,7 +142,8 @@ body {
 }
 
 /* Antes da sequência de entrada começar (classe aplicada no <head>) */
-.is-booting .hero__frame { visibility: hidden; }
+.is-booting .hero__frame,
+.is-booting .nav { visibility: hidden; }
 .is-booting .hero__particles { opacity: 0 !important; }
 
 /* ------------------------------------------------------------------------
@@ -171,14 +189,45 @@ body {
   grid-template-columns: minmax(0, 1fr);
   grid-template-rows: auto 1fr auto;
 }
+/* Reserva no topo da grade o espaço da navbar (ela é fixa, fora do fluxo) */
+.hero__frame::before {
+  content: "";
+  height: calc(var(--nav-h) + var(--nav-gap));
+}
 
 /* ------------------------------------------------------------------------
    Navbar (Navigation HUD)
    ------------------------------------------------------------------------ */
 .nav {
-  position: relative;
-  height: calc(160 * var(--u));
+  /* Fixa no topo: acompanha a rolagem pelo site inteiro */
+  position: fixed;
+  top: 0;
+  left: 50%;
+  z-index: 20;
+  width: var(--frame-w);
+  height: var(--nav-h);
+  transform: translateX(-50%);
 }
+
+/* Fundo da navbar: invisível sobre a Hero, aparece quando a página rola
+   (classe is-scrolled no <html>, script embutido no <head>) */
+.nav__backdrop {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 100vw;
+  height: calc(100% + var(--nav-under));
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid rgba(18, 201, 46, 0.18);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+:root[data-theme="dark"] .nav__backdrop { background: rgba(4, 8, 5, 0.88); }
+.is-scrolled .nav__backdrop { opacity: 1; }
 
 .nav__line {
   position: absolute;
@@ -223,9 +272,45 @@ body {
   border-radius: 2px;
 }
 .nav__brand svg {
+  display: block;
   width: 100%;
-  height: calc(43 * var(--u));
+  height: auto;   /* proporção do logo oficial */
   overflow: visible;
+}
+
+/* Logo da navbar em vidro: corpo claro com brilho suave, um reflexo que
+   atravessa as letras de tempos em tempos e uma flutuação lenta.
+   No tema claro o vidro é grafite (branco sumiria no fundo branco). */
+.nav__brand-body {
+  fill: url(#g-wm-glass-dark);
+}
+:root[data-theme="dark"] .nav__brand-body { fill: url(#g-wm-glass); }
+:root[data-theme="dark"] .nav__brand svg {
+  filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.28));
+}
+.nav__brand-shine {
+  opacity: 0;
+  mix-blend-mode: screen;
+}
+:root:not([data-theme="dark"]) .nav__brand-shine { mix-blend-mode: normal; }
+
+/* Animações só com movimento ativo (classe .reveal-on, ver section-reveal.js) */
+.reveal-on .nav__brand-glass {
+  animation: brand-float 5.5s ease-in-out infinite;
+}
+.reveal-on .nav__brand-shine {
+  animation: brand-shine 5s cubic-bezier(0.45, 0, 0.25, 1) infinite 1.5s;
+}
+@keyframes brand-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }   /* unidades do logo (~2 px na tela) */
+}
+@keyframes brand-shine {
+  0%   { opacity: 0; transform: translateX(0) skewX(-22deg); }
+  6%   { opacity: 1; }
+  38%  { opacity: 1; }
+  44%  { opacity: 0; transform: translateX(3200px) skewX(-22deg); }
+  100% { opacity: 0; transform: translateX(3200px) skewX(-22deg); }
 }
 
 .nav__social {
@@ -245,7 +330,7 @@ body {
 
 .nav__divider {
   width: max(1px, calc(2 * var(--u)));
-  height: calc(53 * var(--u));
+  height: calc(40 * var(--u));
   background: var(--c-tech);
   opacity: 0.35;
 }
@@ -259,9 +344,9 @@ body {
   transition: color 0.25s ease, transform 0.25s ease, filter 0.25s ease;
 }
 .social svg { display: block; width: 100%; height: auto; }
-.social--spotify    { width: calc(62 * var(--u)); }
-.social--soundcloud { width: calc(85 * var(--u)); }
-.social--instagram  { width: calc(53 * var(--u)); }
+.social--spotify    { width: calc(46 * var(--u)); }
+.social--soundcloud { width: calc(64 * var(--u)); }
+.social--instagram  { width: calc(40 * var(--u)); }
 
 /* ---------- Chave de tema (caixinha) ----------
    Pílula com contorno verde e uma bolinha verde que desliza:
@@ -321,8 +406,9 @@ body {
   z-index: 1;
 }
 .nav__menu ul {
+  --menu-gap: max(14px, calc(40 * var(--u)));
   display: flex;
-  gap: max(14px, calc(40 * var(--u)));
+  gap: var(--menu-gap);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -339,6 +425,21 @@ body {
   white-space: nowrap;
   transition: color 0.25s ease;
 }
+/* Ponto vermelho separando os itens (como no manifesto), centrado no espaço
+   entre eles; decorativo: o texto alternativo vazio o esconde dos leitores */
+.nav__menu li { position: relative; }
+.nav__menu li + li::before {
+  content: "•";
+  content: "•" / "";
+  position: absolute;
+  top: 50%;
+  left: calc(var(--menu-gap) / -2);
+  transform: translate(-50%, -50%);
+  font: 400 max(10px, calc(18 * var(--u)))/1 var(--f-display);
+  color: var(--c-red);
+  pointer-events: none;
+}
+
 /* sublinhado neon que cresce da esquerda (mesma linguagem dos ícones) */
 .nav__menu a::after {
   content: "";
@@ -353,26 +454,26 @@ body {
   transform-origin: left center;
   transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
-.nav__menu a:focus-visible { color: var(--c-tech); outline: 2px solid var(--c-tech); outline-offset: 4px; }
+.nav__menu a:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 4px; }
 .nav__menu a:focus-visible::after { transform: scaleX(1); }
+/* O nome mantém a cor; só o sublinhado verde indica o hover */
 @media (hover: hover) {
-  .nav__menu a:hover { color: var(--c-tech); }
   .nav__menu a:hover::after { transform: scaleX(1); }
 }
 
 /* Telas menores e celular deitado: o menu vira uma linha centralizada logo
    abaixo da navbar (dentro da aba não há espaço legível) */
 @media (max-width: 899px), (max-height: 500px) {
-  .nav { margin-bottom: 34px; }
+  :root { --nav-gap: 34px; --nav-under: 48px; }
   .nav__menu {
     left: 50%;
     top: calc(100% + 18px);
   }
-  .nav__menu ul { gap: 16px; }
+  .nav__menu ul { --menu-gap: 16px; }
   .nav__menu a { font-size: 10.5px; letter-spacing: 0.18em; margin-right: -0.18em; }
 }
 @media (max-width: 380px) {
-  .nav__menu ul { gap: 11px; }
+  .nav__menu ul { --menu-gap: 11px; }
   .nav__menu a { font-size: 10px; letter-spacing: 0.14em; margin-right: -0.14em; }
 }
 
@@ -458,14 +559,7 @@ body {
 .layer-logo-halo,
 .layer-haze { will-change: opacity; }
 
-/* HUD */
-.hud-line {
-  fill: none;
-  stroke: var(--c-line);
-  stroke-width: 3;
-}
-.hud-fill { fill: #00E01C; }
-.hud-fill--dim { fill: var(--c-dim); }
+/* HUD: pontos de referência */
 .hud-dots circle { fill: #10D42A; }
 
 /* Circuitos */
@@ -482,32 +576,40 @@ body {
 }
 
 /* Pulsos de dados e terminais acesos (Etapa 3; ocultos no quadro estático) */
-.trace-pulse {
+.trace-pulse,
+.trace-neon {
   fill: none;
-  stroke: var(--c-neon);
-  stroke-width: 3.4;
+  /* cor do feixe/neon sorteada a cada vez (circuit-system.js) */
+  stroke: var(--pulse, var(--c-neon));
+  stroke-width: 4;
   stroke-linecap: round;
+  stroke-linejoin: round;
   opacity: 0;
 }
-.trace-pulse--halo {
-  stroke-width: 10;
+.trace-pulse--halo { stroke-width: 14; }
+.trace-neon { stroke-width: 3.2; }
+.trace-neon--halo { stroke-width: 10; }
+.trace-neon--bloom { stroke-width: 24; }
+/* No escuro, o miolo fica quase branco e a cor vive no brilho: efeito neon */
+:root[data-theme="dark"] :is(.trace-pulse, .trace-neon):not(.trace-pulse--halo, .trace-neon--halo, .trace-neon--bloom) {
+  stroke: var(--pulse-hot, var(--pulse, var(--c-neon)));
 }
 .node-glow { opacity: 0; }
-.node-glow__halo { fill: url(#g-electron); }
-.node-glow__core { fill: var(--c-neon); }
+.node-glow__halo { fill: var(--pulse-glow, url(#g-electron)); }
+.node-glow__core { fill: var(--pulse, var(--c-neon)); }
 
 /* Órbitas e eixos */
+/* Órbitas e eixo em cinza: o verde fica para o logo e o núcleo */
 .orbit {
   fill: none;
-  stroke: #14C82E;
+  stroke: var(--c-gray-orbit);
   stroke-width: 2;
 }
 .axis {
-  stroke: var(--c-line);
+  stroke: var(--c-gray-orbit);
   stroke-width: 1.6;
 }
 .axis--h { opacity: 0.5; }
-.axis-needle { fill: var(--c-line); }
 
 .layer-orbits-front { opacity: 0.28; }
 
@@ -517,12 +619,7 @@ body {
 .logo-halo { fill: var(--c-neon); opacity: 0.85; }
 .logo-halo--tight { opacity: 1; }
 .layer-logo-halo { opacity: 0.85; }
-.logo-body { fill: var(--c-black); }
-.logo-inner-glow {
-  fill: none;
-  stroke: var(--c-neon);
-  stroke-width: 17;
-}
+.logo-body { fill: url(#g-wm-nav); }
 .logo-edge {
   fill: none;
   stroke: #3DFF3D;
@@ -545,12 +642,6 @@ body {
 .logo-spark__halo { fill: url(#g-electron); }
 .logo-spark__flare { fill: #F2FFF2; }
 
-.logo-matrix text {
-  font-family: var(--f-mono);
-  font-size: 15px;
-  fill: #2EFF2E;
-  text-anchor: middle;
-}
 
 /* Núcleo */
 .nucleus-core {
@@ -571,7 +662,7 @@ body {
   opacity: 0.45;
 }
 
-/* Elétrons */
+/* Elétrons (as cores mudam sozinhas: atom-system.js) */
 .electron__halo { fill: url(#g-electron); }
 .electron__core {
   fill: #E9FFE9;
@@ -606,23 +697,23 @@ body {
   margin: 0;
   font-family: var(--f-display);
   font-weight: 500;
-  font-size: calc(37 * var(--u));
+  font-size: calc(24 * var(--u));
   line-height: 1;
-  letter-spacing: 0.56em;
-  color: var(--c-tech);
+  letter-spacing: 0.5em;
+  color: var(--c-gray-text);
   white-space: nowrap;
   /* compensa o espaçamento após o último caractere para centralizar */
-  margin-right: -0.56em;
+  margin-right: -0.5em;
 }
-.manifesto__dot { margin-inline: 0.42em; }
+.manifesto__dot { margin-inline: 0.42em; color: var(--c-red); }
 /* Caracteres separados pelo JS para a revelação letra a letra */
 .manifesto__char { display: inline-block; }
 
 .ornament {
   display: block;
-  width: calc(926 * var(--u));
-  height: calc(126 * var(--u));
-  margin-top: calc(24 * var(--u));
+  width: calc(700 * var(--u));
+  height: calc(95 * var(--u));
+  margin-top: calc(20 * var(--u));
   overflow: visible;
 }
 .ornament__lines path,
@@ -632,6 +723,9 @@ body {
   stroke: var(--c-line);
   stroke-width: 2.6;
 }
+/* Linhas e mira em cinza; anéis da retícula, segmentos e núcleo seguem verdes */
+.ornament__lines path,
+.ornament__reticle path:not(.ornament__core) { stroke: var(--c-gray-line); }
 .ornament__bars path,
 .ornament__bars rect { fill: var(--c-tech); }
 .ornament__core {
@@ -642,15 +736,15 @@ body {
 .enter-row {
   display: flex;
   align-items: center;
-  gap: calc(72 * var(--u));
-  margin-top: calc(22 * var(--u));
+  gap: calc(56 * var(--u));
+  margin-top: calc(18 * var(--u));
 }
 
 .enter-row__line {
   display: block;
-  width: calc(354 * var(--u));
-  height: max(1px, calc(2.5 * var(--u)));
-  background: var(--c-line);
+  width: calc(300 * var(--u));
+  height: max(1px, calc(2 * var(--u)));
+  background: var(--c-gray-line);
   transition: background-color 0.3s ease, box-shadow 0.3s ease;
 }
 /* As linhas laterais acendem junto com o botão */
@@ -670,9 +764,9 @@ body {
   position: relative;
   display: flex;
   align-items: center;
-  width: calc(342 * var(--u));
-  height: calc(94 * var(--u));
-  padding-left: calc(73 * var(--u));
+  width: calc(270 * var(--u));
+  height: calc(74 * var(--u));
+  padding-left: calc(58 * var(--u));
   color: var(--c-tech);
   text-decoration: none;
   border-radius: 2px;
@@ -702,15 +796,15 @@ body {
   position: relative;
   font-family: var(--f-display);
   font-weight: 600;
-  font-size: calc(37 * var(--u));
+  font-size: calc(29 * var(--u));
   letter-spacing: 0.12em;
   line-height: 1;
 }
 .enter__arrow {
   position: absolute;
-  left: calc(277 * var(--u));
+  left: calc(218 * var(--u));
   top: 50%;
-  width: calc(24 * var(--u));
+  width: calc(19 * var(--u));
   height: auto;
   transform: translateY(-50%);
   fill: none;
@@ -825,6 +919,21 @@ body {
   margin-inline: auto;
 }
 
+/* Fundo interativo de caracteres (js/modules/code-field.js): fica atrás do
+   conteúdo e não captura o mouse (os eventos são ouvidos na seção) */
+.code-field {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+.code-field ~ .section__inner {
+  position: relative;
+  z-index: 1;
+}
+
 /* ---------- Cabeçalho de seção ---------- */
 .section-head { margin-bottom: clamp(36px, 5vw, 64px); }
 
@@ -843,8 +952,13 @@ body {
   letter-spacing: 0.22em;
   /* compensa o espaçamento após a última letra */
   margin-right: -0.22em;
-  color: var(--c-tech);
-  text-shadow: 0 0 22px rgba(0, 255, 0, 0.18);
+  /* títulos neutros: branco no escuro; no claro, a cor do texto (branco
+     sumiria no fundo branco). O verde fica nos detalhes HUD ao redor. */
+  color: var(--c-fg);
+}
+:root[data-theme="dark"] .section-head__title {
+  color: #FFFFFF;
+  text-shadow: 0 0 22px rgba(255, 255, 255, 0.18);
 }
 .section-head__title:focus { outline: none; }
 .section-head__title:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 8px; }
@@ -991,14 +1105,6 @@ body {
   height: auto;
   clip-path: polygon(calc(var(--cut) - 0.5px) 0, 100% 0, 100% calc(100% - var(--cut) + 0.5px),
     calc(100% - var(--cut) + 0.5px) 100%, 0 100%, 0 calc(var(--cut) - 0.5px));
-}
-.release-art__caption {
-  margin-top: 12px;
-  font: 400 11px/1.4 var(--f-mono);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--c-text-muted);
-  opacity: 0.8;
 }
 
 .release-info__artist {
@@ -1219,8 +1325,8 @@ body {
 .event-row__index {
   font: 400 12px/1 var(--f-mono);
   letter-spacing: 0.2em;
-  color: var(--c-text-muted);
-  opacity: 0.7;
+  color: var(--c-red);   /* numeração dos sets em vermelho, como os pontos do manifesto */
+  opacity: 0.9;
 }
 .event-row__date {
   font: 400 15px/1 var(--f-mono);
@@ -1238,11 +1344,44 @@ body {
   color: var(--c-text-muted);
   white-space: nowrap;
 }
+.event-row__genre { color: #737373; }   /* gêneros em cinza, como o rodapé */
+.event-row__meta > span[aria-hidden="true"] { color: var(--c-red); }   /* ponto separador */
 .event-row__action {
   font: 600 11px/1 var(--f-display);
   letter-spacing: 0.2em;
-  color: var(--c-tech);
+  color: var(--c-fg);   /* reserva se o recorte do texto não for suportado */
   white-space: nowrap;
+}
+
+/* OUVIR SET em vidro branco (como o logo da navbar): o texto é recortado de
+   dois fundos, um reflexo branco que atravessa as letras (animado) e o corpo
+   levemente acinzentado com uma "quebra" de luz no meio; brilho no drop-shadow */
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .event-row__action {
+    --glass: linear-gradient(180deg, #FFFFFF 0%, #E9EEEA 45%, #C9D1CB 55%, #DDE3DF 100%);
+    background-image:
+      linear-gradient(110deg, transparent 42%, rgba(255, 255, 255, 0.95) 50%, transparent 58%),
+      var(--glass);
+    background-size: 260% 100%, 100% 100%;
+    background-position: 130% 0, 0 0;
+    background-repeat: no-repeat;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 4px rgba(255, 255, 255, 0.45));
+  }
+  /* no fundo branco o vidro é grafite (branco sumiria), com o mesmo reflexo */
+  :root:not([data-theme="dark"]) .event-row__action {
+    --glass: linear-gradient(180deg, #3A443C 0%, #1C241E 45%, #0E1610 55%, #071009 100%);
+    filter: none;
+  }
+  .reveal-on .event-row__action { animation: action-glass 4.5s ease-in-out infinite; }
+  .reveal-on li:nth-child(2n) .event-row__action { animation-delay: -1.5s; }
+  .reveal-on li:nth-child(3n) .event-row__action { animation-delay: -3s; }
+}
+@keyframes action-glass {
+  0%, 55%   { background-position: 130% 0, 0 0; }
+  85%, 100% { background-position: -30% 0, 0 0; }
 }
 .event-row:focus-visible { outline: 2px solid var(--c-tech); outline-offset: -2px; }
 .event-row:focus-visible::before { transform: scaleY(1); }
@@ -1338,7 +1477,7 @@ body {
   border-top: 1px solid rgba(18, 201, 46, 0.25);
   font: 400 12px/1.4 var(--f-mono);
   letter-spacing: 0.12em;
-  color: var(--c-tech);
+  color: #A3A3A3;   /* frase em cinza; o ícone do átomo segue verde */
 }
 .project-readout__signal svg {
   width: 22px;
@@ -1498,7 +1637,7 @@ body {
   font: 400 12px/1 var(--f-mono);
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--c-text-muted);
+  color: #A3A3A3;   /* significados em cinza (matéria, energia...) */
 }
 
 /* Diagrama */
@@ -1511,14 +1650,18 @@ body {
 .atom-diagram__svg { display: block; width: 100%; height: auto; overflow: visible; }
 .atom-diagram__field {
   fill: none;
-  stroke: var(--c-line);
+  stroke: var(--c-gray-orbit);   /* 04 · campo em cinza */
   stroke-width: 1.2;
   stroke-dasharray: 2 7;
   opacity: 0.8;
 }
-.atom-diagram__ticks path { stroke: var(--c-line); stroke-width: 2; }
+.atom-diagram__ticks path { stroke: var(--c-gray-orbit); stroke-width: 2; }
 .atom-diagram__orbit { fill: none; stroke: var(--c-line); stroke-width: 1.8; }
 .atom-diagram__electron { fill: #E9FFE9; stroke: var(--c-neon); stroke-width: 2.4; }
+/* Um elétron de cada cor, um em cada órbita: vermelho, azul e amarelo */
+.atom-diagram__sway--1 .atom-diagram__electron { fill: #FFD6DC; stroke: #FF2D3A; filter: drop-shadow(0 0 4px rgba(255, 45, 58, 0.7)); }
+.atom-diagram__sway--2 .atom-diagram__electron { fill: #D6EAFF; stroke: #2F7BFF; filter: drop-shadow(0 0 4px rgba(47, 123, 255, 0.7)); }
+.atom-diagram__sway--3 .atom-diagram__electron { fill: #FFF7C2; stroke: #FFD000; filter: drop-shadow(0 0 4px rgba(255, 208, 0, 0.7)); }
 .atom-diagram__core { fill: #F2FFF2; stroke: var(--c-neon); stroke-width: 3; }
 .atom-diagram__system { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .atom-diagram__glow { transform-origin: 200px 200px; }
@@ -1746,7 +1889,7 @@ body {
 .booking-contacts dd { margin: 0; overflow-wrap: anywhere; }
 .booking-contacts a {
   font: 600 clamp(14px, 1.3vw, 17px)/1.3 var(--f-display);
-  color: var(--c-tech);
+  color: #737373;
   text-decoration: none;
   border-bottom: 1px solid transparent;
   transition: border-color 0.25s ease, color 0.25s ease;
@@ -1785,7 +1928,7 @@ body {
 .booking-field label {
   font: 400 11px/1 var(--f-mono);
   letter-spacing: 0.22em;
-  color: var(--c-text-muted);
+  color: #737373;
 }
 .booking-field__req { color: var(--c-tech); }
 .booking-field input,
@@ -1804,6 +1947,16 @@ body {
 :root[data-theme="dark"] .booking-field input,
 :root[data-theme="dark"] .booking-field textarea { color-scheme: dark; }
 .booking-field textarea { resize: vertical; min-height: 130px; }
+/* Data: texto branco no escuro (no claro, a cor do texto). O Safari pinta as
+   partes da data (dia/mês/ano) à parte, por isso as regras -webkit- */
+.booking-field input[type="date"] { color: var(--c-fg); }
+:root[data-theme="dark"] .booking-field input[type="date"] { color: #FFFFFF; }
+.booking-field input[type="date"]::-webkit-datetime-edit,
+.booking-field input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.booking-field input[type="date"]::-webkit-datetime-edit-text,
+.booking-field input[type="date"]::-webkit-datetime-edit-day-field,
+.booking-field input[type="date"]::-webkit-datetime-edit-month-field,
+.booking-field input[type="date"]::-webkit-datetime-edit-year-field { color: inherit; }
 .booking-field input:focus,
 .booking-field textarea:focus {
   border-color: var(--c-neon);
@@ -1945,14 +2098,13 @@ body {
   width: min(1240px, calc(100% - 48px));
   margin-inline: auto;
   padding: 28px 0;
-  font: 400 11px/1.4 var(--f-mono);
-  letter-spacing: 0.22em;
-  color: var(--c-text-muted);
+  font: 500 11px/1.4 var(--f-display);   /* Orbitron, como o resto do site */
+  letter-spacing: 0.16em;
+  color: #737373;   /* rodapé discreto, igual nos dois temas */
 }
 .site-footer__inner p { margin: 0; }
-.site-footer__brand { color: var(--c-tech); }
 .site-footer__top {
-  color: var(--c-tech);
+  color: inherit;
   text-decoration: none;
   padding: 6px 0;
 }
@@ -2009,7 +2161,7 @@ body {
   position: absolute;
   top: 12px;
   left: 50%;
-  z-index: 10;
+  z-index: 30;
   padding: 0.6em 1.1em;
   font: 600 13px/1 var(--f-display);
   letter-spacing: 0.12em;
@@ -2030,11 +2182,11 @@ body {
    ------------------------------------------------------------------------ */
 @media (max-width: 760px), (max-height: 500px) {
   /* Navbar ocupa a largura toda da janela, não só a moldura da composição */
+  :root { --nav-h: 80px; }
   .nav {
-    width: 100vw;
-    height: 80px;
-    justify-self: start;
-    margin-left: calc(50% - 50vw);
+    left: 0;
+    width: 100%;
+    transform: none;
   }
   .nav::before,
   .nav::after { display: none; }
@@ -2044,7 +2196,6 @@ body {
     top: 19px;
     width: 128px;
   }
-  .nav__brand svg { height: 15px; }
 
   .nav__social {
     right: 16px;
@@ -2053,9 +2204,9 @@ body {
     gap: 12px;
   }
   .nav__divider { height: 20px; }
-  .social--spotify    { width: 24px; }
-  .social--soundcloud { width: 36px; }
-  .social--instagram  { width: 21px; }
+  .social--spotify    { width: 20px; }
+  .social--soundcloud { width: 30px; }
+  .social--instagram  { width: 18px; }
   /* área de toque mínima */
   .social { padding: 6px 0; }
 
@@ -2064,16 +2215,16 @@ body {
   .access { padding-bottom: 48px; }
 
   .manifesto {
-    font-size: 10.5px;
+    font-size: 9.5px;
     letter-spacing: 0.3em;
     margin-right: -0.3em;
   }
   .manifesto__dot { margin-inline: 0.2em; }
 
   .ornament {
-    width: min(78vw, 320px);
+    width: min(64vw, 250px);
     height: auto;
-    margin-top: 16px;
+    margin-top: 12px;
   }
 
   .enter-row {
@@ -2086,12 +2237,12 @@ body {
 
   .enter {
     flex: none;
-    width: 168px;
-    height: 48px;
-    padding-left: 36px;
+    width: 148px;
+    height: 44px;   /* área de toque confortável */
+    padding-left: 32px;
   }
-  .enter__label { font-size: 17px; }
-  .enter__arrow { left: 132px; width: 14px; }
+  .enter__label { font-size: 15px; }
+  .enter__arrow { left: 116px; width: 13px; }
 }
 
 /* Celular e tablet em pé: o palco é ampliado ~14 % (recorte das bordas
@@ -2105,9 +2256,6 @@ body {
     height: calc(900 * 100vw / 1800);
     margin-left: calc(50vw - 1024 * 100vw / 1800);
   }
-  .hud-frame,
-  .hud-indicators,
-  .reticle--side { display: none; }
 }
 
 /* Telas baixas na horizontal (celular deitado): o palco usa a altura que
@@ -2117,7 +2265,7 @@ body {
   @supports (height: 100svh) {
     :root { --u: min(calc(100vw / 2048), calc((100svh - 224px) / 900)); }
   }
-  .nav { height: 60px; }
+  :root { --nav-h: 60px; }
   .nav__brand { top: 16px; }
   .nav__social { top: 6px; }
   .hero__stage { padding-block: 4px; }
@@ -2132,9 +2280,11 @@ body {
    pede mais contraste recebe textos e ícones em verde escuro (≈ 5,5:1).
    ------------------------------------------------------------------------ */
 @media (prefers-contrast: more) {
-  :root:not([data-theme="dark"]) :is(.manifesto, .social, .theme-toggle, .enter, .section-head__title, .section-head__index, .player-card__label, .player-card__link, .release-meta li, .release-info__artist, .hud-btn--ghost, .live-block-title, .event-row__date, .event-row__action, .project-copy__lead em, .project-readout__title, .project-readout__signal, .project-sequence__title, .atom-copy__lead em, .atom-legend__num, .booking-copy__lead em, .booking-contacts a, .net-card__icon, .net-card__arrow, .site-footer__brand, .site-footer__top) { color: #007A14; }
+  :root:not([data-theme="dark"]) :is(.manifesto, .social, .theme-toggle, .enter, .section-head__index, .player-card__label, .player-card__link, .release-meta li, .release-info__artist, .hud-btn--ghost, .live-block-title, .event-row__date, .project-copy__lead em, .project-readout__title, .project-readout__signal, .project-sequence__title, .atom-copy__lead em, .atom-legend__num, .booking-copy__lead em, .net-card__icon, .net-card__arrow, .site-footer__brand, .site-footer__top) { color: #007A14; }
   :root:not([data-theme="dark"]) :is(.enter__outline, .enter__accent) { stroke: #007A14; }
   .nav__divider { opacity: 0.8; }
+  /* laranja sólido, sem vidro, quando o sistema pede mais contraste */
+  .event-row__action { background: none; -webkit-text-fill-color: currentColor; filter: none; color: var(--c-fg); }
 }
 
 /* Modo de alto contraste do Windows: cores do sistema */

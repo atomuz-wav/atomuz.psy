@@ -5,8 +5,9 @@
       SVG). Aqui só controlamos quando ela roda: pausada fora da tela e
       quando o movimento está desligado (reduzido ou pausado pelo visitante).
    2. Parallax: com mouse, o sistema se desloca levemente na direção do cursor.
-   3. Partículas (canvas 2D cobrindo a seção):
-      - o cursor deixa um rastro de partículas que se dissolve;
+   3. Partículas binárias (canvas 2D cobrindo a seção): cada partícula é um
+      dígito 0 ou 1, que de vez em quando inverte, como um bit mudando.
+      - o cursor deixa um rastro de dígitos que se dissolve;
       - o clique/toque libera uma explosão: as partículas são puxadas em
         espiral para o núcleo, com uma onda de choque no ponto do clique,
         e o núcleo brilha quando as absorve.
@@ -20,8 +21,11 @@ const MAX_PARTICLES = 450;     // teto de segurança
 const TRAIL_PER_MOVE = 2;      // partículas por movimento do mouse
 const BURST_COUNT = 56;        // partículas por clique
 const REBUILD_MS = 1500;       // duração da reconstrução (igual ao CSS)
+const FLIP_CHANCE = 1.5;       // inversões de bit por segundo (média, por dígito)
+const DIGIT_FONT = '"Share Tech Mono", ui-monospace, monospace';
 
 const rand = (min, max) => min + Math.random() * (max - min);
+const bit = () => (Math.random() < 0.5 ? '0' : '1');
 
 export function createAtomDiagram(figure) {
   const svg = figure?.querySelector('svg');
@@ -95,7 +99,7 @@ export function createAtomDiagram(figure) {
       add({
         x: x + rand(-3, 3), y: y + rand(-3, 3),
         vx: rand(-40, 40), vy: rand(-40, 40),
-        life, maxLife: life, size: rand(0.8, 2.2), pull: false,
+        life, maxLife: life, size: Math.round(rand(9, 14)), char: bit(), pull: false,
       });
     }
   }
@@ -108,7 +112,7 @@ export function createAtomDiagram(figure) {
       add({
         x, y,
         vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed,
-        life, maxLife: life, size: rand(1.2, 3), pull: true,
+        life, maxLife: life, size: Math.round(rand(10, 16)), char: bit(), pull: true,
         spin: Math.random() < 0.5 ? 1 : -1,   // sentido da espiral
       });
     }
@@ -154,7 +158,10 @@ export function createAtomDiagram(figure) {
       ctx.stroke();
     }
 
-    // Partículas
+    // Partículas (dígitos centralizados no ponto da partícula)
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    let fontSize = 0;
     for (let i = particles.length - 1; i >= 0; i--) {
       const p = particles[i];
       p.life -= dt;
@@ -180,11 +187,15 @@ export function createAtomDiagram(figure) {
       p.x += p.vx * dt;
       p.y += p.vy * dt;
 
+      if (Math.random() < FLIP_CHANCE * dt) p.char = p.char === '0' ? '1' : '0';
+
       const alpha = Math.min(1, p.life / p.maxLife * 1.4);
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      if (p.size !== fontSize) {
+        fontSize = p.size;
+        ctx.font = `${fontSize}px ${DIGIT_FONT}`;
+      }
       ctx.fillStyle = color(alpha * 0.9);
-      ctx.fill();
+      ctx.fillText(p.char, p.x, p.y);
     }
 
     if (absorbed) charge();

@@ -3,7 +3,7 @@ import { intro, completeIntro } from '../core/state.js';
 /* =========================================================================
    SEQUÊNCIA DE ENTRADA (Initialization Sequence) — GSAP
    -------------------------------------------------------------------------
-   1. System Boot ....... molduras HUD se desenham, pontos e navbar surgem
+   1. System Boot ....... pontos de referência e navbar surgem
    2. Particle Field .... a nuvem converge para as ondas; circuitos se desenham
    3. Atomic Core ....... o núcleo acende e as órbitas se fecham
    4. ATOMUZ Identity ... o logotipo surge e uma faixa de luz o atravessa
@@ -48,18 +48,6 @@ function splitManifesto(manifesto) {
   return [...visual.querySelectorAll('.manifesto__char')];
 }
 
-/** Prepara um <path> para ser "desenhado" (comprimento real do traço). */
-function drawable(paths) {
-  return paths.map((el) => {
-    let length = 0;
-    // Elementos ocultos (ex.: molduras no celular) podem lançar erro em alguns navegadores
-    try { length = el.getTotalLength?.() ?? 0; } catch { /* sem desenho para este traço */ }
-    el.style.strokeDasharray = `${length} ${length}`;
-    el.style.strokeDashoffset = length;
-    return el;
-  });
-}
-
 /**
  * Monta e executa a sequência. Retorna { finish } para encerrar na hora
  * (ex.: o usuário ativa "movimento reduzido" no meio da entrada).
@@ -67,26 +55,24 @@ function drawable(paths) {
 export function playIntro(gsap, root = document) {
   const q = (selector) => [...root.querySelectorAll(selector)];
 
-  const hudLines = drawable(q('.hud-frame .hud-line'));
-  const hudFills = q('.hud-frame .hud-fill');
   const hudDots = q('.hud-dots circle');
-  const hudFx = q('.layer-hud-fx > g');
-  const navLine = root.querySelector('.nav__line');
-  const nav = root.querySelector('.nav');
-  const brand = root.querySelector('.nav__brand');
-  const social = q('.nav__social > li');
-  const menu = q('.nav__menu li');
+  // A navbar fica fora da Hero (fixa no topo), então é buscada no documento
+  const nav = document.querySelector('.nav');
+  const navLine = nav?.querySelector('.nav__line');
+  const brand = nav?.querySelector('.nav__brand');
+  const social = [...(nav?.querySelectorAll('.nav__social > li') ?? [])];
+  const menu = [...(nav?.querySelectorAll('.nav__menu li') ?? [])];
   const chars = splitManifesto(root.querySelector('.manifesto'));
   const ornament = root.querySelector('.ornament');
   const enterLines = q('.enter-row__line');
   const enter = root.querySelector('.enter');
 
-  const domTargets = [...hudLines, ...hudFills, ...hudDots, ...hudFx, navLine, brand, ...social, ...menu,
+  const domTargets = [...hudDots, navLine, brand, ...social, ...menu,
     ...chars, ornament, ...enterLines, enter].filter(Boolean);
 
   // Estado inicial (tudo invisível) — aplicado ANTES de revelar a Hero
   Object.assign(intro, { particles: 0, circuits: 0, core: 0, orbits: 0, logo: 0, sweep: 0 });
-  gsap.set([...hudFills, ...hudFx, brand, ...social, ...menu, ornament, enter].filter(Boolean), { autoAlpha: 0 });
+  gsap.set([brand, ...social, ...menu, ornament, enter].filter(Boolean), { autoAlpha: 0 });
   gsap.set(hudDots, { autoAlpha: 0, scale: 0, transformOrigin: '50% 50%' });
   gsap.set(navLine, { clipPath: 'inset(0% 50% 0% 50%)' });
   gsap.set(nav, { '--nav-reveal': 0 });
@@ -102,10 +88,7 @@ export function playIntro(gsap, root = document) {
   });
 
   // 1 · System Boot
-  tl.to(hudLines, { strokeDashoffset: 0, duration: 0.9, stagger: 0.12, ease: 'power2.inOut' }, 0)
-    .to(hudFills, { autoAlpha: 1, duration: 0.3 }, 0.5)
-    .to(hudDots, { autoAlpha: 1, scale: 1, duration: 0.35, stagger: { each: 0.03, from: 'random' }, ease: 'back.out(2)' }, 0.15)
-    .to(hudFx, { autoAlpha: 1, duration: 0.4, stagger: 0.15 }, 0.55)
+  tl.to(hudDots, { autoAlpha: 1, scale: 1, duration: 0.35, stagger: { each: 0.03, from: 'random' }, ease: 'back.out(2)' }, 0.15)
     .to(navLine, { clipPath: 'inset(0% 0% 0% 0%)', duration: 0.8, ease: 'power3.inOut' }, 0.1)
     .to(nav, { '--nav-reveal': 1, duration: 0.6, ease: 'power2.out' }, 0.75);
 

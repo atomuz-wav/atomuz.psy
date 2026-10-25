@@ -1,60 +1,84 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-BR" data-theme="dark">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ATOMUZ — Psytrance • Science • Technology</title>
   <meta name="description" content="ATOMUZ — site oficial do projeto de música eletrônica. Psytrance, ciência e tecnologia.">
-  <meta name="theme-color" content="#FFFFFF">
-  <!-- A identidade é clara: impede que navegadores apliquem "modo escuro automático" -->
-  <meta name="color-scheme" content="light only">
+  <meta name="theme-color" content="#040805">
+  <!-- O site abre no tema escuro; o claro é opção do visitante (botão sol/lua) -->
+  <meta name="color-scheme" content="dark">
   <link rel="icon" href="data:,">
 
-  <!-- Fontes: Montserrat (manifesto e botão) e Share Tech Mono (caracteres digitais do logotipo) -->
+  <!-- Fontes: Orbitron (títulos, menu, botões e textos) e Share Tech Mono (rótulos técnicos HUD) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/style.css?v=1a4b83e5">
 
   <!--
     BIBLIOTECAS (módulos ES via importmap, versões minificadas)
     - three: partículas WebGL. GSAP: sequência de entrada e transição do ENTER.
     Ambas são carregadas sob demanda com import() dinâmico: se a CDN falhar,
     a Hero continua funcionando sem elas.
+    Os módulos locais também estão aqui, com "?v=" (carimbo do conteúdo):
+    assim o navegador nunca usa uma cópia antiga. NÃO edite à mão — rode
+    python3 tools/versionar.py depois de alterar CSS ou JS.
   -->
   <script type="importmap">
     {
       "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js",
-        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm"
+        "gsap": "https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm",
+        "./js/config.js": "./js/config.js?v=0eaf43e4",
+        "./js/core/interaction.js": "./js/core/interaction.js?v=8762fc9a",
+        "./js/core/loop.js": "./js/core/loop.js?v=078b6124",
+        "./js/core/motion.js": "./js/core/motion.js?v=19092605",
+        "./js/core/state.js": "./js/core/state.js?v=e9f4355a",
+        "./js/modules/atom-diagram.js": "./js/modules/atom-diagram.js?v=1d563f82",
+        "./js/modules/atom-system.js": "./js/modules/atom-system.js?v=07c8d2bb",
+        "./js/modules/booking-form.js": "./js/modules/booking-form.js?v=725ae496",
+        "./js/modules/circuit-system.js": "./js/modules/circuit-system.js?v=b6c32a80",
+        "./js/modules/code-field.js": "./js/modules/code-field.js?v=9fbebf75",
+        "./js/modules/depth-layers.js": "./js/modules/depth-layers.js?v=54ad5562",
+        "./js/modules/enter-transition.js": "./js/modules/enter-transition.js?v=5840edcf",
+        "./js/modules/hud-system.js": "./js/modules/hud-system.js?v=ed468414",
+        "./js/modules/intro-sequence.js": "./js/modules/intro-sequence.js?v=62a45dfc",
+        "./js/modules/logo-energy.js": "./js/modules/logo-energy.js?v=5a87b636",
+        "./js/modules/particle-field.js": "./js/modules/particle-field.js?v=896ae991",
+        "./js/modules/particle-webgl.js": "./js/modules/particle-webgl.js?v=659f5898",
+        "./js/modules/section-reveal.js": "./js/modules/section-reveal.js?v=2387fcad",
+        "./js/script.js": "./js/script.js?v=1ff7b79c",
+        "./js/utils/random.js": "./js/utils/random.js?v=296157a1",
+        "./js/utils/svg.js": "./js/utils/svg.js?v=6b6d900b"
       }
     }
   </script>
 
   <!-- Pré-carrega os módulos locais em paralelo (evita a "cascata" de imports) -->
-  <link rel="modulepreload" href="js/script.js">
-  <link rel="modulepreload" href="js/core/loop.js">
-  <link rel="modulepreload" href="js/core/motion.js">
-  <link rel="modulepreload" href="js/core/interaction.js">
-  <link rel="modulepreload" href="js/core/state.js">
-  <link rel="modulepreload" href="js/config.js">
-  <link rel="modulepreload" href="js/utils/random.js">
-  <link rel="modulepreload" href="js/utils/svg.js">
-  <link rel="modulepreload" href="js/modules/logo-matrix.js">
-  <link rel="modulepreload" href="js/modules/logo-energy.js">
-  <link rel="modulepreload" href="js/modules/circuit-system.js">
-  <link rel="modulepreload" href="js/modules/hud-system.js">
-  <link rel="modulepreload" href="js/modules/depth-layers.js">
-  <link rel="modulepreload" href="js/modules/particle-field.js">
-  <link rel="modulepreload" href="js/modules/atom-system.js">
-  <link rel="modulepreload" href="js/modules/intro-sequence.js">
-  <link rel="modulepreload" href="js/modules/enter-transition.js">
-  <link rel="modulepreload" href="js/modules/section-reveal.js">
-  <link rel="modulepreload" href="js/modules/atom-diagram.js">
-  <link rel="modulepreload" href="js/modules/booking-form.js">
+  <link rel="modulepreload" href="js/script.js?v=1ff7b79c">
+  <link rel="modulepreload" href="js/core/loop.js?v=078b6124">
+  <link rel="modulepreload" href="js/core/motion.js?v=19092605">
+  <link rel="modulepreload" href="js/core/interaction.js?v=8762fc9a">
+  <link rel="modulepreload" href="js/core/state.js?v=e9f4355a">
+  <link rel="modulepreload" href="js/config.js?v=0eaf43e4">
+  <link rel="modulepreload" href="js/utils/random.js?v=296157a1">
+  <link rel="modulepreload" href="js/utils/svg.js?v=6b6d900b">
+  <link rel="modulepreload" href="js/modules/logo-energy.js?v=5a87b636">
+  <link rel="modulepreload" href="js/modules/circuit-system.js?v=b6c32a80">
+  <link rel="modulepreload" href="js/modules/hud-system.js?v=ed468414">
+  <link rel="modulepreload" href="js/modules/depth-layers.js?v=54ad5562">
+  <link rel="modulepreload" href="js/modules/particle-field.js?v=896ae991">
+  <link rel="modulepreload" href="js/modules/atom-system.js?v=07c8d2bb">
+  <link rel="modulepreload" href="js/modules/intro-sequence.js?v=62a45dfc">
+  <link rel="modulepreload" href="js/modules/enter-transition.js?v=5840edcf">
+  <link rel="modulepreload" href="js/modules/section-reveal.js?v=2387fcad">
+  <link rel="modulepreload" href="js/modules/atom-diagram.js?v=1d563f82">
+  <link rel="modulepreload" href="js/modules/booking-form.js?v=725ae496">
+  <link rel="modulepreload" href="js/modules/code-field.js?v=9fbebf75">
 
   <!--
     Esconde a composição até a sequência de entrada começar (evita "piscar" o
@@ -89,8 +113,9 @@
         if (color) color.setAttribute('content', m[1]);
         syncButton();
         if (save) {
+          // o escuro é o padrão: só a escolha pelo claro precisa ser lembrada
           try {
-            if (theme === 'dark') localStorage.setItem(KEY, 'dark');
+            if (theme === 'light') localStorage.setItem(KEY, 'light');
             else localStorage.removeItem(KEY);
           } catch (e) {}
         }
@@ -99,7 +124,7 @@
 
       var saved = null;
       try { saved = localStorage.getItem(KEY); } catch (e) {}
-      apply(saved === 'dark' ? 'dark' : 'light', false);
+      apply(saved === 'light' ? 'light' : 'dark', false);
 
       // Delegação de evento: vale para o botão assim que ele existir na página
       document.addEventListener('click', function (event) {
@@ -112,6 +137,15 @@
   </script>
 
   <script>
+    // Navbar fixa: mostra o fundo dela assim que a página sai do topo
+    (function () {
+      var root = document.documentElement;
+      function sync() { root.classList.toggle('is-scrolled', window.scrollY > 8); }
+      window.addEventListener('scroll', sync, { passive: true });
+      sync();
+    })();
+  </script>
+  <script>
     (function () {
       var root = document.documentElement;
       if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -121,7 +155,7 @@
     })();
   </script>
 
-  <script type="module" src="js/script.js"></script>
+  <script type="module" src="js/script.js?v=1ff7b79c"></script>
 </head>
 <body>
 
@@ -130,34 +164,159 @@
 
   <!--
     SPRITE SVG (definições compartilhadas)
-    O logotipo ATOMUZ é uma APROXIMAÇÃO VETORIAL da referência (não há arquivo
-    original do logo no projeto). As coordenadas seguem o sistema da imagem de
-    referência (2048 × 2048 px), por isso os números parecem "grandes".
-    Quando o arquivo oficial existir, basta trocar o atributo `d` de #wm-path.
+    #wm-path = LOGO OFICIAL do ATOMUZ, vetorizado a partir do arquivo
+    ATOMUZ-.png (contorno traçado automaticamente). As coordenadas seguem o
+    sistema da imagem de referência da Hero (2048 × 2048 px): o logo ocupa
+    x 188 → 1858 e y 932 → 1090. O ponto central do "O" (≈ 823, 1009) é o
+    núcleo atômico da Hero.
   -->
   <svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0">
     <defs>
       <path id="wm-path" fill-rule="evenodd" clip-rule="evenodd" d="
-        M342 912 L496 1108 H446 L340 976 L238 1108 H188 Z
-        M414 914 H734 L710 950 H610 V1098 L580 1126 H570 V950 H440 L414 926 Z
-        M822 908 H882 A100 100 0 0 1 982 1008 V1010 A100 100 0 0 1 882 1110 H822 A100 100 0 0 1 722 1010 V1008 A100 100 0 0 1 822 908 Z
-        M818 950 H890 A52 52 0 0 1 942 1002 V1018 A52 52 0 0 1 890 1070 H818 A52 52 0 0 1 766 1018 V1002 A52 52 0 0 1 818 950 Z
-        M1010 1108 V896 L1135 1000 L1260 896 V1108 H1218 V970 L1136 1052 L1050 968 V1108 Z
-        M1290 916 H1334 V1036 A32 32 0 0 0 1366 1068 H1490 A32 32 0 0 0 1522 1036 V916 H1562 V1038 A70 70 0 0 1 1492 1108 H1360 A70 70 0 0 1 1290 1038 Z
-        M1598 914 H1852 L1832 950 L1640 1070 H1858 V1108 H1586 V1055 L1754 950 H1598 Z"/>
+        M297.6 935.1 L300.7 934.3 L307.0 933.9 L313.2 934.1 L317.9 934.6 L319.5 935.3 L322.6 935.9 L327.3 938.0 L332.0 940.7 L336.6 944.5 L342.1 950.7 L348.0 958.6 L417.0 1050.9 L421.7 1057.2 L423.4 1060.3 L424.1 1065.0 L423.5 1071.3 L421.8 1074.4 L418.1 1078.2 L414.9 1080.0 L411.8 1080.9 L408.7 1081.3 L405.6 1080.8 L402.4 1079.9 L399.3 1077.9 L397.3 1076.0 L392.6 1069.7 L321.1 974.2 L317.9 970.8 L314.8 968.0 L311.6 966.0 L308.5 965.6 L305.4 966.0 L302.3 967.9 L298.7 971.1 L292.5 978.9 L223.1 1071.3 L219.4 1076.0 L217.7 1077.5 L214.6 1079.7 L211.5 1080.7 L208.3 1081.3 L205.2 1081.0 L202.1 1080.0 L199.0 1078.3 L195.1 1074.4 L193.4 1071.3 L192.7 1066.6 L192.7 1065.0 L193.4 1060.3 L195.1 1057.2 L275.4 949.2 L280.3 944.1 L285.0 940.6 L289.7 937.9 L294.4 935.9 L297.6 935.1 Z
+        M425.8 941.4 L427.5 940.6 L432.2 940.3 L654.4 940.3 L659.1 940.6 L663.6 942.9 L665.4 944.3 L666.9 946.1 L668.9 949.2 L670.1 955.4 L669.0 961.7 L667.0 964.8 L665.4 966.6 L663.7 968.0 L660.7 969.8 L659.1 970.4 L654.4 970.9 L591.8 970.9 L582.4 972.3 L577.7 974.0 L573.0 976.9 L569.9 979.6 L566.2 983.6 L563.3 988.3 L562.1 991.3 L560.0 997.7 L558.6 1008.7 L558.6 1065.0 L558.2 1069.7 L557.9 1071.3 L556.2 1074.4 L554.9 1076.0 L552.7 1078.1 L549.5 1079.9 L546.4 1080.9 L543.3 1081.3 L540.2 1080.9 L537.0 1079.9 L533.9 1078.1 L531.7 1076.0 L530.4 1074.4 L528.7 1071.3 L528.3 1069.7 L528.1 1066.6 L528.1 1008.7 L528.4 1000.8 L530.1 991.4 L531.2 988.3 L531.9 985.2 L532.7 983.6 L533.6 980.5 L536.5 974.2 L537.5 972.7 L537.2 971.1 L535.5 970.9 L432.2 970.9 L427.5 970.4 L425.9 970.0 L422.8 968.2 L419.3 964.8 L417.5 961.7 L416.5 957.0 L416.6 953.9 L417.6 949.2 L421.0 944.5 L424.3 942.0 Z
+        M741.7 941.4 L745.2 940.5 L751.4 940.3 L903.3 940.4 L908.0 940.9 L914.2 942.5 L915.8 943.3 L917.4 943.7 L923.6 946.9 L929.9 951.4 L936.1 957.2 L941.4 963.3 L944.6 968.0 L946.4 971.1 L951.0 980.5 L954.1 989.9 L955.6 996.1 L956.8 1005.5 L956.9 1013.3 L955.7 1024.3 L953.9 1032.1 L953.2 1033.7 L952.5 1036.8 L949.3 1044.7 L946.0 1050.9 L942.9 1055.6 L938.0 1061.9 L934.6 1065.4 L931.4 1068.2 L926.7 1071.9 L922.0 1074.9 L915.8 1077.9 L911.1 1079.5 L908.0 1080.0 L901.7 1081.0 L897.0 1081.3 L749.9 1081.3 L740.5 1079.9 L734.2 1078.1 L728.0 1075.1 L723.3 1072.0 L718.6 1068.3 L715.5 1065.5 L712.1 1061.9 L707.2 1055.6 L702.6 1047.8 L699.0 1040.0 L698.7 1038.4 L697.9 1036.8 L695.9 1030.6 L695.5 1027.4 L694.3 1022.7 L693.4 1010.2 L694.4 997.7 L697.6 985.2 L698.4 983.6 L699.3 980.5 L700.2 978.9 L700.7 977.3 L703.9 971.1 L706.9 966.4 L710.4 961.7 L714.7 957.0 L718.6 953.3 L724.8 948.5 L729.5 945.7 L732.7 944.1 L737.4 942.3 L740.5 941.7 Z
+        M1000.2 941.4 L1001.9 940.6 L1008.1 940.4 L1011.3 941.0 L1014.4 942.7 L1016.9 944.5 L1037.9 962.0 L1050.4 971.4 L1059.8 977.7 L1061.3 978.5 L1067.6 982.5 L1069.2 983.0 L1070.7 984.1 L1077.0 987.2 L1078.6 987.7 L1080.1 988.7 L1088.0 991.6 L1091.1 992.3 L1094.2 993.5 L1097.3 993.9 L1100.5 994.8 L1116.1 996.3 L1130.2 996.6 L1141.2 996.3 L1155.3 994.9 L1158.4 994.0 L1161.5 993.5 L1164.6 992.4 L1167.8 991.6 L1169.3 990.8 L1175.6 988.5 L1185.0 983.8 L1192.8 979.2 L1202.2 973.1 L1214.7 963.7 L1222.6 957.5 L1238.2 944.1 L1241.3 942.1 L1244.5 940.7 L1246.0 940.4 L1250.7 940.4 L1253.9 940.9 L1257.0 942.5 L1260.8 946.0 L1262.6 949.2 L1263.8 952.3 L1264.0 953.9 L1264.0 1068.1 L1262.4 1072.8 L1260.1 1076.0 L1258.5 1077.5 L1255.4 1079.7 L1250.7 1081.1 L1246.0 1081.0 L1241.3 1079.5 L1238.7 1077.5 L1235.7 1074.4 L1234.7 1072.8 L1234.1 1071.3 L1233.1 1066.6 L1233.1 1027.4 L1233.1 991.4 L1232.7 989.9 L1231.9 989.5 L1227.3 993.3 L1216.3 1001.2 L1203.8 1009.0 L1197.5 1012.4 L1192.8 1014.5 L1191.3 1015.6 L1189.7 1016.0 L1185.0 1018.3 L1181.9 1019.3 L1180.3 1020.2 L1170.9 1023.5 L1158.4 1026.6 L1147.4 1028.3 L1133.3 1029.3 L1127.1 1029.4 L1106.7 1028.2 L1095.8 1026.6 L1092.6 1025.6 L1089.5 1025.1 L1086.4 1024.1 L1083.3 1023.5 L1073.9 1020.2 L1072.3 1019.3 L1069.2 1018.3 L1064.5 1016.0 L1062.9 1015.6 L1058.2 1012.9 L1056.7 1012.4 L1048.8 1007.9 L1036.3 999.8 L1026.9 992.7 L1022.2 989.4 L1021.8 989.9 L1021.6 991.4 L1021.6 1065.0 L1021.3 1069.7 L1020.0 1072.8 L1017.9 1076.0 L1016.0 1077.8 L1012.8 1079.8 L1008.1 1081.1 L1006.6 1081.3 L1003.4 1081.0 L1000.3 1080.0 L997.2 1078.3 L993.3 1074.4 L991.7 1071.3 L990.8 1065.0 L990.8 955.4 L992.0 949.2 L995.4 944.5 L998.7 942.0 Z
+        M1305.4 941.4 L1307.1 940.6 L1310.2 940.3 L1313.3 940.3 L1316.5 940.8 L1319.6 942.3 L1321.2 943.6 L1324.8 947.6 L1326.2 950.7 L1326.7 953.9 L1326.9 1013.3 L1327.0 1016.5 L1328.8 1025.9 L1330.5 1030.4 L1333.1 1035.3 L1336.8 1039.8 L1338.5 1041.5 L1343.1 1045.1 L1346.2 1046.9 L1349.3 1048.3 L1355.6 1049.9 L1363.4 1050.1 L1491.8 1050.1 L1499.6 1049.8 L1505.8 1048.3 L1512.1 1045.2 L1516.8 1041.7 L1518.6 1040.0 L1523.4 1033.7 L1523.9 1032.1 L1525.0 1030.6 L1526.7 1025.9 L1528.0 1019.6 L1528.5 1013.3 L1528.5 953.9 L1528.8 952.3 L1530.0 949.2 L1531.8 946.0 L1535.6 942.5 L1538.7 940.9 L1540.3 940.5 L1543.4 940.3 L1548.1 940.5 L1549.7 941.1 L1552.8 942.8 L1556.3 946.0 L1558.3 949.2 L1559.5 953.9 L1559.6 980.5 L1559.6 1010.2 L1559.3 1016.5 L1558.3 1024.3 L1556.5 1032.1 L1553.3 1041.5 L1548.5 1050.9 L1545.5 1055.6 L1540.5 1061.9 L1535.6 1066.9 L1529.3 1071.9 L1524.6 1074.9 L1523.1 1075.5 L1521.5 1076.6 L1519.9 1077.0 L1518.4 1077.9 L1512.1 1079.9 L1504.3 1081.0 L1499.6 1081.3 L1354.0 1081.3 L1349.3 1081.0 L1341.5 1079.6 L1336.8 1078.1 L1335.2 1077.2 L1333.7 1076.7 L1327.4 1073.1 L1319.6 1066.9 L1314.7 1061.9 L1309.8 1055.6 L1307.8 1052.5 L1303.6 1044.7 L1301.6 1040.0 L1301.3 1038.4 L1300.0 1035.3 L1299.7 1033.7 L1298.5 1030.6 L1298.1 1027.4 L1296.9 1022.7 L1296.0 1010.2 L1296.0 955.4 L1297.2 949.2 L1300.6 944.5 L1303.9 942.0 Z
+        M1601.2 941.4 L1602.9 940.6 L1607.6 940.3 L1822.0 940.3 L1828.3 940.7 L1833.0 942.1 L1836.1 943.7 L1839.2 945.6 L1843.3 949.2 L1846.2 952.3 L1849.2 957.0 L1851.0 961.7 L1852.4 968.0 L1852.5 971.1 L1852.1 975.8 L1850.6 982.0 L1849.8 983.6 L1849.3 985.2 L1847.5 988.3 L1845.5 990.8 L1841.9 994.6 L1839.2 996.8 L1836.1 998.6 L1833.0 1000.1 L1828.3 1001.6 L1825.1 1002.0 L1822.0 1003.0 L1818.9 1003.5 L1815.7 1004.5 L1804.8 1006.8 L1801.7 1007.9 L1798.5 1008.3 L1795.4 1009.4 L1792.3 1009.8 L1789.1 1010.8 L1786.0 1011.3 L1775.0 1014.2 L1771.9 1014.6 L1768.8 1015.7 L1765.7 1016.1 L1762.5 1017.1 L1759.4 1017.6 L1756.3 1018.6 L1745.3 1020.9 L1742.2 1022.0 L1739.0 1022.4 L1735.9 1023.5 L1732.8 1023.9 L1729.7 1024.9 L1726.5 1025.4 L1715.6 1028.2 L1712.4 1028.7 L1709.3 1029.8 L1706.2 1030.2 L1703.1 1031.2 L1699.9 1031.7 L1696.8 1032.7 L1693.7 1033.2 L1690.5 1034.2 L1685.8 1035.0 L1682.7 1036.1 L1679.6 1036.5 L1676.4 1037.5 L1673.3 1038.0 L1670.2 1039.0 L1667.1 1039.5 L1663.9 1040.5 L1660.8 1041.0 L1656.1 1042.3 L1653.0 1042.8 L1649.8 1043.9 L1646.7 1044.3 L1642.0 1045.9 L1639.9 1047.8 L1642.0 1049.5 L1643.6 1049.8 L1649.8 1050.1 L1839.2 1050.3 L1843.9 1051.8 L1847.1 1054.0 L1848.7 1055.6 L1850.9 1058.7 L1852.4 1063.4 L1852.5 1066.6 L1852.3 1068.1 L1850.8 1072.8 L1848.4 1076.0 L1846.8 1077.5 L1843.9 1079.7 L1839.2 1081.1 L1836.1 1081.3 L1623.2 1081.3 L1620.1 1081.1 L1613.8 1079.9 L1609.1 1078.2 L1606.0 1076.4 L1601.7 1072.8 L1598.2 1069.1 L1596.3 1066.6 L1594.6 1063.4 L1592.8 1058.7 L1591.9 1050.9 L1592.8 1041.5 L1594.4 1036.8 L1595.4 1035.3 L1596.0 1033.7 L1599.3 1029.0 L1600.8 1027.4 L1602.9 1025.5 L1606.0 1023.4 L1609.1 1021.9 L1613.8 1020.6 L1624.8 1018.3 L1627.9 1017.3 L1631.1 1016.8 L1634.2 1015.8 L1637.3 1015.4 L1640.4 1014.3 L1651.4 1012.0 L1654.5 1011.0 L1657.7 1010.6 L1660.8 1009.5 L1663.9 1009.1 L1667.1 1008.1 L1678.0 1005.8 L1681.1 1004.7 L1684.3 1004.3 L1687.4 1003.3 L1690.5 1002.8 L1693.7 1001.8 L1704.6 999.5 L1707.7 998.5 L1710.9 998.1 L1714.0 997.0 L1717.1 996.6 L1720.3 995.6 L1731.2 993.3 L1734.4 992.2 L1737.5 991.8 L1740.6 990.8 L1743.7 990.3 L1746.9 989.3 L1750.0 988.8 L1754.7 987.5 L1757.8 987.0 L1761.0 986.0 L1764.1 985.6 L1767.2 984.5 L1770.4 984.1 L1773.5 983.0 L1776.6 982.6 L1781.3 981.2 L1784.4 980.8 L1787.6 979.7 L1790.7 979.3 L1793.8 978.3 L1797.0 977.8 L1800.1 976.4 L1800.9 975.8 L1802.1 974.2 L1800.1 972.1 L1795.4 971.2 L1790.7 970.9 L1607.6 970.9 L1602.9 970.4 L1601.3 970.0 L1598.2 968.2 L1594.8 964.8 L1592.9 961.7 L1591.9 957.0 L1592.0 953.9 L1593.0 949.2 L1596.4 944.5 L1599.8 942.0 Z
+        M756.4 971.1 L759.3 970.9 L890.7 970.9 L895.4 971.2 L901.7 972.2 L906.4 973.8 L909.5 975.4 L914.2 978.7 L917.8 982.0 L922.1 988.3 L924.2 993.0 L925.6 997.7 L926.9 1005.5 L927.2 1010.2 L926.9 1014.9 L925.5 1024.3 L924.0 1029.0 L920.8 1035.3 L917.4 1039.5 L912.7 1043.7 L908.0 1046.7 L904.8 1048.2 L898.6 1049.8 L893.9 1050.1 L754.6 1050.0 L749.9 1049.4 L745.2 1048.1 L742.1 1046.7 L737.4 1043.6 L733.4 1040.0 L730.6 1036.8 L727.8 1032.1 L725.8 1027.4 L724.5 1022.7 L723.2 1011.8 L723.5 1007.1 L724.4 999.3 L726.1 993.0 L727.4 989.9 L729.1 986.7 L734.2 980.4 L740.5 975.5 L743.6 973.8 L748.3 972.2 L756.1 971.1 Z
+        M818.3 991.4 L820.3 990.8 L821.9 990.7 L826.6 990.8 L831.3 992.2 L834.4 993.9 L837.5 996.7 L839.7 999.3 L841.4 1002.4 L842.5 1005.5 L843.0 1008.7 L842.9 1013.3 L841.4 1018.0 L839.7 1021.2 L837.5 1023.7 L834.4 1026.5 L831.3 1028.2 L828.8 1029.0 L825.0 1029.8 L820.3 1029.6 L815.6 1028.2 L812.5 1026.5 L809.4 1023.7 L807.2 1021.2 L805.5 1018.0 L804.4 1014.9 L803.9 1011.8 L804.0 1007.1 L805.5 1002.4 L807.2 999.3 L809.4 996.7 L812.5 993.9 L815.6 992.3 L817.2 991.9 Z
+        M1425.5 991.4 L1427.6 990.8 L1429.2 990.7 L1433.8 990.8 L1438.5 992.2 L1441.7 993.9 L1444.8 996.7 L1447.0 999.3 L1448.7 1002.4 L1449.8 1005.5 L1450.3 1008.7 L1450.1 1013.3 L1448.7 1018.0 L1447.0 1021.2 L1444.8 1023.7 L1441.7 1026.5 L1438.5 1028.2 L1436.1 1029.0 L1432.3 1029.8 L1427.6 1029.6 L1422.9 1028.2 L1419.8 1026.5 L1416.6 1023.7 L1414.4 1021.2 L1412.7 1018.0 L1411.6 1014.9 L1411.2 1011.8 L1411.3 1007.1 L1412.7 1002.4 L1414.4 999.3 L1416.6 996.7 L1419.8 993.9 L1422.9 992.3 L1424.5 991.9 Z
+        M301.7 1027.4 L303.8 1026.7 L311.6 1026.5 L313.2 1026.7 L317.9 1028.5 L320.8 1030.6 L324.2 1033.9 L326.3 1036.8 L327.5 1040.0 L328.2 1043.1 L328.2 1049.3 L328.1 1050.9 L326.3 1055.6 L322.6 1060.5 L317.9 1064.1 L315.5 1065.0 L313.2 1065.8 L307.0 1066.0 L303.8 1065.8 L299.1 1064.1 L296.0 1062.0 L292.7 1058.7 L290.6 1055.6 L289.3 1052.5 L288.9 1050.9 L288.7 1047.8 L288.9 1041.5 L290.6 1036.8 L294.4 1031.9 L299.1 1028.4 L300.7 1027.9 Z
+        M1123.6 1046.2 L1125.5 1045.8 L1130.2 1045.8 L1134.9 1046.9 L1138.0 1048.5 L1141.2 1050.8 L1142.8 1052.5 L1145.1 1055.6 L1146.6 1058.7 L1147.6 1063.4 L1147.7 1066.6 L1146.6 1072.8 L1145.0 1076.0 L1141.2 1080.5 L1138.0 1083.0 L1134.9 1084.5 L1131.8 1085.1 L1128.6 1085.7 L1125.5 1085.6 L1120.8 1084.6 L1117.7 1083.1 L1114.6 1080.9 L1111.4 1077.3 L1109.6 1074.4 L1108.1 1069.7 L1107.6 1066.6 L1107.8 1063.4 L1109.5 1057.2 L1112.6 1052.5 L1114.6 1050.5 L1119.3 1047.4 L1122.4 1046.6 Z"/>
 
       <clipPath id="wm-clip" clipPathUnits="userSpaceOnUse">
         <use href="#wm-path"/>
       </clipPath>
 
-      <!-- Degradê do logotipo pequeno da navbar -->
-      <linearGradient id="g-wm-nav" x1="0" y1="896" x2="0" y2="1126" gradientUnits="userSpaceOnUse">
+      <!-- Degradê verde do logotipo (navbar e Hero) -->
+      <linearGradient id="g-wm-nav" x1="0" y1="932" x2="0" y2="1090" gradientUnits="userSpaceOnUse">
         <stop offset="0" stop-color="#5CFF5C"/>
         <stop offset=".55" stop-color="#00E61E"/>
         <stop offset="1" stop-color="#00B81F"/>
       </linearGradient>
+
+      <!-- Logo da navbar em "vidro": branco no tema escuro, grafite no claro -->
+      <linearGradient id="g-wm-glass" x1="0" y1="932" x2="0" y2="1090" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#FFFFFF"/>
+        <stop offset=".5" stop-color="#F1F5F2"/>
+        <stop offset=".52" stop-color="#DCE3DE"/>
+        <stop offset="1" stop-color="#C4CDC6"/>
+      </linearGradient>
+      <linearGradient id="g-wm-glass-dark" x1="0" y1="932" x2="0" y2="1090" gradientUnits="userSpaceOnUse">
+        <stop offset="0" stop-color="#3A443C"/>
+        <stop offset=".5" stop-color="#1C241E"/>
+        <stop offset=".52" stop-color="#0E1610"/>
+        <stop offset="1" stop-color="#071009"/>
+      </linearGradient>
+      <!-- Reflexo que atravessa o vidro -->
+      <linearGradient id="g-brand-shine" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0" stop-color="#FFFFFF" stop-opacity="0"/>
+        <stop offset=".5" stop-color="#FFFFFF" stop-opacity=".95"/>
+        <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+      </linearGradient>
     </defs>
   </svg>
+
+  <!-- ===== NAVEGAÇÃO SUPERIOR (Navigation HUD) =====
+       Fica fora da Hero (filha direta do <body>) para continuar fixa no topo
+       em todos os navegadores durante a rolagem do site inteiro. -->
+  <header class="nav">
+    <span class="nav__backdrop" aria-hidden="true"></span>
+    <svg class="nav__line" viewBox="0 0 2048 160" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+      <path class="nav__trace" d="M0 146 H490 L546 91 H1415 L1473 146 H2048"/>
+      <!-- Indicadores digitais segmentados -->
+      <g class="nav__segments" data-segments>
+        <path d="M1083 83.5 H1107 L1098 97 H1074 Z"/>
+        <path d="M1115.4 83.5 H1139.4 L1130.4 97 H1106.4 Z"/>
+        <path d="M1147.8 83.5 H1171.8 L1162.8 97 H1138.8 Z"/>
+        <path d="M1180.2 83.5 H1204.2 L1195.2 97 H1171.2 Z"/>
+        <path d="M1212.6 83.5 H1236.6 L1227.6 97 H1203.6 Z"/>
+        <path d="M1245 83.5 H1272 L1263 97 H1236 Z"/>
+      </g>
+    </svg>
+
+    <a class="nav__brand" href="#inicio" aria-label="ATOMUZ — início">
+      <svg viewBox="184 928 1678 166" aria-hidden="true" focusable="false">
+        <g class="nav__brand-glass">
+          <use class="nav__brand-body" href="#wm-path"/>
+          <!-- reflexo recortado no formato das letras -->
+          <g clip-path="url(#wm-clip)">
+            <rect class="nav__brand-shine" x="-700" y="900" width="260" height="230" fill="url(#g-brand-shine)"/>
+          </g>
+        </g>
+      </svg>
+    </a>
+
+    <!-- Menu de seções: centralizado na "aba" da linha HUD (desktop) ou
+         numa linha logo abaixo da navbar (telas menores) -->
+    <nav class="nav__menu" aria-label="Seções do site">
+      <ul>
+        <li><a href="#music">MUSIC</a></li>
+        <li><a href="#live">LIVE</a></li>
+        <li><a href="#project">ABOUT</a></li>
+        <li><a href="#media">MEDIA</a></li>
+        <li><a href="#booking">BOOKING</a></li>
+      </ul>
+    </nav>
+
+    <nav aria-label="Redes sociais">
+    <ul class="nav__social">
+      <li>
+        <a class="social social--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
+          </svg>
+        </a>
+      </li>
+      <li class="nav__divider" aria-hidden="true"></li>
+      <li>
+        <a class="social social--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
+          <svg viewBox="0 0 44 22" aria-hidden="true" focusable="false">
+            <g fill="currentColor">
+              <rect x="0"    y="12.5" width="2" height="7"  rx="1"/>
+              <rect x="3.3"  y="9.5"  width="2" height="10" rx="1"/>
+              <rect x="6.6"  y="7.5"  width="2" height="12" rx="1"/>
+              <rect x="9.9"  y="5"    width="2" height="14.5" rx="1"/>
+              <rect x="13.2" y="4"    width="2" height="15.5" rx="1"/>
+              <path d="M16.6 19.5 V3.4 C18.1 2.5 19.9 2 21.8 2 C27 2 31.2 5.8 31.8 10.7 C32.5 10.4 33.3 10.3 34.1 10.3 C38.6 10.3 42 13.3 42 15 C42 17.7 39.8 19.5 37.1 19.5 Z"/>
+            </g>
+          </svg>
+        </a>
+      </li>
+      <li class="nav__divider" aria-hidden="true"></li>
+      <li>
+        <a class="social social--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
+          <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <g fill="none" stroke="currentColor" stroke-width="2.3">
+              <rect x="1.6" y="1.6" width="20.8" height="20.8" rx="5.8"/>
+              <circle cx="12" cy="12" r="5"/>
+            </g>
+            <circle cx="18.1" cy="5.9" r="1.45" fill="currentColor"/>
+          </svg>
+        </a>
+      </li>
+      <li class="nav__divider" aria-hidden="true"></li>
+      <li>
+        <!-- Chave de tema claro/escuro (lógica no script embutido no <head>).
+             Bolinha à esquerda com lua = escuro; à direita com sol = claro. -->
+        <button class="theme-switch theme-toggle" type="button" aria-pressed="false" aria-label="Tema escuro">
+          <span class="theme-switch__knob">
+            <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path fill="currentColor" d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/>
+            </svg>
+            <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                <circle cx="12" cy="12" r="4.4" fill="currentColor"/>
+                <path d="M12 1.6v2.6M12 19.8v2.6M1.6 12h2.6M19.8 12h2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>
+              </g>
+            </svg>
+          </span>
+        </button>
+      </li>
+    </ul>
+    </nav>
+  </header>
 
   <main id="conteudo">
 
@@ -173,100 +332,6 @@
     <!-- Moldura de composição: tudo dentro usa a unidade de design --u (1 px da referência) -->
     <div class="hero__frame">
 
-      <!-- ===== NAVEGAÇÃO SUPERIOR (Navigation HUD) ===== -->
-      <header class="nav">
-        <svg class="nav__line" viewBox="0 0 2048 160" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-          <path class="nav__trace" d="M0 146 H490 L546 91 H1415 L1473 146 H2048"/>
-          <!-- Indicadores digitais segmentados -->
-          <g class="nav__segments" data-segments>
-            <path d="M1083 83.5 H1107 L1098 97 H1074 Z"/>
-            <path d="M1115.4 83.5 H1139.4 L1130.4 97 H1106.4 Z"/>
-            <path d="M1147.8 83.5 H1171.8 L1162.8 97 H1138.8 Z"/>
-            <path d="M1180.2 83.5 H1204.2 L1195.2 97 H1171.2 Z"/>
-            <path d="M1212.6 83.5 H1236.6 L1227.6 97 H1203.6 Z"/>
-            <path d="M1245 83.5 H1272 L1263 97 H1236 Z"/>
-          </g>
-        </svg>
-
-        <a class="nav__brand" href="#inicio" aria-label="ATOMUZ — início">
-          <!-- Na referência a versão pequena é mais "larga": achatamos verticalmente -->
-          <svg viewBox="186 892 1676 236" preserveAspectRatio="none" aria-hidden="true" focusable="false">
-            <use href="#wm-path" fill="url(#g-wm-nav)"/>
-            <!-- "olho" atômico no O, como na referência -->
-            <circle cx="854" cy="1009" r="26" fill="none" stroke="url(#g-wm-nav)" stroke-width="14"/>
-            <circle cx="854" cy="1009" r="9" fill="#00FF00"/>
-          </svg>
-        </a>
-
-        <!-- Menu de seções: centralizado na "aba" da linha HUD (desktop) ou
-             numa linha logo abaixo da navbar (telas menores) -->
-        <nav class="nav__menu" aria-label="Seções do site">
-          <ul>
-            <li><a href="#music">MUSIC</a></li>
-            <li><a href="#live">LIVE</a></li>
-            <li><a href="#project">ABOUT</a></li>
-            <li><a href="#media">MEDIA</a></li>
-            <li><a href="#booking">BOOKING</a></li>
-          </ul>
-        </nav>
-
-        <nav aria-label="Redes sociais">
-        <ul class="nav__social">
-          <li>
-            <a class="social social--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <path fill="currentColor" d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/>
-              </svg>
-            </a>
-          </li>
-          <li class="nav__divider" aria-hidden="true"></li>
-          <li>
-            <a class="social social--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
-              <svg viewBox="0 0 44 22" aria-hidden="true" focusable="false">
-                <g fill="currentColor">
-                  <rect x="0"    y="12.5" width="2" height="7"  rx="1"/>
-                  <rect x="3.3"  y="9.5"  width="2" height="10" rx="1"/>
-                  <rect x="6.6"  y="7.5"  width="2" height="12" rx="1"/>
-                  <rect x="9.9"  y="5"    width="2" height="14.5" rx="1"/>
-                  <rect x="13.2" y="4"    width="2" height="15.5" rx="1"/>
-                  <path d="M16.6 19.5 V3.4 C18.1 2.5 19.9 2 21.8 2 C27 2 31.2 5.8 31.8 10.7 C32.5 10.4 33.3 10.3 34.1 10.3 C38.6 10.3 42 13.3 42 15 C42 17.7 39.8 19.5 37.1 19.5 Z"/>
-                </g>
-              </svg>
-            </a>
-          </li>
-          <li class="nav__divider" aria-hidden="true"></li>
-          <li>
-            <a class="social social--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
-              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                <g fill="none" stroke="currentColor" stroke-width="2.3">
-                  <rect x="1.6" y="1.6" width="20.8" height="20.8" rx="5.8"/>
-                  <circle cx="12" cy="12" r="5"/>
-                </g>
-                <circle cx="18.1" cy="5.9" r="1.45" fill="currentColor"/>
-              </svg>
-            </a>
-          </li>
-          <li class="nav__divider" aria-hidden="true"></li>
-          <li>
-            <!-- Chave de tema claro/escuro (lógica no script embutido no <head>).
-                 Bolinha à esquerda com lua = escuro; à direita com sol = claro. -->
-            <button class="theme-switch theme-toggle" type="button" aria-pressed="false" aria-label="Tema escuro">
-              <span class="theme-switch__knob">
-                <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <path fill="currentColor" d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/>
-                </svg>
-                <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                  <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-                    <circle cx="12" cy="12" r="4.4" fill="currentColor"/>
-                    <path d="M12 1.6v2.6M12 19.8v2.6M1.6 12h2.6M19.8 12h2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>
-                  </g>
-                </svg>
-              </span>
-            </button>
-          </li>
-        </ul>
-        </nav>
-      </header>
 
       <!-- ===== CENTRO (Atomic Identity System) =====
            O palco é uma PILHA DE SVGs com o mesmo viewBox (faixa y 520 → 1420 da
@@ -296,10 +361,6 @@
               <filter id="f-logo-halo-tight" filterUnits="userSpaceOnUse" x="0" y="700" width="2048" height="620">
                 <feGaussianBlur stdDeviation="5"/>
               </filter>
-              <!-- Brilho interno das bordas das letras -->
-              <filter id="f-logo-inner" filterUnits="userSpaceOnUse" x="0" y="700" width="2048" height="620">
-                <feGaussianBlur stdDeviation="6"/>
-              </filter>
               <!-- Brilho de região pequena (caixa do próprio elemento) para peças animadas -->
               <filter id="f-fx-glow" x="-80%" y="-40%" width="260%" height="180%">
                 <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur"/>
@@ -328,6 +389,31 @@
                 <stop offset="0" stop-color="#00FF00" stop-opacity=".55"/>
                 <stop offset="1" stop-color="#00FF00" stop-opacity="0"/>
               </radialGradient>
+              <!-- Brilhos coloridos: terminais dos circuitos e elétrons da Hero -->
+              <radialGradient id="g-glow-white">
+                <stop offset="0" stop-color="#FFFFFF" stop-opacity=".6"/>
+                <stop offset="1" stop-color="#FFFFFF" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-glow-black">
+                <stop offset="0" stop-color="#6E7770" stop-opacity=".45"/>
+                <stop offset="1" stop-color="#6E7770" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-glow-yellow">
+                <stop offset="0" stop-color="#FFE600" stop-opacity=".6"/>
+                <stop offset="1" stop-color="#FFE600" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-glow-blue">
+                <stop offset="0" stop-color="#1F8BFF" stop-opacity=".8"/>
+                <stop offset="1" stop-color="#1F8BFF" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-glow-red">
+                <stop offset="0" stop-color="#FF1F3D" stop-opacity=".8"/>
+                <stop offset="1" stop-color="#FF1F3D" stop-opacity="0"/>
+              </radialGradient>
+              <radialGradient id="g-glow-orange">
+                <stop offset="0" stop-color="#FF8C00" stop-opacity=".8"/>
+                <stop offset="1" stop-color="#FF8C00" stop-opacity="0"/>
+              </radialGradient>
 
               <!-- Linhas do sistema orbital: definidas uma vez e reutilizadas (atrás do
                    logo e, bem sutis, sobre as letras como na referência).
@@ -335,7 +421,6 @@
               <g id="orbit-lines">
                 <ellipse class="orbit orbit--a" data-orbit cx="1040" cy="965" rx="432" ry="165" data-rotate="-45" transform="rotate(-45 1040 965)"/>
                 <ellipse class="orbit orbit--b" data-orbit cx="988" cy="1040" rx="335" ry="120" data-rotate="46" transform="rotate(46 988 1040)"/>
-                <line class="axis axis--v" x1="1021" y1="570" x2="1021" y2="1357"/>
                 <line class="axis axis--h" x1="342" y1="1010" x2="1598" y2="1010"/>
               </g>
             </defs>
@@ -349,15 +434,6 @@
           <!-- Camada 1 · ESTÁTICA: molduras HUD e circuitos (com brilho) -->
           <svg class="stage-layer layer-base" viewBox="0 520 2048 900" focusable="false">
             <g class="layer-hud" filter="url(#f-line-glow)">
-              <!-- Moldura esquerda -->
-              <g class="hud-frame hud-frame--left">
-                <path class="hud-line" d="M141 542 H56.5 V925 M56.5 1105 V1395"/>
-                <path class="hud-fill" d="M57 542 H85 L57 571 Z"/>
-              </g>
-              <!-- Moldura direita (interrompida na retícula) -->
-              <g class="hud-frame hud-frame--right">
-                <path class="hud-line" d="M1903 538 H1984 V905 M1984 1170 V1396"/>
-              </g>
               <!-- Pontos de referência -->
               <g class="hud-dots">
                 <circle cx="6" cy="703" r="2.6"/>
@@ -414,24 +490,8 @@
             </g>
           </svg>
 
-          <!-- Camada 2 · ANIMADA (leve): peças HUD, pulsos de dados e terminais -->
+          <!-- Camada 2 · ANIMADA (leve): pulsos de dados e terminais -->
           <svg class="stage-layer layer-fx" viewBox="0 520 2048 900" focusable="false">
-            <g class="layer-hud-fx">
-              <!-- Indicadores (3 ativos + 1 atenuado) -->
-              <g class="hud-indicators" filter="url(#f-fx-glow)">
-                <rect class="hud-fill" data-indicator x="45" y="973"  width="27" height="19"/>
-                <rect class="hud-fill" data-indicator x="45" y="1001" width="27" height="19"/>
-                <rect class="hud-fill hud-fill--dim" data-indicator data-dim x="45" y="1028" width="27" height="20"/>
-                <rect class="hud-fill" data-indicator x="45" y="1056" width="27" height="20"/>
-              </g>
-              <!-- Retícula de precisão direita -->
-              <g class="reticle reticle--side" data-reticle data-cx="1974" data-cy="1027" filter="url(#f-fx-glow)">
-                <circle class="hud-line" cx="1974" cy="1027" r="22"/>
-                <circle class="hud-line" data-reticle-ring cx="1974" cy="1027" r="11"/>
-                <path class="hud-line" d="M1934 1027 H2014 M1974 985 V1075"/>
-                <circle class="hud-fill" data-reticle-core cx="1974" cy="1027" r="3.5"/>
-              </g>
-            </g>
             <!-- Pulsos de dados e terminais (gerados por js/modules/circuit-system.js) -->
             <g class="layer-circuits-fx" data-circuit-fx></g>
           </svg>
@@ -439,7 +499,6 @@
           <!-- Camada 3 · ANIMADA (leve): sistema orbital atrás do logo (parallax via CSS) -->
           <svg class="stage-layer layer-orbits" viewBox="0 520 2048 900" focusable="false">
             <use href="#orbit-lines"/>
-            <path class="axis-needle" d="M1021 541 L1024.5 572 L1021 580 L1017.5 572 Z"/>
             <!-- Elétrons (só aparecem com animação ativa; posicionados por atom-system.js).
                  Ficam atrás do logo: somem ao cruzar as letras, reforçando a profundidade. -->
             <g class="electrons">
@@ -465,21 +524,14 @@
               <use class="logo-halo logo-halo--tight" href="#wm-path" filter="url(#f-logo-halo-tight)"/>
             </svg>
 
-            <!-- Camada 4b · ESTÁTICA: corpo escuro das letras e brilho interno -->
+            <!-- Camada 4b · ESTÁTICA: letras do logo oficial (degradê verde) -->
             <svg class="stage-layer layer-logo-body" viewBox="0 520 2048 900" focusable="false">
               <use class="logo-body" href="#wm-path"/>
-              <g clip-path="url(#wm-clip)">
-                <use class="logo-inner-glow" href="#wm-path" filter="url(#f-logo-inner)"/>
-              </g>
             </svg>
 
-            <!-- Camada 5 · ANIMADA (sem desfoque): textura digital, contorno, pulsos,
+            <!-- Camada 5 · ANIMADA (sem desfoque): contorno, pulsos de energia,
                  reflexo das órbitas e núcleo -->
             <svg class="stage-layer layer-logo-fx" viewBox="0 520 2048 900" focusable="false">
-              <!-- Textura digital (colunas de caracteres) gerada por js/modules/logo-matrix.js -->
-              <g clip-path="url(#wm-clip)">
-                <g class="logo-matrix" data-logo-matrix></g>
-              </g>
               <use class="logo-edge" href="#wm-path"/>
               <!-- Pulsos de energia no contorno e faíscas (js/modules/logo-energy.js) -->
               <g class="logo-energy" data-logo-energy></g>
@@ -492,11 +544,11 @@
               <!-- Núcleo atômico -->
               <g class="layer-nucleus" data-nucleus>
                 <!-- Campo energético: ondas que se expandem e anel tracejado (só com animação) -->
-                <circle class="nucleus-ripple" data-ripple cx="856" cy="1011" r="12"/>
-                <circle class="nucleus-ripple" data-ripple cx="856" cy="1011" r="12"/>
-                <circle class="nucleus-field" data-field cx="856" cy="1011" r="30"/>
-                <circle class="nucleus-halo" data-halo cx="856" cy="1011" r="70" fill="url(#g-nucleus)"/>
-                <circle class="nucleus-core" data-core cx="856" cy="1011" r="9"/>
+                <circle class="nucleus-ripple" data-ripple cx="823" cy="1009" r="12"/>
+                <circle class="nucleus-ripple" data-ripple cx="823" cy="1009" r="12"/>
+                <circle class="nucleus-field" data-field cx="823" cy="1009" r="30"/>
+                <circle class="nucleus-halo" data-halo cx="823" cy="1009" r="70" fill="url(#g-nucleus)"/>
+                <circle class="nucleus-core" data-core cx="823" cy="1009" r="9"/>
               </g>
             </svg>
           </div>
@@ -675,7 +727,6 @@
                 alt="Capa de Primordial Particle: figura tecnológica inspirada em Kokopelli segurando um átomo luminoso no deserto, sob o logo ATOMUZ, com seres dançando ao redor"
                 loading="lazy" decoding="async">
             </div>
-            <figcaption class="release-art__caption">Capa · arte por Oberas</figcaption>
           </figure>
 
           <div class="release-info" data-reveal>
@@ -768,7 +819,7 @@
               <span class="event-row__index" aria-hidden="true">01</span>
               <time class="event-row__date" datetime="2026-09-20">20.09.2026</time>
               <span class="event-row__name">Atomuz in Dub</span>
-              <span class="event-row__meta">PSYDUB · PSYCHILL <span aria-hidden="true">·</span> 73 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">PSYDUB · PSYCHILL</span> <span aria-hidden="true">·</span> 73 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -777,7 +828,7 @@
               <span class="event-row__index" aria-hidden="true">02</span>
               <time class="event-row__date" datetime="2026-01-17">17.01.2026</time>
               <span class="event-row__name">Samsara Leave</span>
-              <span class="event-row__meta">PSYTRANCE <span aria-hidden="true">·</span> 63 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">PSYTRANCE</span> <span aria-hidden="true">·</span> 63 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -786,7 +837,7 @@
               <span class="event-row__index" aria-hidden="true">03</span>
               <time class="event-row__date" datetime="2025-09-06">06.09.2025</time>
               <span class="event-row__name">Intense Open Air</span>
-              <span class="event-row__meta">PSYTRANCE <span aria-hidden="true">·</span> 59 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">PSYTRANCE</span> <span aria-hidden="true">·</span> 59 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -795,7 +846,7 @@
               <span class="event-row__index" aria-hidden="true">04</span>
               <time class="event-row__date" datetime="2025-07-20">20.07.2025</time>
               <span class="event-row__name">Multiverso Open Air</span>
-              <span class="event-row__meta">PSYTRANCE <span aria-hidden="true">·</span> 61 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">PSYTRANCE</span> <span aria-hidden="true">·</span> 61 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -804,7 +855,7 @@
               <span class="event-row__index" aria-hidden="true">05</span>
               <time class="event-row__date" datetime="2025-05-03">03.05.2025</time>
               <span class="event-row__name">Drop Open Air</span>
-              <span class="event-row__meta">PSYTRANCE <span aria-hidden="true">·</span> 57 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">PSYTRANCE</span> <span aria-hidden="true">·</span> 57 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -813,7 +864,7 @@
               <span class="event-row__index" aria-hidden="true">06</span>
               <time class="event-row__date" datetime="2024-09-15">15.09.2024</time>
               <span class="event-row__name">Pulse For Friends</span>
-              <span class="event-row__meta">ZENONESQUE <span aria-hidden="true">·</span> 59 MIN</span>
+              <span class="event-row__meta"><span class="event-row__genre">ZENONESQUE</span> <span aria-hidden="true">·</span> 59 MIN</span>
               <span class="event-row__action">OUVIR SET <span aria-hidden="true">↗</span><span class="sr-only"> no SoundCloud (abre em nova aba)</span></span>
             </a>
           </li>
@@ -930,7 +981,7 @@
               O átomo é o símbolo central do Atomuz — uma representação visual de
               <em>matéria, energia, movimento e transformação.</em>
             </p>
-            <p class="atom-copy__hint">Mova o cursor pelo campo: o sistema responde sutilmente, como uma interface científica experimental.</p>
+            <p class="atom-copy__hint">Mova o cursor ou clique pelo campo: o sistema responde sutilmente, como uma interface científica experimental.</p>
 
             <!-- Legenda do diagrama -->
             <ol class="atom-legend" aria-label="Partes do símbolo">

@@ -28,6 +28,17 @@ const RIPPLE_PERIOD = 3.6;  // s — ondas de energia do núcleo
 const RIPPLE_MAX = 75;      // raio máximo (unidades da referência)
 const BOOST_SPEED = 2.2;    // aceleração extra das órbitas no clique do ENTER
 
+/** Cores dos elétrons (miolo, contorno e brilho). Branco e preto ganham
+    contorno cinza para continuarem visíveis nos dois temas. */
+const ELECTRON_COLORS = [
+  { fill: '#E9FFE9', stroke: '#00FF00', glow: 'url(#g-electron)' },      // verde
+  { fill: '#FFFFFF', stroke: '#C2C9C4', glow: 'url(#g-glow-white)' },    // branco
+  { fill: '#071009', stroke: '#6E7770', glow: 'url(#g-glow-black)' },    // preto
+  { fill: '#FFD6DC', stroke: '#FF2D3A', glow: 'url(#g-glow-red)' },      // vermelho
+  { fill: '#D6EAFF', stroke: '#2F7BFF', glow: 'url(#g-glow-blue)' },     // azul
+  { fill: '#FFF7C2', stroke: '#FFE600', glow: 'url(#g-glow-yellow)' },   // amarelo
+];
+const COLOR_HOLD = [0.6, 1.8];  // s — quanto tempo cada cor dura (mín., máx.)
 export function createAtomSystem(svg, interaction) {
   const orbits = [...svg.querySelectorAll('[data-orbit]')].map((el, i) => {
     // pathLength="1" permite desenhar a órbita com dasharray em frações (0…1)
@@ -46,14 +57,30 @@ export function createAtomSystem(svg, interaction) {
     };
   });
 
-  const axes = [...svg.querySelectorAll('#orbit-lines .axis, .axis-needle')];
+  const axes = [...svg.querySelectorAll('#orbit-lines .axis')];
 
   const electrons = [...svg.querySelectorAll('[data-electron]')].map((el) => ({
     el,
     orbit: orbits[+el.dataset.orbitIndex],
     speed: +el.dataset.speed,
     start: +el.dataset.start,
+    core: el.querySelector('.electron__core'),
+    halo: el.querySelector('.electron__halo'),
+    color: 0,
+    next: 0,
   }));
+
+  /** Troca o elétron para uma cor sorteada (sempre diferente da atual). */
+  function recolor(e, t) {
+    let k = Math.floor(Math.random() * (ELECTRON_COLORS.length - 1));
+    if (k >= e.color) k += 1;
+    e.color = k;
+    const c = ELECTRON_COLORS[k];
+    e.core?.style.setProperty('fill', c.fill);
+    e.core?.style.setProperty('stroke', c.stroke);
+    e.halo?.style.setProperty('fill', c.glow);
+    e.next = t + COLOR_HOLD[0] + Math.random() * (COLOR_HOLD[1] - COLOR_HOLD[0]);
+  }
 
   const nucleus = svg.querySelector('[data-nucleus]');
   const halo = nucleus?.querySelector('[data-halo]');
@@ -119,6 +146,8 @@ export function createAtomSystem(svg, interaction) {
       const scale = 0.75 + 0.45 * depth;
       e.el.setAttribute('transform', `translate(${x.toFixed(1)} ${y.toFixed(1)}) scale(${scale.toFixed(3)})`);
       e.el.style.opacity = ((0.55 + 0.45 * depth) * intro.orbits).toFixed(3);
+      // usa o relógio real (não o do átomo) para o ritmo das cores não acelerar
+      if (performance.now() / 1000 >= e.next) recolor(e, performance.now() / 1000);
     }
   }
 

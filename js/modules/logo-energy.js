@@ -14,19 +14,20 @@ import { intro } from '../core/state.js';
 
 /** Junções e vértices das letras (coordenadas da referência). */
 const SPARK_POINTS = [
-  [342, 912],   // ápice do A
-  [414, 914],   // canto do T
-  [590, 950],   // junção da haste do T
-  [734, 914],   // ponta da barra do T
-  [852, 908],   // topo do O
-  [1010, 896],  // pico esquerdo do M
-  [1135, 1000], // vértice interno do M
-  [1260, 896],  // pico direito do M
-  [1136, 1052], // vértice inferior do M
-  [1562, 916],  // topo do U
-  [1852, 914],  // canto do Z
-  [1640, 1070], // junção da diagonal do Z
-  [1586, 1108], // base do Z
+  [308, 937],   // topo do A
+  [308, 1047],  // ponto do A
+  [425, 955],   // ponta esquerda da barra do T
+  [668, 955],   // ponta direita da barra do T
+  [700, 1010],  // lateral do O
+  [955, 1010],  // lateral do O
+  [1000, 945],  // topo esquerdo do M
+  [1255, 945],  // topo direito do M
+  [1126, 1066], // ponto do M
+  [1430, 1010], // ponto do U
+  [1600, 955],  // canto do Z
+  [1845, 955],  // canto do Z
+  [1600, 1070], // base do Z
+  [1845, 1070], // base do Z
 ];
 
 const SPARK_COUNT = 3;
@@ -47,15 +48,19 @@ export function createLogoEnergy(svg, interaction) {
   if (!layer || !source) return { update() {}, reset() {} };
 
   /* ---------- 1. Pulsos no contorno ----------
-     O path do logo tem vários contornos (um por letra, e dois no O).
-     Cada contorno vira um <path> próprio com um traço curto (dash) que
-     circula por ele. */
+     O path do logo tem vários contornos (letras, o miolo do O e os
+     pontinhos). Cada contorno de letra vira um <path> próprio com um traço
+     curto (dash) que circula por ele; os pontinhos (contornos curtos) ficam
+     de fora — um pulso neles pareceria só uma piscada. */
+  const MIN_CONTOUR = 300;
   const contours = source.getAttribute('d').split(/(?=M)/).map((s) => s.trim()).filter(Boolean);
   const pulses = contours.map((d, i) => {
-    const halo = svgEl('path', { d, class: 'logo-pulse logo-pulse--halo' });
     const core = svgEl('path', { d, class: 'logo-pulse' });
-    layer.append(halo, core);
+    layer.append(core);
     const length = core.getTotalLength();
+    if (length < MIN_CONTOUR) { core.remove(); return null; }
+    const halo = svgEl('path', { d, class: 'logo-pulse logo-pulse--halo' });
+    layer.insertBefore(halo, core);
     const dash = `${PULSE_LENGTH} ${Math.max(length - PULSE_LENGTH, 1)}`;
     halo.setAttribute('stroke-dasharray', dash);
     core.setAttribute('stroke-dasharray', dash);
@@ -67,7 +72,7 @@ export function createLogoEnergy(svg, interaction) {
       rhythm: 0.35 + hash(i + 11) * 0.3,   // frequência de aparição
       phase: hash(i + 21) * Math.PI * 2,
     };
-  });
+  }).filter(Boolean);
 
   /* ---------- 2. Halo ----------
      A oscilação muda a opacidade da CAMADA inteira do halo (CSS), que a GPU

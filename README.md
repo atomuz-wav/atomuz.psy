@@ -38,6 +38,7 @@ Se o macOS perguntar se o Python pode aceitar conexões de entrada, clique em **
 
 ```
 serve.py                   Servidor local sem cache (desenvolvimento)
+tools/versionar.py         Carimba CSS/JS com ?v= no index.html (fura o cache)
 index.html                 Estrutura da Hero (HTML semântico + SVG em camadas)
 css/style.css              Paleta, escala, layout, hover e responsividade
 js/
@@ -100,7 +101,7 @@ assets/referencia-hero.jpeg  Imagem de referência (não é usada na página)
 
 ## Tema claro / escuro
 
-O site abre **sempre no claro** (fiel à referência). O botão sol/lua na navbar ativa o tema escuro; a escolha fica salva no navegador e é aplicada antes da página aparecer.
+O site abre **no tema escuro** (decisão do artista). O botão sol/lua na navbar ativa o tema claro; essa escolha fica salva no navegador e é aplicada antes da página aparecer.
 
 ---
 
@@ -155,8 +156,9 @@ O site abre **sempre no claro** (fiel à referência). O botão sol/lua na navba
 ## Fazer alterações depois
 
 1. Abra esta pasta no Claude Code e peça a alteração (uma por vez, como fizemos).
-2. Teste localmente: `python3 serve.py` → http://localhost:5500.
-3. No GitHub Desktop: escreva um resumo em *Summary* → **Commit to main** → **Push origin**.
-4. O GitHub Pages atualiza o site sozinho em 1–2 minutos.
+2. Rode `python3 tools/versionar.py` (atualiza os carimbos `?v=` dos arquivos alterados, para nenhum navegador — Safari incluído — usar cópia antiga).
+3. Teste localmente: `python3 serve.py` → http://localhost:5500.
+4. No GitHub Desktop: escreva um resumo em *Summary* → **Commit to main** → **Push origin**.
+5. O GitHub Pages atualiza o site sozinho em 1–2 minutos.
 
 Cada commit é uma versão salva: no GitHub Desktop, em **History**, dá para ver e desfazer qualquer alteração.
