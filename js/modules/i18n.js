@@ -19,6 +19,7 @@
 const EN = {
   // Navegação e Hero
   'Pular introdução': 'Skip intro',
+  'ROLE PARA EXPLORAR': 'SCROLL TO EXPLORE',
   'MÚSICA': 'MUSIC',
   'AO VIVO': 'LIVE',
   'SOBRE': 'ABOUT',
@@ -52,6 +53,7 @@ const EN = {
   '/ SOM': '/ SOUND',
   'Ouça o ATOMUZ nas plataformas oficiais.': 'Listen to ATOMUZ on the official platforms.',
   'ABRIR': 'OPEN',
+  'CARREGANDO PLAYER…': 'LOADING PLAYER…',
   'Abrir ATOMUZ no Spotify (abre em nova aba)': 'Open ATOMUZ on Spotify (opens in a new tab)',
   'Abrir ATOMUZ no SoundCloud (abre em nova aba)': 'Open ATOMUZ on SoundCloud (opens in a new tab)',
   'Player do Spotify — ATOMUZ': 'Spotify player — ATOMUZ',
@@ -82,12 +84,18 @@ const EN = {
   'Enviar e-mail para atomuz.audio@gmail.com': 'Send an e-mail to atomuz.audio@gmail.com',
 
   // 05 · Ao vivo
-  '/ TRANSMISSÕES': '/ TRANSMISSIONS',
+  '/ APRESENTAÇÕES': '/ PERFORMANCES',
   'PRÓXIMAS DATAS': 'UPCOMING DATES',
   'Nenhuma data anunciada no momento. As novas apresentações são divulgadas primeiro no Instagram.':
     'No dates announced yet. New shows are announced first on Instagram.',
   'ACOMPANHAR': 'FOLLOW',
   'Acompanhar ATOMUZ no Instagram (abre em nova aba)': 'Follow ATOMUZ on Instagram (opens in a new tab)',
+  'HORA': 'TIME',
+  'LOCAL': 'VENUE',
+  'INGRESSOS': 'TICKETS',
+  'Instagram da Bifrost Open Air (abre em nova aba)': 'Bifrost Open Air on Instagram (opens in a new tab)',
+  'Ingresso sem taxa': 'Ticket with no fee',
+  'Venda de ingressos online': 'Online ticket sales',
   'SETS AO VIVO': 'LIVE SETS',
   'OUVIR SET': 'PLAY SET',
   'no SoundCloud (abre em nova aba)': 'on SoundCloud (opens in a new tab)',

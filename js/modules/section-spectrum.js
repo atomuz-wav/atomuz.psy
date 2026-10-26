@@ -10,6 +10,13 @@
 
    Igual aos orbs: só anima com o canvas na tela e a aba visível; com
    movimento desligado (reduzido ou pausado) mostra um quadro fixo.
+
+   Opções (usadas no espectro da navbar, que fica na tela o tempo todo):
+   - fps: limita os quadros por segundo (30 já parece fluido aqui, porque
+     cada barra só muda de alvo a cada 40–110 ms);
+   - softGlow: brilho desenhado como uma pílula mais larga e transparente
+     atrás de cada barra, em vez de shadowBlur — no Safari do iPhone a sombra
+     do canvas é calculada pelo processador e pesa a cada quadro.
    ========================================================================= */
 const BARS = 22;
 const BPM = 145;
@@ -40,7 +47,7 @@ function pill(ctx, x, y, w, h) {
   ctx.fill();
 }
 
-function createSpectrum(canvas) {
+function createSpectrum(canvas, { fps = 0, softGlow = false } = {}) {
   const ctx = canvas.getContext('2d');
   if (!ctx) return null;
 
@@ -51,6 +58,7 @@ function createSpectrum(canvas) {
   let dpr = 1;
   let raf = 0;
   let last = 0;
+  const minStep = fps ? 1000 / fps - 2 : 0;   // ms entre quadros (folga de 2 ms)
   let visible = false;
   let enabled = false;
 
@@ -69,8 +77,22 @@ function createSpectrum(canvas) {
     const barW = Math.max(2, step * 0.5);
     const maxH = h - pad * 2;
 
-    ctx.shadowColor = palette.glow || 'transparent';
-    ctx.shadowBlur = palette.glow ? 4 * dpr : 0;
+    if (softGlow && palette.glow) {
+      // brilho barato: halo arredondado atrás de cada barra, sem desfoque
+      ctx.shadowBlur = 0;
+      ctx.fillStyle = palette.glow;
+      ctx.globalAlpha = 0.35;
+      const haloW = Math.min(step, barW + 2 * pad);
+      for (let i = 0; i < BARS; i++) {
+        const level = Math.min(1, Math.max(0, levels[i]));
+        const barH = Math.max(barW * 1.4, level * maxH);
+        pill(ctx, pad + i * step + (step - haloW) / 2, h - pad - barH - (haloW - barW) / 2, haloW, barH + (haloW - barW));
+      }
+      ctx.globalAlpha = 1;
+    } else {
+      ctx.shadowColor = palette.glow || 'transparent';
+      ctx.shadowBlur = palette.glow ? 4 * dpr : 0;
+    }
     for (let i = 0; i < BARS; i++) {
       const level = Math.min(1, Math.max(0, levels[i]));
       const barH = Math.max(barW * 1.4, level * maxH);     // a menor barra ainda é uma pílula
@@ -81,6 +103,10 @@ function createSpectrum(canvas) {
   }
 
   function tick(now) {
+    if (minStep && now - last < minStep) {   // limite de fps: pula este quadro
+      raf = requestAnimationFrame(tick);
+      return;
+    }
     const dt = Math.min(0.05, (now - last) / 1000 || 0);
     last = now;
     const beat = (now / 1000) * BPM / 60;
@@ -126,8 +152,9 @@ function createSpectrum(canvas) {
   };
 }
 
-export function createSectionSpectrum(root = document) {
-  const items = [...root.querySelectorAll('canvas[data-spectrum]')].map(createSpectrum).filter(Boolean);
+export function createSectionSpectrum(root = document, options = {}) {
+  const items = [...root.querySelectorAll('canvas[data-spectrum]')]
+    .map((canvas) => createSpectrum(canvas, options)).filter(Boolean);
   if (!items.length) return { enable() {}, disable() {} };
 
   const byCanvas = new Map(items.map((item) => [item.canvas, item]));

@@ -221,7 +221,8 @@ export function createParticleRenderer(canvas, stage, field, interaction) {
     kind: 'webgl',
 
     resize() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // até 1.5×: em telas 3× (iPhone) o ganho visual é mínimo e o custo da GPU, alto
+      const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
       const m = stageMapping(canvas, stage);
       renderer.setPixelRatio(dpr);
       renderer.setSize(m.width, m.height, false);

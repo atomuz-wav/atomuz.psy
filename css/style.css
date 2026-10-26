@@ -42,6 +42,19 @@
   /* Tipografia */
   --f-display: "Orbitron", "Segoe UI", system-ui, sans-serif;
   --f-mono: "Share Tech Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  /* Texto corrido: a Orbitron é de display (larga e geométrica), cansa em
+     parágrafos. Ela continua no logo, títulos, menu, botões e nomes. */
+  --f-body: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+
+  /* Escala tipográfica: todo texto fora da composição da Hero usa um destes
+     tamanhos. Nenhum texto abaixo de 12 px. */
+  --fs-xs:   12px;                          /* rótulos HUD (mínimo absoluto) */
+  --fs-sm:   14px;                          /* metadados, legendas */
+  --fs-base: clamp(16px, 1.2vw, 17px);      /* parágrafos */
+  --fs-lg:   clamp(18px, 1.8vw, 24px);      /* subtítulos, nomes de sets */
+  --fs-xl:   clamp(22px, 2.6vw, 34px);      /* destaques/manifesto */
+  --fs-h2:   clamp(28px, 4.2vw, 54px);      /* título do lançamento */
+  --fs-h1:   clamp(40px, 7vw, 88px);        /* títulos das seções */
 
   /* Unidade de design */
   --design-w: 2048;
@@ -228,6 +241,16 @@ body {
 }
 :root[data-theme="dark"] .nav__backdrop { background: rgba(4, 8, 5, 0.88); }
 .is-scrolled .nav__backdrop { opacity: 1; }
+/* Celular: sem o desfoque do que passa por trás (backdrop-filter), que é
+   recalculado a cada quadro da rolagem. Fundo quase opaco no lugar. */
+@media (max-width: 768px) {
+  .nav__backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background: rgb(255 255 255 / 0.96);
+  }
+  :root[data-theme="dark"] .nav__backdrop { background: rgb(4 8 5 / 0.92); }
+}
 
 .nav__line {
   position: absolute;
@@ -237,6 +260,9 @@ body {
   overflow: visible;
   pointer-events: none;
 }
+
+/* Espectro da aba central: só no celular (ver @media max-width: 760px) */
+.nav__spectrum { display: none; }
 
 .nav__trace {
   fill: none;
@@ -285,7 +311,18 @@ body {
   fill: url(#g-wm-glass-dark);
 }
 :root[data-theme="dark"] .nav__brand-body { fill: url(#g-wm-glass); }
-:root[data-theme="dark"] .nav__brand svg {
+/* Brilho branco no tema escuro: fica numa camada parada atrás das letras
+   (svg.nav__brand-glow). Com o filtro nas letras, que flutuam e têm reflexo
+   animado, o navegador recalculava o desfoque a cada quadro. */
+.nav__brand svg { position: relative; }   /* letras por cima do brilho */
+.nav__brand .nav__brand-glow {
+  position: absolute;
+  inset: 0;
+  display: none;
+  fill: url(#g-wm-glass);
+}
+:root[data-theme="dark"] .nav__brand-glow {
+  display: block;
   filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.28));
 }
 .nav__brand-shine {
@@ -327,6 +364,13 @@ body {
 }
 
 .nav__social li { display: flex; align-items: center; }
+/* Tablets em pé (761–899 px): a escala do desenho fica pequena, os tamanhos
+   mínimos em px dos ícones pesam mais e o Spotify cairia sobre a diagonal da
+   aba da linha HUD. Mais perto da borda (16 px, como no celular) e com os
+   ícones um pouco mais juntos, a fileira volta a caber à direita da aba. */
+@media (min-width: 761px) and (max-width: 899px) {
+  .nav__social { right: 16px; gap: 8px; }
+}
 
 .nav__divider {
   width: max(1px, calc(2 * var(--u)));
@@ -450,7 +494,7 @@ body {
   position: relative;
   display: block;
   padding: 6px 0;
-  font: 600 max(11px, calc(21 * var(--u)))/1 var(--f-display);
+  font: 600 max(var(--fs-xs), calc(21 * var(--u)))/1 var(--f-display);
   letter-spacing: 0.22em;
   margin-right: -0.22em;
   color: var(--c-fg);
@@ -503,11 +547,11 @@ body {
     top: calc(100% + 18px);
   }
   .nav__menu ul { --menu-gap: 16px; }
-  .nav__menu a { font-size: 10.5px; letter-spacing: 0.18em; margin-right: -0.18em; }
+  .nav__menu a { font-size: var(--fs-xs); letter-spacing: 0.12em; margin-right: -0.12em; }
 }
 @media (max-width: 380px) {
   .nav__menu ul { --menu-gap: 11px; }
-  .nav__menu a { font-size: 10px; letter-spacing: 0.14em; margin-right: -0.14em; }
+  .nav__menu a { letter-spacing: 0.08em; margin-right: -0.08em; }
 }
 
 /* Microanimação do contorno: marcador HUD que se abre do centro */
@@ -731,18 +775,58 @@ body {
 /* ------------------------------------------------------------------------
    Área inferior (Access Interface)
    ------------------------------------------------------------------------ */
+/* "Role para explorar": rodapé da Hero, sem ocupar espaço na composição.
+   O chevron desce e volta devagar (só com movimento ativo: .reveal-on) e o
+   conjunto some assim que a página rola. */
+.scroll-hint {
+  position: absolute;
+  left: 50%;
+  bottom: max(10px, calc(18 * var(--u)));
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+.is-scrolled .scroll-hint { opacity: 0; }
+.scroll-hint__label {
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
+  margin-right: -0.16em;
+  color: var(--c-gray-text);
+  white-space: nowrap;
+}
+.scroll-hint__chevron {
+  width: 18px;
+  height: auto;
+  fill: none;
+  stroke: var(--c-tech);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.reveal-on .scroll-hint__chevron { animation: scroll-hint 2s ease-in-out infinite; }
+@keyframes scroll-hint {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(5px); opacity: 1; }
+}
+
 .access {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: calc(70 * var(--u));
+  /* mínimo de 50 px: espaço para o "role para explorar" abaixo do ENTER */
+  padding-bottom: max(calc(70 * var(--u)), 50px);
 }
 
 .manifesto {
   margin: 0;
   font-family: var(--f-display);
   font-weight: 500;
-  font-size: calc(24 * var(--u));
+  font-size: max(var(--fs-xs), calc(24 * var(--u)));
   line-height: 1;
   letter-spacing: 0.5em;
   color: var(--c-gray-text);
@@ -773,10 +857,9 @@ body {
 .ornament__reticle path:not(.ornament__core) { stroke: var(--c-gray-line); }
 .ornament__bars path,
 .ornament__bars rect { fill: var(--c-tech); }
-.ornament__core {
-  fill: var(--c-neon);
-  filter: drop-shadow(0 0 4px rgba(0, 255, 0, 0.8));
-}
+.ornament__core { fill: var(--c-neon); }
+/* brilho pré-desenhado (degradê radial): o núcleo pulsa sem filtro */
+.ornament__reticle .ornament__core-glow { fill: url(#g-ornament-core-glow); stroke: none; }
 
 .enter-row {
   display: flex;
@@ -841,7 +924,7 @@ body {
   position: relative;
   font-family: var(--f-display);
   font-weight: 600;
-  font-size: calc(29 * var(--u));
+  font-size: max(var(--fs-xs), calc(29 * var(--u)));
   letter-spacing: 0.12em;
   line-height: 1;
 }
@@ -984,8 +1067,8 @@ body {
 
 .section-head__index {
   margin: 0 0 14px;
-  font: 400 13px/1 var(--f-mono);
-  letter-spacing: 0.32em;
+  font: 400 var(--fs-sm)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-text-muted);
   text-transform: uppercase;
 }
@@ -993,7 +1076,7 @@ body {
 
 .section-head__title {
   margin: 0;
-  font: 600 clamp(40px, 7vw, 88px)/1 var(--f-display);
+  font: 600 var(--fs-h1)/1 var(--f-display);
   letter-spacing: 0.22em;
   /* compensa o espaçamento após a última letra */
   margin-right: -0.22em;
@@ -1032,8 +1115,8 @@ body {
 
 .section-head__lead {
   margin: 18px 0 0;
-  max-width: 560px;
-  font: 500 clamp(15px, 1.4vw, 18px)/1.7 var(--f-display);
+  max-width: 65ch;
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.72;
 }
@@ -1086,12 +1169,12 @@ body {
 }
 .player-card__label {
   margin: 0;
-  font: 400 13px/1 var(--f-mono);
-  letter-spacing: 0.3em;
+  font: 400 var(--fs-sm)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-tech);
 }
 .player-card__link {
-  font: 600 11px/1 var(--f-display);
+  font: 600 var(--fs-xs)/1 var(--f-display);
   letter-spacing: 0.2em;
   color: var(--c-tech);
   text-decoration: none;
@@ -1114,6 +1197,33 @@ body {
   height: 352px;
   border: 0;
 }
+
+/* Enquanto o player externo não abre, a caixa mostra o painel escuro com o
+   aviso "CARREGANDO PLAYER…" (atrás do iframe transparente).
+   color-scheme: normal no iframe, igual ao dos players: se os dois forem
+   diferentes (o site declara "dark"), o navegador pinta um fundo opaco atrás
+   do iframe durante o carregamento, que esconderia o aviso.
+   Obs.: o player do SoundCloud é claro por design (não tem versão escura). */
+.player-card__screen,
+.release-player { position: relative; }
+.player-card__screen iframe,
+.release-player iframe {
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  color-scheme: normal;
+}
+.embed-loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
+  color: var(--c-text-muted);
+}
+/* o lazy-embeds.js marca a caixa quando o player termina de carregar */
+.is-loaded > .embed-loading { display: none; }
 
 @media (hover: hover) {
   .player-card:hover { background: var(--c-neon); }
@@ -1150,6 +1260,11 @@ body {
   clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
     calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
 }
+/* <picture> só escolhe o formato (AVIF → WebP → JPG): sem caixa própria, a
+   foto continua dimensionada pela moldura/pelo item como antes */
+.release-art__frame > picture,
+.media-item > picture { display: contents; }
+
 .release-art__img {
   display: block;
   width: 100%;
@@ -1160,13 +1275,13 @@ body {
 
 .release-info__artist {
   margin: 0 0 10px;
-  font: 400 13px/1 var(--f-mono);
-  letter-spacing: 0.32em;
+  font: 400 var(--fs-sm)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-text-muted);
 }
 .release-info__title {
   margin: 0;
-  font: 600 clamp(28px, 4.2vw, 54px)/1.08 var(--f-display);
+  font: 600 var(--fs-h2)/1.08 var(--f-display);
   letter-spacing: 0.08em;
   color: var(--c-fg);
 }
@@ -1182,7 +1297,7 @@ body {
 }
 .release-meta li {
   padding: 8px 12px;
-  font: 400 12px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-tech);
   border: 1px solid rgba(18, 201, 46, 0.45);
@@ -1191,8 +1306,8 @@ body {
 
 .release-info__text {
   margin: 22px 0 0;
-  max-width: 620px;
-  font: 500 clamp(15px, 1.3vw, 17px)/1.75 var(--f-display);
+  max-width: 65ch;
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.75;
 }
@@ -1223,7 +1338,7 @@ body {
   gap: 14px;
   min-height: 48px;
   padding: 0 22px;
-  font: 600 12px/1 var(--f-display);
+  font: 600 var(--fs-xs)/1 var(--f-display);
   letter-spacing: 0.2em;
   color: var(--c-black);
   text-decoration: none;
@@ -1269,13 +1384,13 @@ body {
 }
 .release-credits div { display: flex; gap: 10px; align-items: baseline; }
 .release-credits dt {
-  font: 400 11px/1 var(--f-mono);
-  letter-spacing: 0.24em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-text-muted);
 }
 .release-credits dd {
   margin: 0;
-  font: 500 14px/1 var(--f-display);
+  font: 500 var(--fs-sm)/1 var(--f-body);
   color: var(--c-fg);
   opacity: 0.8;
 }
@@ -1288,8 +1403,8 @@ body {
 /* ---------- 03 · LIVE ---------- */
 .live-block-title {
   margin: 0;
-  font: 400 13px/1 var(--f-mono);
-  letter-spacing: 0.32em;
+  font: 400 var(--fs-sm)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-tech);
 }
 .live-block-title--list { margin: clamp(48px, 6vw, 72px) 0 18px; }
@@ -1311,9 +1426,126 @@ body {
 .live-upcoming__status { display: flex; align-items: center; gap: 14px; }
 .live-upcoming__text {
   margin: 0;
-  font: 500 clamp(14px, 1.2vw, 16px)/1.6 var(--f-display);
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.75;
+}
+
+/* Evento anunciado: nome + data/hora/local */
+.live-upcoming__event { min-width: 0; }
+.live-upcoming__name {
+  margin: 0 0 10px;
+  font: 600 var(--fs-lg)/1.2 var(--f-display);
+  letter-spacing: 0.06em;
+  color: var(--c-fg);
+}
+.live-upcoming__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font: 400 var(--fs-sm)/1.4 var(--f-body);
+  color: var(--c-fg);
+}
+.live-upcoming__key {
+  margin-right: 6px;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
+  color: var(--c-tech);
+}
+.live-upcoming__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.live-upcoming__actions .hud-btn { border: 0; cursor: pointer; }
+
+/* Janelinha de ingressos (<dialog>, js/modules/ticket-picker.js) */
+.ticket-picker {
+  width: min(100% - 32px, 480px);
+  max-width: none;
+  margin: auto;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--c-fg);
+  overflow: visible;
+}
+.ticket-picker::backdrop { background: rgba(4, 8, 5, 0.82); }
+.ticket-picker__panel {
+  --cut: 18px;
+  position: relative;
+  padding: 30px clamp(20px, 5vw, 32px) 26px;
+  background: var(--c-panel);
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)),
+    calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
+  box-shadow: inset 0 0 0 1px rgba(18, 201, 46, 0.6);
+}
+.ticket-picker__index {
+  margin: 0 0 8px;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.2em;
+  color: var(--c-tech);
+}
+.ticket-picker__title {
+  margin: 0 48px 8px 0;
+  font: 600 var(--fs-xl)/1.15 var(--f-display);
+  letter-spacing: 0.04em;
+}
+.ticket-picker__info {
+  margin: 0 0 22px;
+  font: 400 var(--fs-sm)/1.5 var(--f-body);
+  opacity: 0.75;
+}
+.ticket-picker__list { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.ticket-option {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 18px;
+  border: 1px solid rgba(18, 201, 46, 0.45);
+  color: inherit;
+  text-decoration: none;
+  transition: background-color 0.25s ease, border-color 0.25s ease;
+}
+.ticket-option__num { font: 400 var(--fs-xs)/1 var(--f-mono); color: var(--c-tech); }
+.ticket-option__body { display: grid; gap: 4px; }
+.ticket-option__label { font: 600 var(--fs-sm)/1.2 var(--f-display); letter-spacing: 0.14em; color: var(--c-tech); }
+.ticket-option__desc { font: 400 var(--fs-sm)/1.4 var(--f-body); }
+.ticket-option__arrow { color: var(--c-tech); transition: transform 0.25s ease; }
+.ticket-option:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 3px; }
+@media (hover: hover) {
+  .ticket-option:hover { background: rgba(18, 201, 46, 0.1); border-color: var(--c-tech); }
+  .ticket-option:hover .ticket-option__arrow { transform: translate(2px, -2px); }
+}
+.ticket-picker__close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--c-tech);
+  border-radius: 50%;
+  background: transparent;
+  color: var(--c-tech);
+  cursor: pointer;
+}
+.ticket-picker__close svg {
+  width: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+.ticket-picker__close:focus-visible { outline: 2px solid var(--c-tech); outline-offset: 3px; }
+@media (hover: hover) {
+  .ticket-picker__close:hover { box-shadow: 0 0 12px rgba(0, 255, 0, 0.5); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ticket-picker[open] { animation: viewer-img-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ticket-picker[open]::backdrop { animation: viewer-in 0.3s ease; }
 }
 
 /* Sinal "aguardando transmissão": ponto com anel (o anel pulsa só com movimento ativo) */
@@ -1374,23 +1606,23 @@ body {
   transition: transform 0.3s ease;
 }
 .event-row__index {
-  font: 400 12px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-red);   /* numeração dos sets em vermelho, como os pontos do manifesto */
   opacity: 0.9;
 }
 .event-row__date {
-  font: 400 15px/1 var(--f-mono);
+  font: 400 var(--fs-sm)/1 var(--f-mono);
   letter-spacing: 0.14em;
   color: var(--c-tech);
 }
 .event-row__name {
-  font: 600 clamp(17px, 1.8vw, 24px)/1.2 var(--f-display);
+  font: 600 var(--fs-lg)/1.2 var(--f-display);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 .event-row__meta {
-  font: 400 12px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-text-muted);
   white-space: nowrap;
@@ -1398,7 +1630,7 @@ body {
 .event-row__genre { color: #737373; }   /* gêneros em cinza, como o rodapé */
 .event-row__meta > span[aria-hidden="true"] { color: var(--c-red); }   /* ponto separador */
 .event-row__action {
-  font: 600 11px/1 var(--f-display);
+  font: 600 var(--fs-xs)/1 var(--f-display);
   letter-spacing: 0.2em;
   color: var(--c-fg);   /* reserva se o recorte do texto não for suportado */
   white-space: nowrap;
@@ -1474,14 +1706,14 @@ body {
 }
 .project-copy__lead {
   margin: 0;
-  font: 500 clamp(22px, 2.6vw, 34px)/1.45 var(--f-display);
+  font: 500 var(--fs-xl)/1.45 var(--f-display);
   color: var(--c-fg);
 }
 .project-copy__lead em { font-style: normal; color: var(--c-tech); }
 .project-copy__text {
   margin: 22px 0 0;
-  max-width: 640px;
-  font: 500 clamp(15px, 1.3vw, 17px)/1.75 var(--f-display);
+  max-width: 65ch;
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.75;
 }
@@ -1497,10 +1729,15 @@ body {
 }
 .project-readout__title {
   margin: 0 0 18px;
-  font: 400 12px/1 var(--f-mono);
-  letter-spacing: 0.32em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-tech);
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
+/* afasta o radar da borda para o anel pulsante não encostar no chanfro */
+.project-readout__title .live-upcoming__signal { margin-left: 6px; }
 .project-readout__list { margin: 0; }
 .project-readout__list div {
   display: grid;
@@ -1510,13 +1747,13 @@ body {
   border-top: 1px solid rgba(18, 201, 46, 0.25);
 }
 .project-readout__list dt {
-  font: 400 11px/1.5 var(--f-mono);
-  letter-spacing: 0.22em;
+  font: 400 var(--fs-xs)/1.5 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-text-muted);
 }
 .project-readout__list dd {
   margin: 0;
-  font: 600 14px/1.4 var(--f-display);
+  font: 600 var(--fs-sm)/1.4 var(--f-body);
   color: var(--c-fg);
 }
 .project-readout__signal {
@@ -1526,7 +1763,7 @@ body {
   margin: 16px 0 0;
   padding-top: 16px;
   border-top: 1px solid rgba(18, 201, 46, 0.25);
-  font: 400 12px/1.4 var(--f-mono);
+  font: 400 var(--fs-xs)/1.4 var(--f-mono);
   letter-spacing: 0.12em;
   color: #A3A3A3;   /* frase em cinza; o orb segue verde */
 }
@@ -1545,8 +1782,8 @@ body {
 .project-sequence__title {
   margin: 0 0 28px;
   max-width: 560px;
-  font: 400 13px/1.6 var(--f-mono);
-  letter-spacing: 0.32em;
+  font: 400 var(--fs-sm)/1.6 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-tech);
   display: flex;
   align-items: baseline;
@@ -1593,7 +1830,7 @@ body {
 }
 .sequence__index {
   width: 30px;
-  font: 400 11px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-text-muted);
 }
@@ -1610,7 +1847,7 @@ body {
 }
 .sequence__word {
   order: 2;
-  font: 600 clamp(15px, 1.4vw, 19px)/1.2 var(--f-display);
+  font: 600 var(--fs-base)/1.2 var(--f-display);
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--c-fg);
@@ -1659,14 +1896,14 @@ body {
 }
 .atom-copy__lead {
   margin: 0;
-  font: 500 clamp(22px, 2.6vw, 34px)/1.45 var(--f-display);
+  font: 500 var(--fs-xl)/1.45 var(--f-display);
   color: var(--c-fg);
 }
 .atom-copy__lead em { font-style: normal; color: var(--c-tech); }
 .atom-copy__hint {
   margin: 20px 0 0;
-  max-width: 520px;
-  font: 500 clamp(14px, 1.2vw, 16px)/1.7 var(--f-display);
+  max-width: 65ch;
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.7;
 }
@@ -1689,18 +1926,18 @@ body {
   border-bottom: 1px solid rgba(18, 201, 46, 0.35);
 }
 .atom-legend__num {
-  font: 400 12px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-tech);
 }
 .atom-legend__part {
-  font: 600 clamp(14px, 1.3vw, 17px)/1.2 var(--f-display);
+  font: 600 var(--fs-base)/1.2 var(--f-display);
   letter-spacing: 0.16em;
   color: var(--c-fg);
 }
 .atom-legend__meaning {
-  font: 400 12px/1 var(--f-mono);
-  letter-spacing: 0.22em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #A3A3A3;   /* significados em cinza (matéria, energia...) */
 }
@@ -1724,9 +1961,10 @@ body {
 .atom-diagram__orbit { fill: none; stroke: var(--c-line); stroke-width: 1.8; }
 .atom-diagram__electron { fill: #E9FFE9; stroke: var(--c-neon); stroke-width: 2.4; }
 /* Um elétron de cada cor, um em cada órbita: vermelho, azul e amarelo */
-.atom-diagram__sway--1 .atom-diagram__electron { fill: #FFD6DC; stroke: #FF2D3A; filter: drop-shadow(0 0 4px rgba(255, 45, 58, 0.7)); }
-.atom-diagram__sway--2 .atom-diagram__electron { fill: #D6EAFF; stroke: #2F7BFF; filter: drop-shadow(0 0 4px rgba(47, 123, 255, 0.7)); }
-.atom-diagram__sway--3 .atom-diagram__electron { fill: #FFF7C2; stroke: #FFD000; filter: drop-shadow(0 0 4px rgba(255, 208, 0, 0.7)); }
+/* (o brilho de cada um é o círculo .atom-diagram__electron-glow, com degradê) */
+.atom-diagram__sway--1 .atom-diagram__electron { fill: #FFD6DC; stroke: #FF2D3A; }
+.atom-diagram__sway--2 .atom-diagram__electron { fill: #D6EAFF; stroke: #2F7BFF; }
+.atom-diagram__sway--3 .atom-diagram__electron { fill: #FFF7C2; stroke: #FFD000; }
 .atom-diagram__core { fill: #F2FFF2; stroke: var(--c-neon); stroke-width: 3; }
 .atom-diagram__system { transition: transform 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .atom-diagram__glow { transform-origin: 200px 200px; }
@@ -1781,7 +2019,7 @@ body {
 }
 .atom-diagram.is-rebuilding .atom-diagram__sway--2 .atom-diagram__orbit { animation-delay: 0.15s; }
 .atom-diagram.is-rebuilding .atom-diagram__sway--3 .atom-diagram__orbit { animation-delay: 0.3s; }
-.atom-diagram.is-rebuilding .atom-diagram__electron { animation: atom-fade-in 0.4s ease 1s both; }
+.atom-diagram.is-rebuilding :is(.atom-diagram__electron, .atom-diagram__electron-glow) { animation: atom-fade-in 0.4s ease 1s both; }
 .atom-diagram__core,
 .atom-diagram__glow { transform-box: fill-box; transform-origin: center; }
 .reveal-on .atom-diagram.is-rebuilding .atom-diagram__core {
@@ -1942,6 +2180,38 @@ body {
 .media-item__view:focus-visible .media-item__eye,
 .media-item:hover .media-item__eye { opacity: 1; transform: scale(1); }
 
+/* Onda líquida no hover (js/modules/image-wave.js — só no computador).
+   O canvas ondulado aparece por cima da foto, a foto some e, nos picos da
+   onda, o fundo verde do cartão aparece nas bordas (como no Boom Festival) */
+.release-art__frame { position: relative; }
+.wave-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease-in-out;
+}
+.release-art__frame .wave-canvas {
+  inset: 1px;
+  width: calc(100% - 2px);
+  height: calc(100% - 2px);
+  clip-path: polygon(calc(var(--cut) - 0.5px) 0, 100% 0, 100% calc(100% - var(--cut) + 0.5px),
+    calc(100% - var(--cut) + 0.5px) 100%, 0 100%, 0 calc(var(--cut) - 0.5px));
+}
+.has-wave .media-item,
+.has-wave .release-art__frame { transition: background-color 0.3s ease-in-out; }
+.has-wave .media-item__img,
+.has-wave .release-art__img { transition: opacity 0.5s ease-in-out; }
+.media-item.is-waving,
+.release-art__frame.is-waving { background: var(--c-tech); }
+.is-waving .wave-canvas { opacity: 1; }
+.media-item.is-waving .media-item__img,
+.is-waving .release-art__img { opacity: 0; transform: none; }
+/* o olho continua, mas sem escurecer: as cores da onda ficam vivas */
+.media-item.is-waving .media-item__view { background: rgba(4, 8, 5, 0.15); }
+
 /* Visualizador em tela cheia */
 html.is-viewing { overflow: hidden; }
 .photo-viewer {
@@ -1986,7 +2256,7 @@ html.is-viewing { overflow: hidden; }
   gap: 16px;
   align-items: baseline;
   max-width: min(100%, 900px);
-  font: 400 12px/1.5 var(--f-mono);
+  font: 400 var(--fs-xs)/1.5 var(--f-mono);
   letter-spacing: 0.12em;
   color: #A3A3A3;
   text-align: center;
@@ -2061,14 +2331,14 @@ html.is-viewing { overflow: hidden; }
 .booking-panel { grid-area: panel; }
 .booking-copy__lead {
   margin: 0;
-  font: 500 clamp(22px, 2.6vw, 34px)/1.45 var(--f-display);
+  font: 500 var(--fs-xl)/1.45 var(--f-display);
   color: var(--c-fg);
 }
 .booking-copy__lead em { font-style: normal; color: var(--c-tech); }
 .booking-copy__text {
   margin: 18px 0 0;
-  max-width: 440px;
-  font: 500 clamp(14px, 1.2vw, 16px)/1.7 var(--f-display);
+  max-width: 65ch;
+  font: 400 var(--fs-base)/1.6 var(--f-body);
   color: var(--c-fg);
   opacity: 0.72;
 }
@@ -2085,13 +2355,13 @@ html.is-viewing { overflow: hidden; }
   border-bottom: 1px solid rgba(18, 201, 46, 0.35);
 }
 .booking-contacts dt {
-  font: 400 11px/1 var(--f-mono);
-  letter-spacing: 0.24em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-text-muted);
 }
 .booking-contacts dd { margin: 0; overflow-wrap: anywhere; }
 .booking-contacts a {
-  font: 600 clamp(14px, 1.3vw, 17px)/1.3 var(--f-display);
+  font: 600 var(--fs-base)/1.3 var(--f-display);
   color: #737373;
   text-decoration: none;
   border-bottom: 1px solid transparent;
@@ -2127,8 +2397,8 @@ html.is-viewing { overflow: hidden; }
   display: flex;
   justify-content: space-between;
   padding: 0 18px;
-  font: 400 11px/1 var(--f-mono);
-  letter-spacing: 0.24em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: var(--c-tech);
 }
 .agency-card__arrow { transition: transform 0.25s ease; }
@@ -2194,8 +2464,8 @@ html.is-viewing { overflow: hidden; }
 .booking-field { display: flex; flex-direction: column; gap: 8px; }
 .booking-field--full { grid-column: 1 / -1; }
 .booking-field label {
-  font: 400 11px/1 var(--f-mono);
-  letter-spacing: 0.22em;
+  font: 400 var(--fs-xs)/1 var(--f-mono);
+  letter-spacing: 0.16em;
   color: #737373;
 }
 .booking-field__req { color: var(--c-tech); }
@@ -2203,7 +2473,7 @@ html.is-viewing { overflow: hidden; }
 .booking-field textarea {
   width: 100%;
   padding: 13px 14px;
-  font: 500 15px/1.4 var(--f-display);
+  font: 400 var(--fs-base)/1.4 var(--f-body);   /* ≥ 16 px: o iPhone não dá zoom ao focar */
   color: var(--c-fg);
   background: var(--c-bg);
   border: 1px solid rgba(18, 201, 46, 0.4);
@@ -2244,7 +2514,7 @@ html.is-viewing { overflow: hidden; }
 }
 .booking-form__note {
   margin: 0;
-  font: 400 11px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.18em;
   color: var(--c-text-muted);
 }
@@ -2255,7 +2525,7 @@ html.is-viewing { overflow: hidden; }
 .booking-form__status {
   grid-column: 1 / -1;
   margin: 0;
-  font: 500 14px/1.6 var(--f-display);
+  font: 500 var(--fs-sm)/1.6 var(--f-body);
   color: var(--c-fg);
 }
 .booking-form__status:empty { display: none; }
@@ -2307,7 +2577,7 @@ html.is-viewing { overflow: hidden; }
 }
 .net-card__index {
   grid-area: index;
-  font: 400 11px/1 var(--f-mono);
+  font: 400 var(--fs-xs)/1 var(--f-mono);
   letter-spacing: 0.2em;
   color: var(--c-text-muted);
 }
@@ -2330,12 +2600,12 @@ html.is-viewing { overflow: hidden; }
 .net-card__label {
   grid-area: label;
   margin-top: 8px;
-  font: 600 clamp(15px, 1.4vw, 19px)/1.2 var(--f-display);
+  font: 600 var(--fs-base)/1.2 var(--f-display);
   letter-spacing: 0.16em;
 }
 .net-card__handle {
   grid-area: handle;
-  font: 400 12px/1.3 var(--f-mono);
+  font: 400 var(--fs-xs)/1.3 var(--f-mono);
   letter-spacing: 0.1em;
   color: var(--c-text-muted);
   overflow-wrap: anywhere;
@@ -2352,9 +2622,26 @@ html.is-viewing { overflow: hidden; }
 
 @media (max-width: 900px) {
   .net-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  /* Duas colunas: o título acompanha a largura do cartão (≈ metade da tela
+     menos margens), para "SOUNDCLOUD", o nome mais longo, caber no celular.
+     Fica entre 12 px e --fs-base; no tablet o limite é o próprio --fs-base.
+     Obs.: não usar container query (cqi) aqui — ela deixa o recálculo de
+     estilo da página ~4× mais caro e pesava a animação da Hero. */
+  .net-card__label { font-size: max(var(--fs-xs), min(var(--fs-base), calc(4.8vw - 6px))); }
+}
+/* logo acima de 900 px a grade vira 4 colunas estreitas: letras um pouco
+   mais juntas para "SOUNDCLOUD" não encostar na borda */
+@media (min-width: 901px) and (max-width: 1000px) {
+  .net-card__label { letter-spacing: 0.12em; }
 }
 @media (max-width: 420px) {
   .net-card { min-height: 170px; padding: 18px; }
+}
+/* telas bem estreitas (≈ 320 px): o título já está no mínimo de 12 px; com
+   menos margem interna e letras mais juntas, "SOUNDCLOUD" cabe no cartão */
+@media (max-width: 340px) {
+  .net-card { padding: 12px; }
+  .net-card__label { letter-spacing: 0.08em; }
 }
 
 /* ---------- Rodapé ---------- */
@@ -2372,7 +2659,7 @@ html.is-viewing { overflow: hidden; }
   width: min(1240px, calc(100% - 48px));
   margin-inline: auto;
   padding: 28px 0;
-  font: 500 11px/1.4 var(--f-display);   /* Orbitron, como o resto do site */
+  font: 500 var(--fs-xs)/1.4 var(--f-display);   /* Orbitron, como o resto do site */
   letter-spacing: 0.16em;
   color: #737373;   /* rodapé discreto, igual nos dois temas */
 }
@@ -2413,7 +2700,7 @@ html.is-viewing { overflow: hidden; }
   bottom: 16px;
   z-index: 2;
   padding: 0.55em 1em;
-  font: 600 12px/1 var(--f-display);
+  font: 600 var(--fs-xs)/1 var(--f-display);
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--c-fg);
@@ -2437,7 +2724,7 @@ html.is-viewing { overflow: hidden; }
   left: 50%;
   z-index: 30;
   padding: 0.6em 1.1em;
-  font: 600 13px/1 var(--f-display);
+  font: 600 var(--fs-sm)/1 var(--f-display);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--c-fg);
@@ -2492,12 +2779,25 @@ html.is-viewing { overflow: hidden; }
 
   .nav__segments { display: none; }
 
+  /* Espectro dentro da aba da linha HUD (trapézio entre x 546–1415 e
+     y 91–146 do viewBox 2048 × 160, esticado na largura da tela) */
+  .nav__spectrum {
+    display: block;
+    position: absolute;
+    left: calc(980.5 / 2048 * 100%);   /* centro da aba */
+    top: calc(118.5 / 160 * 100%);     /* meio da altura da aba */
+    width: min(36%, 180px);
+    height: calc(var(--nav-h) * 0.28);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
   .access { padding-bottom: 48px; }
 
   .manifesto {
-    font-size: 9.5px;
-    letter-spacing: 0.3em;
-    margin-right: -0.3em;
+    font-size: var(--fs-xs);
+    letter-spacing: 0.14em;
+    margin-right: -0.14em;
   }
   .manifesto__dot { margin-inline: 0.2em; }
 
@@ -2552,6 +2852,7 @@ html.is-viewing { overflow: hidden; }
   .ornament { display: none; }
   .enter-row { margin-top: 12px; }
   .access { padding-bottom: 14px; }
+  .scroll-hint { display: none; }   /* sem espaço abaixo do ENTER */
 }
 
 /* ------------------------------------------------------------------------
@@ -2560,7 +2861,7 @@ html.is-viewing { overflow: hidden; }
    pede mais contraste recebe textos e ícones em verde escuro (≈ 5,5:1).
    ------------------------------------------------------------------------ */
 @media (prefers-contrast: more) {
-  :root:not([data-theme="dark"]) :is(.manifesto, .social, .theme-toggle, .enter, .section-head__index, .player-card__label, .player-card__link, .release-meta li, .release-info__artist, .hud-btn--ghost, .live-block-title, .event-row__date, .project-copy__lead em, .project-readout__title, .project-readout__signal, .project-sequence__title, .atom-copy__lead em, .atom-legend__num, .booking-copy__lead em, .net-card__icon, .net-card__arrow, .site-footer__brand, .site-footer__top) { color: #007A14; }
+  :root:not([data-theme="dark"]) :is(.manifesto, .social, .theme-toggle, .enter, .section-head__index, .player-card__label, .player-card__link, .release-meta li, .release-info__artist, .hud-btn--ghost, .live-block-title, .event-row__date, .project-copy__lead em, .project-readout__title, .project-readout__signal, .project-sequence__title, .atom-copy__lead em, .atom-legend__num, .booking-copy__lead em, .net-card__icon, .net-card__arrow, .site-footer__brand, .site-footer__top, .live-upcoming__key, .ticket-picker__index, .ticket-option__num, .ticket-option__label, .ticket-option__arrow, .ticket-picker__close) { color: #007A14; }
   :root:not([data-theme="dark"]) :is(.enter__outline, .enter__accent) { stroke: #007A14; }
   .nav__divider { opacity: 0.8; }
   /* laranja sólido, sem vidro, quando o sistema pede mais contraste */

@@ -1,5 +1,6 @@
 /* =========================================================================
-   CAMPO DE CÓDIGO (fundo interativo das seções 01–04, 07 e 08)
+   CAMPO DE CÓDIGO (fundo interativo das seções 01–04, 07 e 08; só no
+   desktop — no celular e em aparelhos fracos fica só a onda da Hero)
    -------------------------------------------------------------------------
    Uma grade de caracteres (0, 1 e as letras de ATOMUZ) cobre o fundo da
    seção, quase invisível em repouso, com a palavra ATOMUZ escondida em
@@ -83,6 +84,7 @@ function createField(section, { rippleOnly = false } = {}) {
   let colors = palette();
 
   let near = false;           // seção perto da tela (canvas alocado)
+  let visible = false;        // seção de fato na tela (o loop só anima assim)
   let interactive = false;
   let frame = 0;
   let last = 0;
@@ -306,7 +308,11 @@ function createField(section, { rippleOnly = false } = {}) {
       if (heat[i] < colors.glint) heat[i] = colors.glint;
     }
 
-    setupContext();
+    // Sem setupContext() aqui: a fonte, o alinhamento e a escala do canvas já
+    // foram definidos no drawAll() e continuam valendo entre os quadros (só se
+    // perdem quando o canvas muda de tamanho, e aí o build() redesenha tudo).
+    // Definir ctx.font a cada quadro obrigava o navegador a recalcular o estilo
+    // da página inteira: era o que deixava a onda da Hero pesada.
     // na Hero o rastro apaga mais rápido: lê-se como um anel, sem cobrir o logo
     const cool = Math.exp(-(rippleOnly ? COOL_RATE * 2.2 : COOL_RATE) * dt);
     let glowing = false;
@@ -325,14 +331,18 @@ function createField(section, { rippleOnly = false } = {}) {
       lit[i] = heat[i] > 0.02 ? 1 : 0;
     }
 
-    // O loop segue enquanto a seção está perto da tela (setNear/stop param);
+    // O loop segue enquanto a seção está na tela (setVisible/stop param);
     // no modo "só onda", para assim que a onda e o brilho terminam
     if (rippleOnly && !rings.length && !glowing) { last = 0; return; }
+    if (!visible && !rippleOnly) { last = 0; return; }
     frame = requestAnimationFrame(step);
   }
 
   function start() {
-    if (!frame && ctx && interactive) frame = requestAnimationFrame(step);
+    // Perto da tela o canvas já fica pronto (sem "pipocar" ao rolar), mas só
+    // anima quando a seção aparece: antes, a grade da seção logo abaixo da
+    // Hero animava fora da vista (~2 ms por quadro no desktop)
+    if (!frame && ctx && interactive && (visible || rippleOnly)) frame = requestAnimationFrame(step);
   }
   function stop() {
     if (frame) cancelAnimationFrame(frame);
@@ -380,6 +390,10 @@ function createField(section, { rippleOnly = false } = {}) {
       }
       else release();
     },
+    setVisible(value) {
+      visible = value;
+      if (visible && !rippleOnly) start();
+    },
     resize() {
       if (!near) return;
       const w = Math.round(section.getBoundingClientRect().width);
@@ -422,9 +436,21 @@ export function createCodeField(sections, options = {}) {
     const io = new IntersectionObserver((entries) => {
       for (const entry of entries) fields.get(entry.target)?.setNear(entry.isIntersecting);
     }, { rootMargin: '300px 0px' });
-    fields.forEach((_, section) => io.observe(section));
+    // …e só anima as que estão de fato na tela. intersectionRatio > 0 (e não
+    // isIntersecting): uma seção que só encosta na borda da tela, como a logo
+    // abaixo da Hero, conta como "intersectando" mas não aparece
+    const seen = new IntersectionObserver((entries) => {
+      for (const entry of entries) fields.get(entry.target)?.setVisible(entry.intersectionRatio > 0);
+    }, { threshold: [0, 0.01] });
+    fields.forEach((_, section) => {
+      io.observe(section);
+      seen.observe(section);
+    });
   } else {
-    fields.forEach((field) => field.setNear(true));
+    fields.forEach((field) => {
+      field.setNear(true);
+      field.setVisible(true);
+    });
   }
 
   if ('ResizeObserver' in window) {

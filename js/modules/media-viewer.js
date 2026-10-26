@@ -17,7 +17,7 @@ import { t } from './i18n.js';
 const SWIPE_MIN = 50;   // px — deslize mínimo para trocar de foto
 
 const EYE_SVG = `
-  <svg class="media-item__eye" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+  <svg class="media-item__eye" viewBox="0 0 48 48" aria-hidden="true">
     <path d="M3 24C9 13 16 8 24 8s15 5 21 16c-6 11-13 16-21 16S9 35 3 24Z"/>
     <circle cx="24" cy="24" r="8.5"/>
     <circle class="media-item__pupil" cx="24" cy="24" r="3.4"/>
@@ -37,6 +37,19 @@ export function createMediaViewer(section) {
       indexBySrc.set(src, photos.length);
       photos.push(img);
     }
+  }
+
+  // Formato que o navegador escolheu no <picture> (avif, webp ou jpg), lido de
+  // qualquer foto já carregada: a tela cheia abre a versão grande (1600 px)
+  // nesse mesmo formato, e não o JPG, que pesa 2 a 3 vezes mais
+  let format = null;
+  function largeSrc(img) {
+    if (!format) {
+      const loaded = items.map((item) => item.querySelector('img').currentSrc).find(Boolean);
+      format = loaded?.match(/\.(avif|webp|jpg)(?:\?|$)/)?.[1] ?? null;
+    }
+    const src = img.getAttribute('src');
+    return format ? src.replace(/\.jpg$/, `.${format}`) : src;
   }
 
   /* ---------- 1. Botões com o olho ---------- */
@@ -69,13 +82,13 @@ export function createMediaViewer(section) {
       </figcaption>
     </figure>
     <button class="photo-viewer__btn photo-viewer__btn--close" type="button" data-viewer="close">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 5l14 14M19 5L5 19"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>
     </button>
     <button class="photo-viewer__btn photo-viewer__btn--prev" type="button" data-viewer="prev">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M15 4l-8 8 8 8"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 4l-8 8 8 8"/></svg>
     </button>
     <button class="photo-viewer__btn photo-viewer__btn--next" type="button" data-viewer="next">
-      <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M9 4l8 8-8 8"/></svg>
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 4l8 8-8 8"/></svg>
     </button>`;
   document.body.append(dialog);
 
@@ -98,13 +111,13 @@ export function createMediaViewer(section) {
   function show(index) {
     current = (index + photos.length) % photos.length;
     const img = photos[current];
-    view.src = img.getAttribute('src');          // versão grande (1600 px)
+    view.src = largeSrc(img);                    // versão grande (1600 px)
     view.alt = img.alt;   // descrição só para leitores de tela (não aparece)
     count.textContent = `${String(current + 1).padStart(2, '0')} / ${String(photos.length).padStart(2, '0')}`;
     // pré-carrega as vizinhas para a troca ser imediata
     for (const step of [-1, 1]) {
       const next = photos[(current + step + photos.length) % photos.length];
-      new Image().src = next.getAttribute('src');
+      new Image().src = largeSrc(next);
     }
   }
 

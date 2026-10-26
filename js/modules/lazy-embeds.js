@@ -19,6 +19,8 @@ export function initLazyEmbeds(root = document) {
 
   const load = (frame) => {
     if (!frame.dataset.src) return;
+    // esconde o aviso "CARREGANDO PLAYER…" quando o player terminar de abrir
+    frame.addEventListener('load', () => frame.parentElement?.classList.add('is-loaded'), { once: true });
     frame.src = frame.dataset.src;
     frame.removeAttribute('data-src');
   };

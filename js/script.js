@@ -34,9 +34,11 @@ import { createCodeField } from './modules/code-field.js';
 import { initI18n } from './modules/i18n.js';
 import { createMediaViewer } from './modules/media-viewer.js';
 import { initBookingForm } from './modules/booking-form.js';
+import { initTicketPicker } from './modules/ticket-picker.js';
 import { initLazyEmbeds } from './modules/lazy-embeds.js';
 import { createSectionOrbs } from './modules/section-orbs.js';
 import { createSectionSpectrum } from './modules/section-spectrum.js';
+import { createImageWave } from './modules/image-wave.js';
 
 const hero = document.querySelector('.hero');
 const stage = document.querySelector('[data-stage]');
@@ -52,11 +54,16 @@ function debounce(fn, wait) {
   };
 }
 
+/* ---------- Aparelhos de pouca potência ----------
+   Celular (≤ 768 px) ou processador com até 4 núcleos: ficam sem os efeitos
+   mais caros (grade de caracteres das seções) e com menos partículas. */
+const isLowPower = window.matchMedia('(max-width: 768px)').matches
+  || (navigator.hardwareConcurrency || 8) <= 4;
+
 /* ---------- Densidade de partículas conforme o dispositivo ---------- */
 function particleDensity() {
-  if (window.matchMedia('(max-width: 768px)').matches) return 0.55;
-  const cores = navigator.hardwareConcurrency || 8;
-  return cores <= 4 ? 0.75 : 1;
+  if (window.matchMedia('(max-width: 768px)').matches) return 0.4;
+  return isLowPower ? 0.75 : 1;
 }
 
 function supportsWebGL() {
@@ -188,17 +195,48 @@ const atomDiagram = createAtomDiagram(document.querySelector('[data-atom-diagram
 const sectionOrbs = createSectionOrbs(document.querySelector('.site-sections') || document);
 // Espectro de frequências animado nos cabeçalhos (<canvas data-spectrum>)
 const sectionSpectrum = createSectionSpectrum(document.querySelector('.site-sections') || document);
-// Fundo interativo de caracteres: só nas seções 01–04, 07 e 08
+// O mesmo espectro no centro da navbar (só aparece no celular; no desktop o
+// canvas fica escondido e, fora da tela, não anima). Como ele fica na tela o
+// tempo todo, roda a 30 fps e com o brilho "barato" (ver section-spectrum.js)
+const navSpectrum = createSectionSpectrum(document.querySelector('.nav'), { fps: 30, softGlow: true });
+// Fundo interativo de caracteres: só no desktop, nas seções 01–04, 07 e 08.
+// No celular era o efeito mais caro (~40 % do JS das animações nos primeiros
+// segundos). Lista vazia = sem grade: createCodeField devolve um objeto com
+// enable/disable que não fazem nada.
 const codeField = createCodeField(
-  ['#music', '#release', '#live', '#project', '#booking', '#connect'].map((id) => document.querySelector(id)),
+  isLowPower ? [] : ['#music', '#release', '#live', '#project', '#booking', '#connect']
+    .map((id) => document.querySelector(id)),
 );
 // Na Hero, só a onda de caracteres ao clicar (sem grade em repouso)
 const heroWave = createCodeField([hero], { rippleOnly: true });
 // Idioma antes do formulário (ele lê os textos no idioma atual)
 initI18n();
+// Cópias das fotos da MÍDIA para o loop contínuo: o CSS desliza cada fileira
+// 50 %, então ela precisa estar repetida uma vez. As cópias são só visuais
+// (sem texto alternativo, fora do leitor de tela) e o CSS só as mostra com o
+// loop ligado. Precisam existir antes do visualizador e da onda líquida.
+for (const track of document.querySelectorAll('#media .media-row__track')) {
+  for (const item of [...track.children]) {
+    const clone = item.cloneNode(true);
+    clone.classList.add('media-item--clone');
+    clone.setAttribute('aria-hidden', 'true');
+    clone.querySelector('img').alt = '';
+    track.append(clone);
+  }
+}
 // Fotos da MÍDIA: olho no hover e visualizador em tela cheia
 createMediaViewer(document.querySelector('#media'));
+// Onda líquida no hover das fotos da MÍDIA e da capa do lançamento (só no
+// computador; ver image-wave.js)
+const imageWave = createImageWave([
+  ...[...document.querySelectorAll('.media-item')]
+    .map((host) => ({ host, img: host.querySelector('img') })),
+  ...[...document.querySelectorAll('.release-art__frame')]
+    .map((host) => ({ host, img: host.querySelector('img') })),
+]);
 initBookingForm(document.querySelector('[data-booking-form]'));
+// AO VIVO: janelinha com as opções de ingresso (WhatsApp ou Sympla)
+initTicketPicker();
 // Players do Spotify/SoundCloud: só depois do load e perto da tela
 initLazyEmbeds(document.querySelector('.site-sections') || document);
 
@@ -208,15 +246,19 @@ function applyMotionPreference(reduce) {
     atomDiagram.disable();
     sectionOrbs.disable();
     sectionSpectrum.disable();
+    navSpectrum.disable();
     codeField.disable();
     heroWave.disable();
+    imageWave.disable();
   } else {
     sectionReveal.enable();
     atomDiagram.enable();
     sectionOrbs.enable();
     sectionSpectrum.enable();
+    navSpectrum.enable();
     codeField.enable();
     heroWave.enable();
+    imageWave.enable();
   }
 
   if (reduce) {

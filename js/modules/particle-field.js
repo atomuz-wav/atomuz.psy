@@ -266,7 +266,7 @@ export class ParticleCanvas {
   }
 
   resize() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);   // mesmo limite do WebGL
     const { width, height } = this.canvas.getBoundingClientRect();
     this.dpr = dpr;
     this.canvas.width = Math.round(width * dpr);
