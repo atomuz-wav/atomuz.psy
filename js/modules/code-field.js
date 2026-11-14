@@ -20,6 +20,8 @@
 
    Modo "só onda" (Hero): nada aparece em repouso nem sob o cursor; só o
    clique revela a grade, dentro da onda, que some logo depois.
+   No celular, as seções 01–05 e 08 usam o mesmo modo, mas a onda sai ao
+   ROLAR a página (no ponto do dedo), não ao tocar.
 
    Leitura: atrás dos textos da seção a grade fica rarefeita e mais fraca
    (só ~1 em cada 7 células aparece), para não competir com o conteúdo.
@@ -35,6 +37,7 @@ const COOL_RATE = 2.4;        // velocidade com que o brilho se apaga (1/s)
 const SCRAMBLE_RATE = 6;      // trocas de caractere por segundo (célula 100 % acesa)
 const RING_SPEED = 760;       // px/s — velocidade da onda do clique
 const RING_BAND = 56;         // px — espessura da onda
+const SCROLL_WAVE_GAP = 500;  // ms — intervalo mínimo entre ondas na rolagem (celular)
 const EDGE_FADE = 96;         // px — esmaecimento no topo e na base da seção
 const MAX_DPR = 1.5;
 const TEXT_PAD_X = 16;        // px — margem da área "silenciosa" ao redor dos textos
@@ -57,7 +60,7 @@ function palette() {
     : { base: '#008C18', baseAlpha: 0.12, low: '#008C18', high: '#008C18', hotAlpha: 0.6, glint: 0.55 };
 }
 
-function createField(section, { rippleOnly = false } = {}) {
+function createField(section, { rippleOnly = false, onScroll = false } = {}) {
   const canvas = document.createElement('canvas');
   canvas.className = 'code-field';
   canvas.setAttribute('aria-hidden', 'true');
@@ -376,9 +379,24 @@ function createField(section, { rippleOnly = false } = {}) {
 
   section.addEventListener('pointermove', onMove, { passive: true });
   section.addEventListener('pointerleave', onLeave);
-  section.addEventListener('pointerdown', onDown, { passive: true });
+  // onScroll (seções no celular): sem ouvintes de toque; quem solta as
+  // ondas é a rolagem da página (ver createCodeField → ripple())
+  if (!onScroll) section.addEventListener('pointerdown', onDown, { passive: true });
 
   return {
+    /** Solta uma onda no ponto da tela (clientX/Y), se ele cair nesta seção. */
+    ripple(clientX, clientY) {
+      if (!interactive || !ctx || !visible) return false;
+      const rect = section.getBoundingClientRect();
+      if (clientY < rect.top || clientY > rect.bottom) return false;
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+      rings.push({ x, y, r: 0 });
+      if (rings.length > 4) rings.shift();
+      heatAround(x, y, 70, 1);
+      start();
+      return true;
+    },
     setNear(value) {
       if (value === near) return;
       near = value;
@@ -423,6 +441,7 @@ function createField(section, { rippleOnly = false } = {}) {
  * Cria o campo nas seções indicadas. Retorna { enable, disable } para
  * seguir a preferência de movimento do site.
  * options.rippleOnly: só a onda do clique (usado na Hero).
+ * options.onScroll: a onda sai ao rolar a página, não ao tocar (celular).
  */
 export function createCodeField(sections, options = {}) {
   const fields = new Map();
@@ -466,6 +485,30 @@ export function createCodeField(sections, options = {}) {
   document.addEventListener('atomuz:themechange', redrawAll);
   // textos mudam de tamanho ao trocar o idioma: remarca a área atrás deles
   document.addEventListener('atomuz:langchange', redrawAll);
+
+  // Modo rolagem (celular): enquanto a página rola, solta ondas no ponto onde
+  // está o dedo (ou no centro da tela, na rolagem por inércia sem o dedo),
+  // no máximo uma a cada SCROLL_WAVE_GAP ms. Só a seção sob esse ponto reage:
+  // rolando sobre as seções 06 e 07, que não têm campo, nada acontece.
+  if (options.onScroll) {
+    let finger = null;
+    let lastWave = -Infinity;
+    const track = (event) => {
+      const t = event.touches[0];
+      if (t) finger = { x: t.clientX, y: t.clientY };
+    };
+    window.addEventListener('touchstart', track, { passive: true });
+    window.addEventListener('touchmove', track, { passive: true });
+    window.addEventListener('scroll', () => {
+      const now = performance.now();
+      if (now - lastWave < SCROLL_WAVE_GAP) return;
+      const x = finger ? finger.x : window.innerWidth / 2;
+      const y = finger ? finger.y : window.innerHeight / 2;
+      for (const field of fields.values()) {
+        if (field.ripple(x, y)) { lastWave = now; break; }
+      }
+    }, { passive: true });
+  }
 
   return {
     enable() { fields.forEach((field) => field.setInteractive(true)); },

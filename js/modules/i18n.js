@@ -33,13 +33,13 @@ const EN = {
   // 01 · Projeto
   '/ O PROJETO': '/ THE PROJECT',
   'PROJETO': 'PROJECT',
-  'Atomuz é um projeto de progressive psytrance e zenonesque que explora o':
-    'Atomuz is a progressive psytrance and zenonesque project that explores',
-  'som, ciência, tecnologia e consciência.': 'sound, science, technology and consciousness.',
-  'Criado por Luiz Felipe, o projeto explora as profundezas da mente através de paisagens sonoras psicodélicas e imersivas — batidas hipnóticas, falhas interestelares, melodias marcantes e linhas de baixo profundas, inspiradas pela ciência, tecnologia e ficção científica.':
-    'Created by Luiz Felipe, the project explores the depths of the mind through psychedelic, immersive soundscapes — hypnotic beats, interstellar glitches, striking melodies and deep basslines, inspired by science, technology and science fiction.',
-  'A música é tratada como uma exploração de sistemas: precisa, imersiva e audiovisual, com uma linguagem futurista baseada em psicodelia.':
-    'Music is treated as an exploration of systems: precise, immersive and audiovisual, with a futuristic language rooted in psychedelia.',
+  'Atomuz é um projeto de progressive psytrance e zenonesque que conecta':
+    'Atomuz is a progressive psytrance and zenonesque project that connects',
+  'som, ciência e tecnologia.': 'sound, science and technology.',
+  'Criado por Luiz Felipe, o projeto explora as profundezas da mente por meio de paisagens sonoras psicodélicas e imersivas, com grooves hipnóticos, melodias marcantes e linhas de baixo profundas.':
+    'Created by Luiz Felipe, the project explores the depths of the mind through psychedelic, immersive soundscapes, with hypnotic grooves, striking melodies and deep basslines.',
+  'Inspirado pela ficção científica, o Atomuz transforma a música em uma exploração espacial: precisa, imersiva e audiovisual, com uma linguagem futurista guiada pela psicodelia.':
+    'Inspired by science fiction, Atomuz turns music into a space exploration: precise, immersive and audiovisual, with a futuristic language guided by psychedelia.',
   'Ficha do projeto': 'Project profile',
   'PERFIL DO SISTEMA': 'SYSTEM PROFILE',
   'ARTISTA': 'ARTIST',

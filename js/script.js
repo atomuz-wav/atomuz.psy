@@ -46,6 +46,10 @@ const loop = new AnimationLoop(hero);
 const interaction = new Interaction(hero, stage);
 const getCanvas = () => document.querySelector('[data-particles]');
 
+/* O Safari do iPhone só aplica :active (cartões de CONECTE acendendo sob o
+   dedo) quando a página tem algum ouvinte de touchstart, mesmo vazio */
+document.addEventListener('touchstart', () => {}, { passive: true });
+
 function debounce(fn, wait) {
   let id;
   return (...args) => {
@@ -55,10 +59,19 @@ function debounce(fn, wait) {
 }
 
 /* ---------- Aparelhos de pouca potência ----------
-   Celular (≤ 768 px) ou processador com até 4 núcleos: ficam sem os efeitos
-   mais caros (grade de caracteres das seções) e com menos partículas. */
-const isLowPower = window.matchMedia('(max-width: 768px)').matches
-  || (navigator.hardwareConcurrency || 8) <= 4;
+   Celular (≤ 768 px) ou processador com até 4 núcleos: menos partículas.
+   A grade de caracteres das seções só sai no celular ou com até 2 núcleos:
+   muitos PCs com Windows têm 4 núcleos lógicos e, com o limite em 4, ficavam
+   sem a grade no Chrome e no Firefox. */
+const isMobileWidth = window.matchMedia('(max-width: 768px)').matches;
+const cores = navigator.hardwareConcurrency || 8;
+const isLowPower = isMobileWidth || cores <= 4;
+/* Celular ou tablet: fica só a onda da Hero. A largura com toque cobre aparelhos
+   (alguns Samsung) que se anunciam com hover; notebook com tela de toque segue
+   como computador. */
+const isTouchDevice = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+  || (isMobileWidth && navigator.maxTouchPoints > 0);
+const skipCodeField = isMobileWidth || isTouchDevice || cores <= 2;
 
 /* ---------- Densidade de partículas conforme o dispositivo ---------- */
 function particleDensity() {
@@ -203,9 +216,14 @@ const navSpectrum = createSectionSpectrum(document.querySelector('.nav'), { fps:
 // No celular era o efeito mais caro (~40 % do JS das animações nos primeiros
 // segundos). Lista vazia = sem grade: createCodeField devolve um objeto com
 // enable/disable que não fazem nada.
-const codeField = createCodeField(
-  isLowPower ? [] : ['#music', '#release', '#live', '#project', '#booking', '#connect']
-    .map((id) => document.querySelector(id)),
+const codeFieldSections = ['#music', '#release', '#live', '#project', '#booking', '#connect']
+  .map((id) => document.querySelector(id));
+const codeField = createCodeField(skipCodeField ? [] : codeFieldSections);
+// Celular/tablet: nas mesmas seções (01–05 e 08; nunca 06 e 07), nada em
+// repouso — só a onda de caracteres da Hero, solta ao ROLAR a página
+const mobileWave = createCodeField(
+  isMobileWidth || isTouchDevice ? codeFieldSections : [],
+  { rippleOnly: true, onScroll: true },
 );
 // Na Hero, só a onda de caracteres ao clicar (sem grade em repouso)
 const heroWave = createCodeField([hero], { rippleOnly: true });
@@ -223,6 +241,18 @@ for (const track of document.querySelectorAll('#media .media-row__track')) {
     clone.querySelector('img').alt = '';
     track.append(clone);
   }
+}
+// Firefox não carrega fotos com loading="lazy" que entram na tela só pelo
+// deslize do loop (transform animado no CSS): ficava só a primeira foto.
+// Quando a MÍDIA chega perto, todas as fotos dela passam a carregar já.
+const mediaSection = document.querySelector('#media');
+if (mediaSection && 'IntersectionObserver' in window) {
+  const mediaLoader = new IntersectionObserver((entries) => {
+    if (!entries.some((entry) => entry.isIntersecting)) return;
+    mediaLoader.disconnect();
+    for (const img of mediaSection.querySelectorAll('img[loading="lazy"]')) img.loading = 'eager';
+  }, { rootMargin: '600px 0px' });
+  mediaLoader.observe(mediaSection);
 }
 // Fotos da MÍDIA: olho no hover e visualizador em tela cheia
 createMediaViewer(document.querySelector('#media'));
@@ -248,6 +278,7 @@ function applyMotionPreference(reduce) {
     sectionSpectrum.disable();
     navSpectrum.disable();
     codeField.disable();
+    mobileWave.disable();
     heroWave.disable();
     imageWave.disable();
   } else {
@@ -257,6 +288,7 @@ function applyMotionPreference(reduce) {
     sectionSpectrum.enable();
     navSpectrum.enable();
     codeField.enable();
+    mobileWave.enable();
     heroWave.enable();
     imageWave.enable();
   }

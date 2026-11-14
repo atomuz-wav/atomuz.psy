@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark">
 <head>
+  <!-- ===== BÁSICO ===== -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>ATOMUZ — Psytrance • Science • Technology</title>
@@ -10,12 +11,13 @@
   <!-- O site abre no tema escuro; o claro é opção do visitante (botão sol/lua) -->
   <meta name="color-scheme" content="dark">
 
+  <!-- ===== ÍCONES ===== -->
   <!-- Ícone da aba: o "A" do logo oficial (SVG nos navegadores atuais, PNG nos antigos e no iPhone) -->
   <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="icon" href="assets/icons/favicon-32.png" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
 
-  <!--
+  <!-- ===== COMPARTILHAMENTO =====
     Prévia do link ao compartilhar (WhatsApp, Instagram, Facebook, X).
     As URLs precisam ser ABSOLUTAS. Se o site ganhar domínio próprio,
     atualizar canonical, og:url, og:image e o JSON-LD no fim do <head>.
@@ -33,7 +35,8 @@
   <meta property="og:locale:alternate" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
 
-  <!-- Fontes: Orbitron (logo, títulos, menu e botões), Space Grotesk (parágrafos e textos
+  <!-- ===== FONTES E ESTILOS =====
+       Fontes: Orbitron (logo, títulos, menu e botões), Space Grotesk (parágrafos e textos
        corridos) e Share Tech Mono (rótulos técnicos HUD) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,9 +44,9 @@
 
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 
-  <link rel="stylesheet" href="css/style.css?v=34bdf79f">
+  <link rel="stylesheet" href="css/style.css?v=2d46a917">
 
-  <!--
+  <!-- ===== JAVASCRIPT =====
     BIBLIOTECAS (módulos ES via importmap, versões minificadas)
     - three: partículas WebGL. GSAP: sequência de entrada e transição do ENTER.
     Ambas são carregadas sob demanda com import() dinâmico: se a CDN falhar,
@@ -66,24 +69,24 @@
         "./js/modules/atom-system.js": "./js/modules/atom-system.js?v=07651ddc",
         "./js/modules/booking-form.js": "./js/modules/booking-form.js?v=23349b3a",
         "./js/modules/circuit-system.js": "./js/modules/circuit-system.js?v=b6c32a80",
-        "./js/modules/code-field.js": "./js/modules/code-field.js?v=66953139",
+        "./js/modules/code-field.js": "./js/modules/code-field.js?v=fa983ccd",
         "./js/modules/depth-layers.js": "./js/modules/depth-layers.js?v=54ad5562",
         "./js/modules/enter-transition.js": "./js/modules/enter-transition.js?v=5840edcf",
         "./js/modules/hud-system.js": "./js/modules/hud-system.js?v=ed468414",
-        "./js/modules/i18n.js": "./js/modules/i18n.js?v=6ef46a4d",
+        "./js/modules/i18n.js": "./js/modules/i18n.js?v=614376ce",
         "./js/modules/image-wave.js": "./js/modules/image-wave.js?v=855420e9",
         "./js/modules/intro-sequence.js": "./js/modules/intro-sequence.js?v=3821b317",
         "./js/modules/lazy-embeds.js": "./js/modules/lazy-embeds.js?v=67e5f021",
         "./js/modules/logo-energy.js": "./js/modules/logo-energy.js?v=5a87b636",
         "./js/modules/logo-matrix.js": "./js/modules/logo-matrix.js?v=44653e71",
-        "./js/modules/media-viewer.js": "./js/modules/media-viewer.js?v=4a9887f2",
+        "./js/modules/media-viewer.js": "./js/modules/media-viewer.js?v=9553b598",
         "./js/modules/particle-field.js": "./js/modules/particle-field.js?v=888e0e8d",
         "./js/modules/particle-webgl.js": "./js/modules/particle-webgl.js?v=a1584689",
         "./js/modules/section-orbs.js": "./js/modules/section-orbs.js?v=e6a6d760",
         "./js/modules/section-reveal.js": "./js/modules/section-reveal.js?v=2387fcad",
         "./js/modules/section-spectrum.js": "./js/modules/section-spectrum.js?v=f6606246",
         "./js/modules/ticket-picker.js": "./js/modules/ticket-picker.js?v=561747f8",
-        "./js/script.js": "./js/script.js?v=bd2ce4ab",
+        "./js/script.js": "./js/script.js?v=f5937428",
         "./js/utils/random.js": "./js/utils/random.js?v=296157a1",
         "./js/utils/svg.js": "./js/utils/svg.js?v=6b6d900b",
         "./js/vendor/thinking-orbs.js": "./js/vendor/thinking-orbs.js?v=429ddd79"
@@ -92,7 +95,7 @@
   </script>
 
   <!-- Pré-carrega os módulos locais em paralelo (evita a "cascata" de imports) -->
-  <link rel="modulepreload" href="js/script.js?v=bd2ce4ab">
+  <link rel="modulepreload" href="js/script.js?v=f5937428">
   <link rel="modulepreload" href="js/core/loop.js?v=078b6124">
   <link rel="modulepreload" href="js/core/motion.js?v=19092605">
   <link rel="modulepreload" href="js/core/interaction.js?v=8762fc9a">
@@ -112,10 +115,16 @@
   <link rel="modulepreload" href="js/modules/section-reveal.js?v=2387fcad">
   <link rel="modulepreload" href="js/modules/atom-diagram.js?v=00d131f4">
   <link rel="modulepreload" href="js/modules/booking-form.js?v=23349b3a">
-  <link rel="modulepreload" href="js/modules/code-field.js?v=66953139">
-  <link rel="modulepreload" href="js/modules/i18n.js?v=6ef46a4d">
-  <link rel="modulepreload" href="js/modules/media-viewer.js?v=4a9887f2">
+  <link rel="modulepreload" href="js/modules/code-field.js?v=fa983ccd">
+  <link rel="modulepreload" href="js/modules/i18n.js?v=614376ce">
+  <link rel="modulepreload" href="js/modules/media-viewer.js?v=9553b598">
   <link rel="modulepreload" href="js/modules/lazy-embeds.js?v=67e5f021">
+  <link rel="modulepreload" href="js/modules/ticket-picker.js?v=561747f8">
+  <link rel="modulepreload" href="js/modules/image-wave.js?v=855420e9">
+  <link rel="modulepreload" href="js/modules/section-orbs.js?v=e6a6d760">
+  <link rel="modulepreload" href="js/vendor/thinking-orbs.js?v=429ddd79">
+  <link rel="modulepreload" href="js/modules/section-spectrum.js?v=f6606246">
+  <link rel="modulepreload" href="js/modules/particle-webgl.js?v=a1584689">
 
   <!--
     Bibliotecas da CDN pré-carregadas JUNTO com os módulos locais (antes só
@@ -125,11 +134,6 @@
   <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/gsap@3.12.5/+esm" crossorigin>
   <link rel="modulepreload" href="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.min.js" crossorigin>
 
-  <!--
-    Esconde a composição até a sequência de entrada começar (evita "piscar" o
-    layout completo antes da animação). Trava de segurança: se o JS não
-    assumir em 3 s, tudo aparece normalmente. Não roda com movimento reduzido.
-  -->
   <!--
     TEMA CLARO/ESCURO (script embutido de propósito)
     - Aplica o tema salvo antes da primeira pintura (evita piscar branco).
@@ -189,8 +193,10 @@
       window.addEventListener('scroll', sync, { passive: true });
       sync();
     })();
-  </script>
-  <script>
+
+    // Esconde a composição até a sequência de entrada começar (evita "piscar" o
+    // layout completo antes da animação). Trava de segurança: se o JS não
+    // assumir em 3 s, tudo aparece normalmente. Não roda com movimento reduzido.
     (function () {
       var root = document.documentElement;
       if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -200,7 +206,7 @@
     })();
   </script>
 
-  <script type="module" src="js/script.js?v=bd2ce4ab"></script>
+  <script type="module" src="js/script.js?v=f5937428"></script>
 
   <!-- Dados estruturados (schema.org): dizem ao Google que o site é de um artista musical -->
   <script type="application/ld+json">
@@ -347,72 +353,72 @@
          numa linha logo abaixo da navbar (telas menores) -->
     <nav class="nav__menu" aria-label="Seções do site">
       <ul>
+        <li><a href="#project">SOBRE</a></li>
         <li><a href="#music">MÚSICA</a></li>
         <li><a href="#live">AO VIVO</a></li>
-        <li><a href="#project">SOBRE</a></li>
         <li><a href="#media">MÍDIA</a></li>
         <li><a href="#booking">BOOKING</a></li>
       </ul>
     </nav>
 
     <nav aria-label="Redes sociais">
-    <ul class="nav__social">
-      <li>
-        <a class="social social--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spotify"/></svg>
-        </a>
-      </li>
-      <li class="nav__divider" aria-hidden="true"></li>
-      <li>
-        <a class="social social--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
-          <svg viewBox="0 0 44 22" aria-hidden="true"><use href="#i-soundcloud"/></svg>
-        </a>
-      </li>
-      <li class="nav__divider" aria-hidden="true"></li>
-      <li>
-        <a class="social social--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg>
-        </a>
-      </li>
-      <li class="nav__divider" aria-hidden="true"></li>
-      <li>
-        <!-- Chave de tema claro/escuro (lógica no script embutido no <head>).
-             Bolinha à esquerda com lua = escuro; à direita com sol = claro. -->
-        <button class="theme-switch theme-toggle" type="button" aria-pressed="false" aria-label="Tema escuro">
-          <span class="theme-switch__knob">
-            <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true">
-              <path fill="currentColor" d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/>
+      <ul class="nav__social">
+        <li>
+          <a class="social social--spotify" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Spotify (abre em nova aba)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-spotify"/></svg>
+          </a>
+        </li>
+        <li class="nav__divider" aria-hidden="true"></li>
+        <li>
+          <a class="social social--soundcloud" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no SoundCloud (abre em nova aba)">
+            <svg viewBox="0 0 44 22" aria-hidden="true"><use href="#i-soundcloud"/></svg>
+          </a>
+        </li>
+        <li class="nav__divider" aria-hidden="true"></li>
+        <li>
+          <a class="social social--instagram" href="https://www.instagram.com/atomuz_/" target="_blank" rel="noopener noreferrer" aria-label="ATOMUZ no Instagram (abre em nova aba)">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-instagram"/></svg>
+          </a>
+        </li>
+        <li class="nav__divider" aria-hidden="true"></li>
+        <li>
+          <!-- Chave de tema claro/escuro (lógica no script embutido no <head>).
+               Bolinha à esquerda com lua = escuro; à direita com sol = claro. -->
+          <button class="theme-switch theme-toggle" type="button" aria-pressed="false" aria-label="Tema escuro">
+            <span class="theme-switch__knob">
+              <svg class="theme-toggle__moon" viewBox="0 0 24 24" aria-hidden="true">
+                <path fill="currentColor" d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.8 6.8 0 0 0 10.7 10.7Z"/>
+              </svg>
+              <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
+                  <circle cx="12" cy="12" r="4.4" fill="currentColor"/>
+                  <path d="M12 1.6v2.6M12 19.8v2.6M1.6 12h2.6M19.8 12h2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>
+                </g>
+              </svg>
+            </span>
+          </button>
+        </li>
+        <li>
+          <!-- Idioma (js/modules/i18n.js): mostra a bandeira do idioma para o qual
+               o site vai mudar — Reino Unido no português, Brasil no inglês -->
+          <button class="lang-switch" type="button" data-lang-toggle aria-label="Mudar o idioma para inglês" title="English">
+            <svg class="lang-switch__flag lang-switch__flag--en" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <clipPath id="flag-uk-diag"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath>
+              <path d="M0 0v30h60V0z" fill="#012169"/>
+              <path d="M0 0l60 30m0-30L0 30" stroke="#FFFFFF" stroke-width="6"/>
+              <path d="M0 0l60 30m0-30L0 30" clip-path="url(#flag-uk-diag)" stroke="#C8102E" stroke-width="4"/>
+              <path d="M30 0v30M0 15h60" stroke="#FFFFFF" stroke-width="10"/>
+              <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
             </svg>
-            <svg class="theme-toggle__sun" viewBox="0 0 24 24" aria-hidden="true">
-              <g fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round">
-                <circle cx="12" cy="12" r="4.4" fill="currentColor"/>
-                <path d="M12 1.6v2.6M12 19.8v2.6M1.6 12h2.6M19.8 12h2.6M4.6 4.6l1.8 1.8M17.6 17.6l1.8 1.8M4.6 19.4l1.8-1.8M17.6 6.4l1.8-1.8"/>
-              </g>
+            <svg class="lang-switch__flag lang-switch__flag--pt" viewBox="0 0 20 14" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+              <rect width="20" height="14" fill="#009C3B"/>
+              <path d="M10 1.6 18.4 7 10 12.4 1.6 7z" fill="#FFDF00"/>
+              <circle cx="10" cy="7" r="3.5" fill="#002776"/>
+              <path d="M6.7 6.2a7 7 0 0 1 6.6 1.6" fill="none" stroke="#FFFFFF" stroke-width="0.6"/>
             </svg>
-          </span>
-        </button>
-      </li>
-      <li>
-        <!-- Idioma (js/modules/i18n.js): mostra a bandeira do idioma para o qual
-             o site vai mudar — Reino Unido no português, Brasil no inglês -->
-        <button class="lang-switch" type="button" data-lang-toggle aria-label="Mudar o idioma para inglês" title="English">
-          <svg class="lang-switch__flag lang-switch__flag--en" viewBox="0 0 60 30" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <clipPath id="flag-uk-diag"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath>
-            <path d="M0 0v30h60V0z" fill="#012169"/>
-            <path d="M0 0l60 30m0-30L0 30" stroke="#FFFFFF" stroke-width="6"/>
-            <path d="M0 0l60 30m0-30L0 30" clip-path="url(#flag-uk-diag)" stroke="#C8102E" stroke-width="4"/>
-            <path d="M30 0v30M0 15h60" stroke="#FFFFFF" stroke-width="10"/>
-            <path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/>
-          </svg>
-          <svg class="lang-switch__flag lang-switch__flag--pt" viewBox="0 0 20 14" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
-            <rect width="20" height="14" fill="#009C3B"/>
-            <path d="M10 1.6 18.4 7 10 12.4 1.6 7z" fill="#FFDF00"/>
-            <circle cx="10" cy="7" r="3.5" fill="#002776"/>
-            <path d="M6.7 6.2a7 7 0 0 1 6.6 1.6" fill="none" stroke="#FFFFFF" stroke-width="0.6"/>
-          </svg>
-        </button>
-      </li>
-    </ul>
+          </button>
+        </li>
+      </ul>
     </nav>
   </header>
 
@@ -429,7 +435,6 @@
 
     <!-- Moldura de composição: tudo dentro usa a unidade de design --u (1 px da referência) -->
     <div class="hero__frame">
-
 
       <!-- ===== CENTRO (Atomic Identity System) =====
            O palco é uma PILHA DE SVGs com o mesmo viewBox (faixa y 520 → 1420 da
@@ -462,11 +467,6 @@
               <!-- Brilho interno das bordas das letras (versão com chuva de caracteres) -->
               <filter id="f-logo-inner" filterUnits="userSpaceOnUse" x="0" y="700" width="2048" height="620">
                 <feGaussianBlur stdDeviation="4"/>
-              </filter>
-              <!-- Brilho de região pequena (caixa do próprio elemento) para peças animadas -->
-              <filter id="f-fx-glow" x="-80%" y="-40%" width="260%" height="180%">
-                <feGaussianBlur in="SourceGraphic" stdDeviation="2.2" result="blur"/>
-                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
               </filter>
 
               <radialGradient id="g-haze" cx="1024" cy="1010" r="1" gradientUnits="userSpaceOnUse"
@@ -776,17 +776,16 @@
         <div class="project-grid">
           <div class="project-copy" data-reveal>
             <p class="project-copy__lead">
-              Atomuz é um projeto de progressive psytrance e zenonesque que explora o
-              <em>som, ciência, tecnologia e consciência.</em>
+              Atomuz é um projeto de progressive psytrance e zenonesque que conecta
+              <em>som, ciência e tecnologia.</em>
             </p>
             <p class="project-copy__text">
-              Criado por Luiz Felipe, o projeto explora as profundezas da mente através de paisagens sonoras
-              psicodélicas e imersivas — batidas hipnóticas, falhas interestelares, melodias marcantes e linhas
-              de baixo profundas, inspiradas pela ciência, tecnologia e ficção científica.
+              Criado por Luiz Felipe, o projeto explora as profundezas da mente por meio de paisagens sonoras
+              psicodélicas e imersivas, com grooves hipnóticos, melodias marcantes e linhas de baixo profundas.
             </p>
             <p class="project-copy__text">
-              A música é tratada como uma exploração de sistemas: precisa, imersiva e audiovisual, com uma
-              linguagem futurista baseada em psicodelia.
+              Inspirado pela ficção científica, o Atomuz transforma a música em uma exploração espacial: precisa,
+              imersiva e audiovisual, com uma linguagem futurista guiada pela psicodelia.
             </p>
           </div>
 
@@ -830,77 +829,14 @@
       </div>
     </section>
 
-    <!-- ===== 02 · MUSIC ===== -->
-    <section class="section section--music" id="music" aria-labelledby="music-title">
-      <div class="section__inner">
-
-        <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>02</span> / SOM</p>
-          <h2 class="section-head__title" id="music-title">MÚSICA</h2>
-          <div class="section-head__rule" aria-hidden="true">
-            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
-            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
-            <span class="section-head__line"></span>
-            <!-- Orb animado (thinking-orbs, estado "listening"): js/modules/section-orbs.js -->
-            <canvas class="section-head__orb" data-orb="listening" data-orb-size="64" width="64" height="64"></canvas>
-          </div>
-          <p class="section-head__lead">Ouça o ATOMUZ nas plataformas oficiais.</p>
-        </header>
-
-        <div class="music-grid">
-          <!-- Cartão de player: moldura HUD chanfrada (mesma linguagem do botão ENTER) -->
-          <article class="player-card" aria-labelledby="player-spotify-title" data-reveal>
-            <div class="player-card__body">
-              <div class="player-card__bar">
-                <h3 class="player-card__label" id="player-spotify-title">SPOTIFY</h3>
-                <a class="player-card__link" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="Abrir ATOMUZ no Spotify (abre em nova aba)">
-                  ABRIR <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-              <div class="player-card__screen">
-                <span class="embed-loading" aria-hidden="true">CARREGANDO PLAYER…</span>
-                <iframe
-                  title="Player do Spotify — ATOMUZ"
-                  data-src="https://open.spotify.com/embed/artist/55wNhCr9PhSkrum4GwGuZi?utm_source=generator&amp;theme=0"
-                  height="352"
-                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                  loading="lazy"></iframe>
-              </div>
-            </div>
-          </article>
-
-          <article class="player-card" aria-labelledby="player-soundcloud-title" data-reveal>
-            <div class="player-card__body">
-              <div class="player-card__bar">
-                <h3 class="player-card__label" id="player-soundcloud-title">SOUNDCLOUD</h3>
-                <a class="player-card__link" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="Abrir ATOMUZ no SoundCloud (abre em nova aba)">
-                  ABRIR <span aria-hidden="true">↗</span>
-                </a>
-              </div>
-              <div class="player-card__screen">
-                <span class="embed-loading" aria-hidden="true">CARREGANDO PLAYER…</span>
-                <iframe
-                  title="Player do SoundCloud — ATOMUZ"
-                  data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/atomuz&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
-                  height="352"
-                  allow="autoplay"
-                  loading="lazy"></iframe>
-              </div>
-            </div>
-          </article>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- ===== 03 · LATEST RELEASE =====
+    <!-- ===== 02 · LATEST RELEASE =====
          Dados reais da página oficial da faixa no SoundCloud
          (soundcloud.com/atomuz/atomuz-primordial-particle). -->
     <section class="section section--release" id="release" aria-labelledby="release-title">
       <div class="section__inner">
 
         <header class="section-head" data-reveal>
-          <p class="section-head__index"><span>03</span> / ÚLTIMO LANÇAMENTO</p>
+          <p class="section-head__index"><span>02</span> / ÚLTIMO LANÇAMENTO</p>
           <h2 class="section-head__title" id="release-title">LANÇAMENTO</h2>
           <div class="section-head__rule" aria-hidden="true">
             <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
@@ -975,6 +911,69 @@
           </div>
 
         </div>
+      </div>
+    </section>
+
+    <!-- ===== 03 · MUSIC ===== -->
+    <section class="section section--music" id="music" aria-labelledby="music-title">
+      <div class="section__inner">
+
+        <header class="section-head" data-reveal>
+          <p class="section-head__index"><span>03</span> / SOM</p>
+          <h2 class="section-head__title" id="music-title">MÚSICA</h2>
+          <div class="section-head__rule" aria-hidden="true">
+            <!-- Espectro de frequências animado: js/modules/section-spectrum.js -->
+            <canvas class="section-head__spectrum" data-spectrum width="128" height="28"></canvas>
+            <span class="section-head__line"></span>
+            <!-- Orb animado (thinking-orbs, estado "listening"): js/modules/section-orbs.js -->
+            <canvas class="section-head__orb" data-orb="listening" data-orb-size="64" width="64" height="64"></canvas>
+          </div>
+          <p class="section-head__lead">Ouça o ATOMUZ nas plataformas oficiais.</p>
+        </header>
+
+        <div class="music-grid">
+          <!-- Cartão de player: moldura HUD chanfrada (mesma linguagem do botão ENTER) -->
+          <article class="player-card" aria-labelledby="player-spotify-title" data-reveal>
+            <div class="player-card__body">
+              <div class="player-card__bar">
+                <h3 class="player-card__label" id="player-spotify-title">SPOTIFY</h3>
+                <a class="player-card__link" href="https://open.spotify.com/intl-pt/artist/55wNhCr9PhSkrum4GwGuZi" target="_blank" rel="noopener noreferrer" aria-label="Abrir ATOMUZ no Spotify (abre em nova aba)">
+                  ABRIR <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+              <div class="player-card__screen">
+                <span class="embed-loading" aria-hidden="true">CARREGANDO PLAYER…</span>
+                <iframe
+                  title="Player do Spotify — ATOMUZ"
+                  data-src="https://open.spotify.com/embed/artist/55wNhCr9PhSkrum4GwGuZi?utm_source=generator&amp;theme=0"
+                  height="352"
+                  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                  loading="lazy"></iframe>
+              </div>
+            </div>
+          </article>
+
+          <article class="player-card" aria-labelledby="player-soundcloud-title" data-reveal>
+            <div class="player-card__body">
+              <div class="player-card__bar">
+                <h3 class="player-card__label" id="player-soundcloud-title">SOUNDCLOUD</h3>
+                <a class="player-card__link" href="https://soundcloud.com/atomuz" target="_blank" rel="noopener noreferrer" aria-label="Abrir ATOMUZ no SoundCloud (abre em nova aba)">
+                  ABRIR <span aria-hidden="true">↗</span>
+                </a>
+              </div>
+              <div class="player-card__screen">
+                <span class="embed-loading" aria-hidden="true">CARREGANDO PLAYER…</span>
+                <iframe
+                  title="Player do SoundCloud — ATOMUZ"
+                  data-src="https://w.soundcloud.com/player/?url=https%3A//soundcloud.com/atomuz&amp;color=%2300cc22&amp;auto_play=false&amp;hide_related=true&amp;show_comments=false&amp;show_user=true&amp;show_reposts=false&amp;show_teaser=false&amp;visual=false"
+                  height="352"
+                  allow="autoplay"
+                  loading="lazy"></iframe>
+              </div>
+            </div>
+          </article>
+        </div>
+
       </div>
     </section>
 
@@ -1634,7 +1633,6 @@
       <a class="site-footer__top" href="#inicio">VOLTAR AO TOPO <span aria-hidden="true">↑</span></a>
     </div>
   </footer>
-
 
 </body>
 </html>
