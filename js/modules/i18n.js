@@ -33,19 +33,20 @@ const EN = {
   // 01 · Projeto
   '/ O PROJETO': '/ THE PROJECT',
   'PROJETO': 'PROJECT',
-  'Atomuz é um projeto de progressive psytrance e zenonesque que conecta':
+  'Atomuz é um projeto de psytrance progressivo e zenonesque que conecta':
     'Atomuz is a progressive psytrance and zenonesque project that connects',
   'som, ciência e tecnologia.': 'sound, science and technology.',
   'Criado por Luiz Felipe, o projeto explora as profundezas da mente por meio de paisagens sonoras psicodélicas e imersivas, com grooves hipnóticos, melodias marcantes e linhas de baixo profundas.':
     'Created by Luiz Felipe, the project explores the depths of the mind through psychedelic, immersive soundscapes, with hypnotic grooves, striking melodies and deep basslines.',
-  'Inspirado pela ficção científica, o Atomuz transforma a música em uma exploração espacial: precisa, imersiva e audiovisual, com uma linguagem futurista guiada pela psicodelia.':
-    'Inspired by science fiction, Atomuz turns music into a space exploration: precise, immersive and audiovisual, with a futuristic language guided by psychedelia.',
+  'Inspirado pela ficção científica, o Atomuz transforma a música em uma experiência espacial, unindo precisão, introspecção e psicodelia em uma linguagem futurista.':
+    'Inspired by science fiction, Atomuz turns music into a space experience, uniting precision, introspection and psychedelia in a futuristic language.',
   'Ficha do projeto': 'Project profile',
   'PERFIL DO SISTEMA': 'SYSTEM PROFILE',
   'ARTISTA': 'ARTIST',
   'ORIGEM': 'ORIGIN',
   'Pernambuco · Brasil': 'Pernambuco · Brazil',
   'ESTILO': 'STYLE',
+  'Psytrance Progressivo · Zenonesque': 'Progressive Psytrance · Zenonesque',
   'Experiência sônica do mundo quântico': 'A sonic experience of the quantum world',
   'Apresentações ao vivo nas maiores raves do Nordeste:': 'Live performances at the biggest raves in Northeast Brazil:',
 

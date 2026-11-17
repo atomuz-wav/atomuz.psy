@@ -219,11 +219,12 @@ const navSpectrum = createSectionSpectrum(document.querySelector('.nav'), { fps:
 const codeFieldSections = ['#music', '#release', '#live', '#project', '#booking', '#connect']
   .map((id) => document.querySelector(id));
 const codeField = createCodeField(skipCodeField ? [] : codeFieldSections);
-// Celular/tablet: nas mesmas seções (01–05 e 08; nunca 06 e 07), nada em
-// repouso — só a onda de caracteres da Hero, solta ao ROLAR a página
+// Celular/tablet: nas mesmas seções, igual à Hero — nada em repouso, só a
+// onda de caracteres ao TOCAR. No desktop a lista fica vazia (sem efeito).
+// (O modo { onScroll: true }, onda ao rolar, continua disponível em code-field.js.)
 const mobileWave = createCodeField(
   isMobileWidth || isTouchDevice ? codeFieldSections : [],
-  { rippleOnly: true, onScroll: true },
+  { rippleOnly: true },
 );
 // Na Hero, só a onda de caracteres ao clicar (sem grade em repouso)
 const heroWave = createCodeField([hero], { rippleOnly: true });

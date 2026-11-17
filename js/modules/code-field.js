@@ -20,8 +20,8 @@
 
    Modo "só onda" (Hero): nada aparece em repouso nem sob o cursor; só o
    clique revela a grade, dentro da onda, que some logo depois.
-   No celular, as seções 01–05 e 08 usam o mesmo modo, mas a onda sai ao
-   ROLAR a página (no ponto do dedo), não ao tocar.
+   No celular, as seções com grade usam o mesmo modo da Hero (onda ao tocar).
+   Opcional: { onScroll: true } faz a onda sair ao ROLAR a página, não ao tocar.
 
    Leitura: atrás dos textos da seção a grade fica rarefeita e mais fraca
    (só ~1 em cada 7 células aparece), para não competir com o conteúdo.
